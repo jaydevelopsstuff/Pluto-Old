@@ -26,7 +26,7 @@ public class TerrariaReader extends InputStream {
         return in.read();
     }
 
-    public final void readFully(byte b[], int off, int len) throws IOException {
+    public final void readFully(byte[] b, int off, int len) throws IOException {
         Objects.checkFromIndexSize(off, len, b.length);
         int n = 0;
         while (n < len) {
@@ -86,40 +86,12 @@ public class TerrariaReader extends InputStream {
     }
 
     public String readString() throws IOException {
-        byte[] m_charBytes = new byte[128];
-        char[] m_charBuffer = new char[512];
+        int bytesLength = read7BitEncodedInt();
 
-        int readBuffer = 0;
-        int stringLength = read7BitEncodedInt();
+        byte[] buffer = new byte[bytesLength];
+        if(in.read(buffer) < 0) throw new EOFException();
 
-        if(stringLength < 0) throw new IllegalStateException();
-        if(stringLength == 0) return "";
-
-        StringBuilder stringBuilder = null;
-        do
-        {
-            int count = (Math.min(stringLength - readBuffer, 128));
-            int num3 = in.read(m_charBytes, 0, count);
-            if (num3 == 0) throw new EOFException();
-
-            int chars = 0;
-            for(char character : new String(m_charBytes, encoding).toCharArray()) {
-                m_charBuffer[chars] = character;
-                chars++;
-            }
-            if (readBuffer == 0 && num3 == stringLength)
-            {
-                return new String(m_charBuffer, 0, chars);
-            }
-            if (stringBuilder == null)
-            {
-                stringBuilder = new StringBuilder(Math.min(stringLength, 360));
-            }
-            stringBuilder.append(m_charBuffer, 0, chars);
-            readBuffer += num3;
-        }
-        while (readBuffer < stringLength);
-        return stringBuilder.toString();
+        return new String(buffer, encoding);
     }
 
     // Ported from C#'s BinaryReader class
@@ -127,13 +99,15 @@ public class TerrariaReader extends InputStream {
         int count = 0;
         int shift = 0;
         boolean more = true;
-        while (more) {
+        while(more) {
+            if(shift == 35) throw new IllegalStateException();
+
             byte b = readByte();
+
             count |= (b & 0x7F) << shift;
             shift += 7;
-            if((b & 0x80) == 0) {
-                more = false;
-            }
+
+            if((b & 0x80) == 0) more = false;
         }
         return count;
     }

@@ -6,7 +6,9 @@ import net.jay.pluto.net.Packets;
 public interface Packet {
     void readPacketData(PacketBuffer buffer);
 
-    void writePacketData(PacketBuffer buffer);
+    PacketBuffer writePacketData();
+
+    PacketBuffer writePacketData(PacketBuffer buffer);
 
     Packets getEnum();
 }

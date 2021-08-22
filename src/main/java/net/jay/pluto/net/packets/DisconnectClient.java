@@ -1,30 +1,32 @@
 package net.jay.pluto.net.packets;
 
+import net.jay.pluto.localization.NetworkText;
 import net.jay.pluto.net.PacketBuffer;
 import net.jay.pluto.net.Packets;
 
-public class ConnectRequest implements Packet {
-    private static final Packets enumRepresentation = Packets.ConnectRequest;
+public class DisconnectClient implements Packet {
+    private static final Packets enumRepresentation = Packets.Disconnect;
 
-    private String version;
+    private NetworkText reason;
 
-    public ConnectRequest(PacketBuffer buffer) {
-        this.readPacketData(buffer);
+    public DisconnectClient(NetworkText reason) {
+        this.reason = reason;
     }
 
     @Override
     public void readPacketData(PacketBuffer buffer) {
-        version = buffer.readString();
+
     }
 
     @Override
     public PacketBuffer writePacketData() {
-        return null;
+        return reason.serialize(new PacketBuffer(256));
     }
 
     @Override
     public PacketBuffer writePacketData(PacketBuffer buffer) {
-        return null;
+        buffer = reason.serialize(buffer);
+        return buffer;
     }
 
     @Override

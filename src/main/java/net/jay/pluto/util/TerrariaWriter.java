@@ -1,5 +1,7 @@
 package net.jay.pluto.util;
 
+import net.jay.pluto.net.PacketBuffer;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -26,6 +28,10 @@ public class TerrariaWriter extends OutputStream {
     }
 
     public void writeByte(byte b) throws IOException {
+        out.write(b);
+    }
+
+    public void writeBytes(byte[] b) throws IOException {
         out.write(b);
     }
 
@@ -70,6 +76,10 @@ public class TerrariaWriter extends OutputStream {
         byte[] stringBytes = s.getBytes(StandardCharsets.UTF_8);
         write7BitEncodedInt(stringBytes.length);
         write(stringBytes);
+    }
+
+    public void writeBuffer(PacketBuffer buffer) throws IOException {
+        writeBytes(buffer.getBuffer());
     }
 
     @Override

@@ -1,21 +1,16 @@
 package net.jay.pluto.net;
 
-import net.jay.pluto.net.packets.ConnectRequest;
-import net.jay.pluto.util.TerrariaReader;
-import net.jay.pluto.util.TerrariaWriter;
+import net.jay.pluto.localization.NetworkText;
+import net.jay.pluto.net.packets.DisconnectClient;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Arrays;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class TCPServerManager {
     private final int port;
 
-    private ServerSocket server;
+    private TServerSocket server;
 
     private final Thread listenerThread;
     private final Executor executor;
@@ -31,18 +26,16 @@ public class TCPServerManager {
 
     private void startServerAndListen() {
         try {
-            server = new ServerSocket(port);
+            server = new TServerSocket(port);
 
             while(!listenerThread.isInterrupted()) {
-                Socket connectedSocket = server.accept();
+                PlayerSocket connectedSocket = (PlayerSocket)server.accept();
+                connectedSocket.init();
                 System.out.println("Somebody connected");
-
-                TerrariaReader reader = new TerrariaReader(connectedSocket.getInputStream());
-                TerrariaWriter writer = new TerrariaWriter(connectedSocket.getOutputStream());
 
                 executor.execute(() -> {
                     try {
-                        System.out.println(Arrays.toString(reader.readNBytes(reader.available())));
+                        connectedSocket.sendPacket(new DisconnectClient(new NetworkText("Haha fuck you", NetworkText.Mode.LITERAL)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

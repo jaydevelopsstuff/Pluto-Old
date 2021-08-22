@@ -1,6 +1,7 @@
 package net.jay.pluto.net;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class PacketBuffer {
     private byte[] buffer;
@@ -11,6 +12,7 @@ public class PacketBuffer {
 
     public PacketBuffer(int allocation) {
         this.buffer = new byte[allocation];
+        Arrays.fill(buffer, (byte)-128);
         canWrite = true;
     }
 
@@ -22,6 +24,10 @@ public class PacketBuffer {
     public PacketBuffer(byte[] buffer, boolean canWrite) {
         this.buffer = buffer;
         this.canWrite = canWrite;
+    }
+
+    public byte[] getBuffer() {
+        return buffer;
     }
 
 
@@ -72,36 +78,32 @@ public class PacketBuffer {
 
     public String readString() {
         StringAndTwoIntegers result = getStringS(readerIndex);
-        readerIndex += result.int1 + 4;
-        return result.string;
-    }
-
-    public String readStringEnc() {
-        StringAndTwoIntegers result = getStringEncS(readerIndex);
         readerIndex += result.int1 + result.int2;
         return result.string;
     }
 
     public String readString(int numBytes) {
         String result = getString(readerIndex, numBytes);
-        readerIndex += numBytes + 4;
+        readerIndex += numBytes;
         return result;
     }
 
     public boolean getBoolean(int index) {
-        if(index < 0 || isInBounds(index, 1)) throw new ArrayIndexOutOfBoundsException();
+        if(index < 0 || isntInBounds(index, 1)) throw new ArrayIndexOutOfBoundsException();
 
         return buffer[index] != 0;
     }
 
     public byte getByte(int index) {
-        if(index < 0 || isInBounds(index, 1)) throw new ArrayIndexOutOfBoundsException();
+        System.out.println(index);
+        System.out.println(buffer.length);
+        if(index < 0 || isntInBounds(index, 1)) throw new ArrayIndexOutOfBoundsException();
 
         return buffer[index];
     }
 
     public short getShort(int startIndex) {
-        if(startIndex < 0 || isInBounds(startIndex, 2)) throw new ArrayIndexOutOfBoundsException();
+        if(startIndex < 0 || isntInBounds(startIndex, 2)) throw new ArrayIndexOutOfBoundsException();
 
         byte ch1 = buffer[startIndex];
         byte ch2 = buffer[startIndex + 1];
@@ -110,7 +112,7 @@ public class PacketBuffer {
     }
 
     public int getInt(int startIndex) {
-        if(startIndex < 0 || isInBounds(startIndex, 4)) throw new ArrayIndexOutOfBoundsException();
+        if(startIndex < 0 || isntInBounds(startIndex, 4)) throw new ArrayIndexOutOfBoundsException();
 
         byte ch1 = buffer[startIndex];
         byte ch2 = buffer[startIndex + 1];
@@ -121,7 +123,7 @@ public class PacketBuffer {
     }
 
     public long getLong(int startIndex) {
-        if(startIndex < 0 || isInBounds(startIndex, 8)) throw new ArrayIndexOutOfBoundsException();
+        if(startIndex < 0 || isntInBounds(startIndex, 8)) throw new ArrayIndexOutOfBoundsException();
 
         // Pretty ugly but oh well, might improve later
         byte ch1 = buffer[startIndex];
@@ -147,50 +149,29 @@ public class PacketBuffer {
     }
 
     public String getString(int startIndex) {
-        if(startIndex < 0 || isInBounds(startIndex, 1)) throw new ArrayIndexOutOfBoundsException();
-
-        int numBytes = getInt(startIndex);
-
-        if(isInBounds(startIndex + 1, numBytes)) throw new ArrayIndexOutOfBoundsException();
-
-        return new String(buffer, startIndex + 1, numBytes, StandardCharsets.UTF_8);
-    }
-
-    public String getStringEnc(int startIndex) {
-        if(startIndex < 0 || isInBounds(startIndex, 1)) throw new ArrayIndexOutOfBoundsException();
+        if(startIndex < 0 || isntInBounds(startIndex, 1)) throw new ArrayIndexOutOfBoundsException();
 
         int numBytes = get7BitEncodedInt(startIndex).int1;
 
-        if(isInBounds(startIndex + 1, numBytes)) throw new ArrayIndexOutOfBoundsException();
+        if(isntInBounds(startIndex + 1, numBytes)) throw new ArrayIndexOutOfBoundsException();
 
         return new String(buffer, startIndex + 1, numBytes, StandardCharsets.UTF_8);
     }
 
     public String getString(int startIndex, int numBytes) {
-        if(startIndex < 0 || isInBounds(startIndex, numBytes)) throw new ArrayIndexOutOfBoundsException();
+        if(startIndex < 0 || isntInBounds(startIndex, numBytes)) throw new ArrayIndexOutOfBoundsException();
 
         return new String(buffer, startIndex, numBytes, StandardCharsets.UTF_8);
     }
 
     // Necessary private function, shouldn't be used normally
     private StringAndTwoIntegers getStringS(int startIndex) {
-        if(startIndex < 0 || isInBounds(startIndex, 1)) throw new ArrayIndexOutOfBoundsException();
-
-        int numBytes = getInt(startIndex);
-
-        if(isInBounds(startIndex + 1, numBytes)) throw new ArrayIndexOutOfBoundsException();
-
-        return new StringAndTwoIntegers(new String(buffer, startIndex + 1, numBytes, StandardCharsets.UTF_8), numBytes, 0);
-    }
-
-    // Necessary private function, shouldn't be used normally
-    private StringAndTwoIntegers getStringEncS(int startIndex) {
-        if(startIndex < 0 || isInBounds(startIndex, 1)) throw new ArrayIndexOutOfBoundsException();
+        if(startIndex < 0 || isntInBounds(startIndex, 1)) throw new ArrayIndexOutOfBoundsException();
 
         TwoIntegers result = get7BitEncodedInt(startIndex);
         int numBytes = result.int1;
 
-        if(isInBounds(startIndex + 1, numBytes)) throw new ArrayIndexOutOfBoundsException();
+        if(isntInBounds(startIndex + 1, numBytes)) throw new ArrayIndexOutOfBoundsException();
 
         return new StringAndTwoIntegers(new String(buffer, startIndex + 1, numBytes, StandardCharsets.UTF_8), numBytes, result.int2);
     }
@@ -235,25 +216,20 @@ public class PacketBuffer {
     }
 
     public void writeString(String s) {
-        int writtenBytes = writeString(s, writerIndex);
-        writerIndex += writtenBytes + 4;
-    }
-
-    public void writeStringEnc(String s) {
-        int writtenBytes = writeStringEncS(s, writerIndex);
+        int writtenBytes = writeStringS(s, writerIndex);
         writerIndex += writtenBytes;
     }
 
     public void writeBoolean(boolean b, int index) {
         if(!canWrite) throw new IllegalStateException();
-        if(index < 0 || isInBounds(index, 1)) throw new ArrayIndexOutOfBoundsException();
+        if(index < 0 || isntInBounds(index, 1)) throw new ArrayIndexOutOfBoundsException();
 
         buffer[index] = (byte)(b ? 1 : 0);
     }
 
     public void writeByte(byte b, int index) {
         if(!canWrite) throw new IllegalStateException();
-        if(index < 0 || isInBounds(index, 1)) throw new ArrayIndexOutOfBoundsException();
+        if(index < 0 || isntInBounds(index, 1)) throw new ArrayIndexOutOfBoundsException();
 
         buffer[index] = b;
     }
@@ -261,7 +237,7 @@ public class PacketBuffer {
     public void writeBytes(byte[] b, int startIndex) {
         if(!canWrite) throw new IllegalStateException();
         int byteArrayLength = b.length;
-        if(startIndex < 0 || isInBounds(startIndex, byteArrayLength)) throw new ArrayIndexOutOfBoundsException();
+        if(startIndex < 0 || isntInBounds(startIndex, byteArrayLength)) throw new ArrayIndexOutOfBoundsException();
 
         int i = 0;
         for(byte bytee : b) {
@@ -272,7 +248,7 @@ public class PacketBuffer {
 
     public void writeShort(short s, int startIndex) {
         if(!canWrite) throw new IllegalStateException();
-        if(startIndex < 0 || isInBounds(startIndex, 2)) throw new ArrayIndexOutOfBoundsException();
+        if(startIndex < 0 || isntInBounds(startIndex, 2)) throw new ArrayIndexOutOfBoundsException();
 
         buffer[startIndex] = (byte)(s);
         buffer[startIndex + 1] = (byte)(s >>> 8);
@@ -280,7 +256,7 @@ public class PacketBuffer {
 
     public void writeInt(int i, int startIndex) {
         if(!canWrite) throw new IllegalStateException();
-        if(startIndex < 0 || isInBounds(startIndex, 4)) throw new ArrayIndexOutOfBoundsException();
+        if(startIndex < 0 || isntInBounds(startIndex, 4)) throw new ArrayIndexOutOfBoundsException();
 
         buffer[startIndex] = (byte)(i);
         buffer[startIndex + 1] = (byte)(i >>> 8);
@@ -290,7 +266,7 @@ public class PacketBuffer {
 
     public void writeLong(long l, int startIndex) {
         if(!canWrite) throw new IllegalStateException();
-        if(startIndex < 0 || isInBounds(startIndex, 4)) throw new ArrayIndexOutOfBoundsException();
+        if(startIndex < 0 || isntInBounds(startIndex, 4)) throw new ArrayIndexOutOfBoundsException();
 
         buffer[startIndex] = (byte)(l);
         buffer[startIndex + 1] = (byte)(l >>> 8);
@@ -311,25 +287,10 @@ public class PacketBuffer {
     }
 
     public int writeString(String s, int startIndex) {
-        if(!canWrite) throw new IllegalStateException();
-        if(startIndex < 0 || isInBounds(startIndex, 1)) throw new ArrayIndexOutOfBoundsException();
-
         byte[] stringBytes = s.getBytes(StandardCharsets.UTF_8);
         int numBytes = stringBytes.length;
 
-        if(isInBounds(startIndex + 1, numBytes)) throw new ArrayIndexOutOfBoundsException();
-
-        writeInt(numBytes, startIndex);
-        writeBytes(s.getBytes(StandardCharsets.UTF_8), startIndex + 1);
-
-        return numBytes;
-    }
-
-    public int writeStringEnc(String s, int startIndex) {
-        byte[] stringBytes = s.getBytes(StandardCharsets.UTF_8);
-        int numBytes = stringBytes.length;
-
-        if(isInBounds(startIndex + 1, numBytes)) throw new ArrayIndexOutOfBoundsException();
+        if(isntInBounds(startIndex + 1, numBytes)) throw new ArrayIndexOutOfBoundsException();
 
         write7BitEncodedInt(numBytes, startIndex);
         writeBytes(s.getBytes(StandardCharsets.UTF_8), startIndex + 1);
@@ -337,7 +298,7 @@ public class PacketBuffer {
         return numBytes;
     }
 
-    private int writeStringEncS(String s, int startIndex) {
+    private int writeStringS(String s, int startIndex) {
         byte[] stringBytes = s.getBytes(StandardCharsets.UTF_8);
         int numBytes = stringBytes.length;
 
@@ -378,11 +339,11 @@ public class PacketBuffer {
         return j;
     }
 
-    public boolean isInBounds(int startIndex, int length) {
+    public boolean isntInBounds(int startIndex, int length) {
         for(int i = 0; i < length; i++) {
-            if(startIndex + i > buffer.length - 1) return false;
+            if(startIndex + i > buffer.length - 1) return true;
         }
-        return true;
+        return false;
     }
 
     private record TwoIntegers(int int1, int int2) {}
