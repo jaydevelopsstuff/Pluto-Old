@@ -1,13 +1,13 @@
-package net.jay.pluto.net.packets;
+package net.jay.pluto.net;
 
 public enum Packets {
-    ConnectRequest(1),
-    Disconnect(2),
-    ContinueConnecting(3),
-    PlayerInfo(4),
-    PlayerSlot(5),
-    ContinueConnecting2(6),
-    WorldInfo(7),
+    ConnectRequest(1, From.CLIENT),
+    Disconnect(2, From.SERVER),
+    ContinueConnecting(3, From.SERVER),
+    PlayerInfo(4, From.BOTH),
+    PlayerSlot(5, From.BOTH),
+    ContinueConnecting2(6, From.CLIENT),
+    WorldInfo(7, From.SERVER),
     TileGetSection(8),
     Status(9),
     TileSendSection(10),
@@ -138,8 +138,21 @@ public enum Packets {
     SetCountsAsHostForGameplay(139);
 
     public final int ID;
+    public final From from;
 
     Packets(int ID) {
         this.ID = ID;
+        this.from = null;
+    }
+
+    Packets(int ID, From from) {
+        this.ID = ID;
+        this.from = from;
+    }
+
+    public enum From {
+        CLIENT,
+        SERVER,
+        BOTH
     }
 }
