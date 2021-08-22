@@ -72,6 +72,16 @@ public class TerrariaWriter extends OutputStream {
         write(stringBytes);
     }
 
+    @Override
+    public void flush() throws IOException {
+        out.flush();
+    }
+
+    @Override
+    public void close() throws IOException {
+        out.close();
+    }
+
     private void write7BitEncodedInt(int i) throws IOException {
         int num;
         for (num = i; num >= 128; num >>= 7)

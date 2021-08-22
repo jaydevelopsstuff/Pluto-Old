@@ -17,6 +17,11 @@ public class TerrariaReader extends InputStream {
     }
 
     @Override
+    public int available() throws IOException {
+        return in.available();
+    }
+
+    @Override
     public int read() throws IOException {
         return in.read();
     }
@@ -37,7 +42,11 @@ public class TerrariaReader extends InputStream {
     }
 
     public byte readByte() throws IOException {
-        return (byte)in.read();
+        byte b = (byte)in.read();
+
+        if(b == -1) throw new EOFException();
+
+        return b;
     }
 
     public short readShort() throws IOException {
@@ -114,16 +123,18 @@ public class TerrariaReader extends InputStream {
     }
 
     // Ported from C#'s BinaryReader class
-    private int read7BitEncodedInt() throws IOException {
-        int num = 0;
-        int num2 = 0;
-        byte b;
-        do {
-            if(num2 == 35) throw new IllegalStateException();
-            b = readByte();
-            num |= (b & 0x7F) << num2;
-            num2 += 7;
-        } while((b & 0x80) != 0);
-        return num;
+    public int read7BitEncodedInt() throws IOException {
+        int count = 0;
+        int shift = 0;
+        boolean more = true;
+        while (more) {
+            byte b = readByte();
+            count |= (b & 0x7F) << shift;
+            shift += 7;
+            if((b & 0x80) == 0) {
+                more = false;
+            }
+        }
+        return count;
     }
 }

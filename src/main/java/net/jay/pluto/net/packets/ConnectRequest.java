@@ -6,9 +6,13 @@ import net.jay.pluto.net.Packets;
 public class ConnectRequest implements Packet {
     private static final Packets enumRepresentation = Packets.ConnectRequest;
 
+    private String version;
+
     @Override
     public void readPacketData(PacketBuffer buffer) {
-
+        buffer.readByte();
+        version = buffer.readString();
+        System.out.println(version);
     }
 
     @Override
