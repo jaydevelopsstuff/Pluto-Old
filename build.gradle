@@ -1,0 +1,25 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'java'
+}
+
+group 'net.jay'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+}
+
+jar.manifest.attributes(
+        'Main-Class': 'net.jay.pluto.Main'
+);
+
+shadowJar {
+    classifier = 'Full'
+}
+
+build.dependsOn(shadowJar)
