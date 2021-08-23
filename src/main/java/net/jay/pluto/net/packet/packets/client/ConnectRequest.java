@@ -1,9 +1,11 @@
-package net.jay.pluto.net.packets;
+package net.jay.pluto.net.packet.packets.client;
 
 import net.jay.pluto.net.PacketBuffer;
 import net.jay.pluto.net.Packets;
+import net.jay.pluto.net.handlers.IServerLoginNetHandler;
+import net.jay.pluto.net.packet.CPacket;
 
-public class ConnectRequest implements Packet {
+public class ConnectRequest implements CPacket<IServerLoginNetHandler> {
     private static final Packets enumRepresentation = Packets.ConnectRequest;
 
     private String version;
@@ -18,13 +20,8 @@ public class ConnectRequest implements Packet {
     }
 
     @Override
-    public PacketBuffer writePacketData() {
-        return null;
-    }
+    public void processPacket(IServerLoginNetHandler handler) {
 
-    @Override
-    public PacketBuffer writePacketData(PacketBuffer buffer) {
-        return null;
     }
 
     @Override

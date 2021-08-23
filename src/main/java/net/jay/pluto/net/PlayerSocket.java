@@ -1,12 +1,11 @@
 package net.jay.pluto.net;
 
-import net.jay.pluto.net.packets.Packet;
+import net.jay.pluto.net.packet.SPacket;
 import net.jay.pluto.util.TerrariaReader;
 import net.jay.pluto.util.TerrariaWriter;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Arrays;
 
 public class PlayerSocket extends Socket {
     private TerrariaReader reader;
@@ -17,7 +16,12 @@ public class PlayerSocket extends Socket {
         writer = new TerrariaWriter(getOutputStream());
     }
 
-    public void sendPacket(Packet packet) throws IOException {
+    public void readData() throws IOException {
+        if(reader.available() == 0) return;
+
+    }
+
+    public void sendPacket(SPacket packet) throws IOException {
         PacketBuffer tempBuffer = packet.writePacketData();
 
         int bytesCount = 0;

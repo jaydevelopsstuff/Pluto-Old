@@ -1,5 +1,9 @@
 package net.jay.pluto.net;
 
+import net.jay.pluto.net.packet.CPacket;
+import net.jay.pluto.net.packet.packets.client.ConnectRequest;
+
+/** An enum for all the Packet Types in Terraria, this was a pain to make so you better appreciate it :) */
 public enum Packets {
     ConnectRequest(1, From.CLIENT),
     Disconnect(2, From.SERVER),
@@ -148,6 +152,29 @@ public enum Packets {
     Packets(int ID, From from) {
         this.ID = ID;
         this.from = from;
+    }
+
+    public CPacket getPacketAndSetData(PacketBuffer buffer) {
+        Packets packet = fromID(buffer.readByte());
+
+        return switch(packet) {
+            case ConnectRequest -> new ConnectRequest(buffer);
+            default -> null;
+        };
+    }
+
+    public CPacket getPacketAndSetData(Packets packet, PacketBuffer buffer) {
+        return switch(packet) {
+            case ConnectRequest -> new ConnectRequest(buffer);
+            default -> null;
+        };
+    }
+
+    public Packets fromID(int ID) {
+        for(Packets packet : values()) {
+            if(packet.ID == ID) return packet;
+        }
+        return null;
     }
 
     public enum From {

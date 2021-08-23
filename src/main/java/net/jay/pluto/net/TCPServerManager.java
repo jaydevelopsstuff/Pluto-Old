@@ -1,7 +1,7 @@
 package net.jay.pluto.net;
 
 import net.jay.pluto.localization.NetworkText;
-import net.jay.pluto.net.packets.DisconnectClient;
+import net.jay.pluto.net.packet.packets.server.DisconnectClient;
 
 import java.io.IOException;
 import java.util.concurrent.Executor;

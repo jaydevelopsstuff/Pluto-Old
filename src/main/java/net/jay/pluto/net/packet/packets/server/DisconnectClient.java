@@ -1,21 +1,25 @@
-package net.jay.pluto.net.packets;
+package net.jay.pluto.net.packet.packets.server;
 
 import net.jay.pluto.localization.NetworkText;
 import net.jay.pluto.net.PacketBuffer;
 import net.jay.pluto.net.Packets;
+import net.jay.pluto.net.packet.SPacket;
 
-public class DisconnectClient implements Packet {
+public class DisconnectClient implements SPacket {
     private static final Packets enumRepresentation = Packets.Disconnect;
 
     private NetworkText reason;
+
+    public DisconnectClient() {
+
+    }
 
     public DisconnectClient(NetworkText reason) {
         this.reason = reason;
     }
 
-    @Override
-    public void readPacketData(PacketBuffer buffer) {
-
+    public void setPacketData(NetworkText reason) {
+        this.reason = reason;
     }
 
     @Override
