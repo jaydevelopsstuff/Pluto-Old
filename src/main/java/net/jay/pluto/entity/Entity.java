@@ -3,7 +3,6 @@ package net.jay.pluto.entity;
 import net.jay.pluto.util.Vector2;
 
 public class Entity {
-    protected int who;
     protected boolean active;
 
     protected Vector2 position;
@@ -119,14 +118,6 @@ public class Entity {
 
     public Vector2 getBottomRight() {
         return new Vector2(position.getX() + (float)width, position.getY() + (float)height);
-    }
-
-    public int getWho() {
-        return who;
-    }
-
-    public void setWho(int who) {
-        this.who = who;
     }
 
     public boolean isActive() {

@@ -23,6 +23,12 @@ public class NetManager implements Manager {
         connectedClients.remove(client);
     }
 
+    public void updateClientIDs(int removedPlayerID) {
+        for(Client client : connectedClients) {
+            if(client.getClientID() > removedPlayerID) client.setClientID(client.getClientID() - 1);
+        }
+    }
+
     @Override
     public void shutdown() {
         try {
