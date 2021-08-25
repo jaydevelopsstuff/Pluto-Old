@@ -29,6 +29,10 @@ public class PlayerInfo implements MultipleHandlersBothPacket<IServerLoginNetHan
     private byte difficultyFlag;
     private byte torchFlags;
 
+    public PlayerInfo(PacketBuffer buffer) {
+        this.readPacketData(buffer);
+    }
+
     public PlayerInfo(short playerID, short skinVariant, short hair, String name, short hairDye, short hideVisuals, short hideVisuals2, short hideMisc, TColor hairColor, TColor skinColor, TColor eyeColor, TColor shirtColor, TColor underShirtColor, TColor pantsColor, TColor shoeColor, byte difficultyFlag, byte torchFlags) {
         this.playerID = playerID;
         this.skinVariant = skinVariant;
