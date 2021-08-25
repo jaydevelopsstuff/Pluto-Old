@@ -11,23 +11,23 @@ public class PlayerInfo implements MultipleHandlersBothPacket<IServerLoginNetHan
     private static final Packets enumRepresentation = Packets.PlayerInfo;
     private static final int maxPacketDataSize = 30 + maxStringLength;
 
-    private short playerID;
-    private short skinVariant;
-    private short hair;
-    private String name;
-    private short hairDye;
-    private short hideVisuals;
-    private short hideVisuals2;
-    private short hideMisc;
-    private TColor hairColor;
-    private TColor skinColor;
-    private TColor eyeColor;
-    private TColor shirtColor;
-    private TColor underShirtColor;
-    private TColor pantsColor;
-    private TColor shoeColor;
-    private byte difficultyFlag;
-    private byte torchFlags;
+    public short playerID;
+    public short skinVariant;
+    public short hair;
+    public String name;
+    public short hairDye;
+    public short hideVisuals;
+    public short hideVisuals2;
+    public short hideMisc;
+    public TColor hairColor;
+    public TColor skinColor;
+    public TColor eyeColor;
+    public TColor shirtColor;
+    public TColor underShirtColor;
+    public TColor pantsColor;
+    public TColor shoeColor;
+    public byte difficultyFlag;
+    public byte torchFlags;
 
     public PlayerInfo(PacketBuffer buffer) {
         this.readPacketData(buffer);
@@ -60,8 +60,8 @@ public class PlayerInfo implements MultipleHandlersBothPacket<IServerLoginNetHan
         hair = buffer.readUnsignedByte();
         name = buffer.readString();
         hairDye = buffer.readUnsignedByte();
-        hideVisuals = buffer.readUnsignedByte();
-        hideVisuals2 = buffer.readUnsignedByte();
+        hideVisuals = buffer.readByte();
+        hideVisuals2 = buffer.readByte();
         hideMisc = buffer.readUnsignedByte();
         hairColor = buffer.readColor();
         skinColor = buffer.readColor();
@@ -76,7 +76,7 @@ public class PlayerInfo implements MultipleHandlersBothPacket<IServerLoginNetHan
 
     @Override
     public void processPacketLogin(IServerLoginNetHandler handler) {
-
+        handler.processPlayerInfo(this);
     }
 
     @Override

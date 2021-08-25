@@ -8,7 +8,7 @@ import net.jay.pluto.net.packet.CPacket;
 public class PasswordSend implements CPacket<IServerLoginNetHandler> {
     private static final Packets enumRepresentation = Packets.PasswordSend;
 
-    private String password;
+    public String password;
 
     public PasswordSend(PacketBuffer buffer) {
         this.readPacketData(buffer);

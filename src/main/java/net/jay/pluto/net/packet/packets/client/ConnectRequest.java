@@ -8,7 +8,7 @@ import net.jay.pluto.net.packet.CPacket;
 public class ConnectRequest implements CPacket<IServerLoginNetHandler> {
     private static final Packets enumRepresentation = Packets.ConnectRequest;
 
-    private String version;
+    public String version;
 
     public ConnectRequest(PacketBuffer buffer) {
         this.readPacketData(buffer);
@@ -27,9 +27,5 @@ public class ConnectRequest implements CPacket<IServerLoginNetHandler> {
     @Override
     public Packets getEnum() {
         return enumRepresentation;
-    }
-
-    public String getVersion() {
-        return version;
     }
 }

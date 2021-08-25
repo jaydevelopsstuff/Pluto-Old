@@ -210,9 +210,9 @@ public class PacketBuffer {
     public TColor getColor(int startIndex) {
         if(startIndex < 0 || isntInBounds(startIndex, 3)) throw new ArrayIndexOutOfBoundsException();
 
-        byte red = readByte();
-        byte green = readByte();
-        byte blue = readByte();
+        byte red = getByte(startIndex);
+        byte green = getByte(startIndex + 1);
+        byte blue = getByte(startIndex + 2);
 
         return new TColor(red, green, blue);
     }

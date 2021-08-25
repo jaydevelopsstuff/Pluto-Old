@@ -8,7 +8,7 @@ public class ContinueConnecting implements SPacket {
     private static final Packets enumRepresentation = Packets.ContinueConnecting;
     private static final int maxPacketDataSize = 1;
 
-    private byte userSlot;
+    private final byte userSlot;
 
     public ContinueConnecting(byte userSlot) {
         this.userSlot = userSlot;

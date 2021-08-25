@@ -59,9 +59,11 @@ public class PlutoServer {
     }
 
     /**
-     * Frees up the specified player ID and updates all old Player IDs
+     * Frees up the specified player ID and updates all old Player ID
+     * @deprecated This should never be used, it will break things
      * @param ID The ID to free
      */
+    @Deprecated
     public void freePlayerID(int ID) {
         nextPlayerID--;
         netManager.updateClientIDs(ID);

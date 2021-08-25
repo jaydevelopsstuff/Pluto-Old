@@ -6,6 +6,7 @@ import net.jay.pluto.net.packet.packets.both.PlayerInfo;
 import net.jay.pluto.net.packet.packets.client.ConnectRequest;
 import net.jay.pluto.net.packet.packets.client.PasswordSend;
 import net.jay.pluto.net.packet.packets.client.RequestWorldData;
+import net.jay.pluto.net.packet.packets.server.ContinueConnecting;
 
 import java.io.IOException;
 
@@ -18,7 +19,7 @@ public class ServerLoginNetHandler implements IServerLoginNetHandler {
 
     @Override
     public void processConnectRequest(ConnectRequest request) {
-        if(!request.getVersion().equals("Terraria" + Terraria.currentRelease)) {
+        if(!request.version.equals("Terraria" + Terraria.currentRelease)) {
             try {
                 client.disconnect();
             } catch (IOException e) {
@@ -26,7 +27,7 @@ public class ServerLoginNetHandler implements IServerLoginNetHandler {
             }
         }
         try {
-            client.disconnect();
+            client.sendPacket(new ContinueConnecting((byte)client.getClientID()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,7 +40,7 @@ public class ServerLoginNetHandler implements IServerLoginNetHandler {
 
     @Override
     public void processPlayerInfo(PlayerInfo packet) {
-
+        System.out.println(packet.name);
     }
 
     @Override

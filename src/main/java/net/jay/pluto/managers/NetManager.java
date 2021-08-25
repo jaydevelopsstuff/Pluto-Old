@@ -23,9 +23,10 @@ public class NetManager implements Manager {
         connectedClients.remove(client);
     }
 
+    @Deprecated
     public void updateClientIDs(int removedPlayerID) {
         for(Client client : connectedClients) {
-            if(client.getClientID() > removedPlayerID) client.setClientID(client.getClientID() - 1);
+            //if(client.getClientID() > removedPlayerID) client.setClientID(client.getClientID() - 1);
         }
     }
 

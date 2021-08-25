@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Client implements Access {
     /** The ID of this client, if the client completes login it will be passed to the <code>Player</code> object */
-    private int clientID;
+    private final int clientID;
 
     private boolean loggedIn;
 
@@ -59,10 +59,6 @@ public class Client implements Access {
 
     public int getClientID() {
         return clientID;
-    }
-
-    public void setClientID(int clientID) {
-        this.clientID = clientID;
     }
 
     public boolean isLoggedIn() {
