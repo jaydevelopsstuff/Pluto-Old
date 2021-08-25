@@ -6,4 +6,6 @@ public interface SPacket extends Packet {
     PacketBuffer writePacketData();
 
     PacketBuffer writePacketData(PacketBuffer buffer);
+
+    int getMaxPacketDataSize();
 }

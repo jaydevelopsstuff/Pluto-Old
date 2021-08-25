@@ -8,9 +8,6 @@ public class TServerSocket extends ServerSocket {
         super(impl);
     }
 
-    public TServerSocket() throws IOException {
-    }
-
     public TServerSocket(int port) throws IOException {
         super(port);
     }
@@ -27,7 +24,7 @@ public class TServerSocket extends ServerSocket {
     public Socket accept() throws IOException {
         if(isClosed()) throw new SocketException("Socket is closed");
         if(!isBound()) throw new SocketException("Socket is not bound yet");
-        Socket s = new PlayerSocket();
+        Socket s = new ClientSocket();
         implAccept(s);
         return s;
     }

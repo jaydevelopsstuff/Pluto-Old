@@ -1,6 +1,7 @@
-package net.jay.pluto.util;
+package net.jay.pluto.io;
 
 import net.jay.pluto.net.PacketBuffer;
+import net.jay.pluto.util.TColor;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -76,6 +77,12 @@ public class TerrariaWriter extends OutputStream {
         byte[] stringBytes = s.getBytes(StandardCharsets.UTF_8);
         write7BitEncodedInt(stringBytes.length);
         write(stringBytes);
+    }
+
+    public void writeColor(TColor color) throws IOException {
+        writeByte((byte)color.getRed());
+        writeByte((byte)color.getGreen());
+        writeByte((byte)color.getBlue());
     }
 
     public void writeBuffer(PacketBuffer buffer) throws IOException {

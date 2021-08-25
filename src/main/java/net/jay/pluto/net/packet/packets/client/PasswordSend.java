@@ -5,31 +5,27 @@ import net.jay.pluto.net.Packets;
 import net.jay.pluto.net.handlers.IServerLoginNetHandler;
 import net.jay.pluto.net.packet.CPacket;
 
-public class ConnectRequest implements CPacket<IServerLoginNetHandler> {
-    private static final Packets enumRepresentation = Packets.ConnectRequest;
+public class PasswordSend implements CPacket<IServerLoginNetHandler> {
+    private static final Packets enumRepresentation = Packets.PasswordSend;
 
-    private String version;
+    private String password;
 
-    public ConnectRequest(PacketBuffer buffer) {
+    public PasswordSend(PacketBuffer buffer) {
         this.readPacketData(buffer);
     }
 
     @Override
     public void readPacketData(PacketBuffer buffer) {
-        version = buffer.readString();
+        password = buffer.readString();
     }
 
     @Override
     public void processPacket(IServerLoginNetHandler handler) {
-        handler.processConnectRequest(this);
+
     }
 
     @Override
     public Packets getEnum() {
         return enumRepresentation;
-    }
-
-    public String getVersion() {
-        return version;
     }
 }

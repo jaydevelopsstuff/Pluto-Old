@@ -1,4 +1,6 @@
-package net.jay.pluto.util;
+package net.jay.pluto.io;
+
+import net.jay.pluto.util.TColor;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -92,6 +94,14 @@ public class TerrariaReader extends InputStream {
         if(in.read(buffer) < 0) throw new EOFException();
 
         return new String(buffer, encoding);
+    }
+
+    public TColor readColor() throws IOException {
+        byte red = readByte();
+        byte green = readByte();
+        byte blue = readByte();
+
+        return new TColor(red, green, blue);
     }
 
     // Ported from C#'s BinaryReader class

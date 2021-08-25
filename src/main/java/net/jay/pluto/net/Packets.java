@@ -1,6 +1,7 @@
 package net.jay.pluto.net;
 
 import net.jay.pluto.net.packet.CPacket;
+import net.jay.pluto.net.packet.Packet;
 import net.jay.pluto.net.packet.packets.client.ConnectRequest;
 
 /** An enum for all the Packet Types in Terraria, this was a pain to make so you better appreciate it :) */
@@ -10,12 +11,12 @@ public enum Packets {
     ContinueConnecting(3, From.SERVER),
     PlayerInfo(4, From.BOTH),
     PlayerSlot(5, From.BOTH),
-    ContinueConnecting2(6, From.CLIENT),
+    RequestWorldData(6, From.CLIENT), // AKA ContinueConnecting2
     WorldInfo(7, From.SERVER),
-    TileGetSection(8, From.CLIENT),
+    RequestEssentialTiles(8, From.CLIENT),
     Status(9, From.SERVER),
-    TileSendSection(10, From.SERVER),
-    TileFrameSection(11, From.SERVER),
+    SendTileSection(10, From.SERVER),
+    SectionTileFrame(11, From.SERVER),
     PlayerSpawn(12, From.CLIENT),
     PlayerUpdate(13, From.BOTH),
     PlayerActive(14, From.SERVER),
@@ -144,33 +145,25 @@ public enum Packets {
     public final int ID;
     public final From from;
 
-    Packets(int ID) {
-        this.ID = ID;
-        this.from = null;
-    }
-
     Packets(int ID, From from) {
         this.ID = ID;
         this.from = from;
     }
 
-    public CPacket getPacketAndSetData(PacketBuffer buffer) {
+    public static Packet getPacketAndSetData(PacketBuffer buffer) {
         Packets packet = fromID(buffer.readByte());
 
+        return getPacketAndSetData(packet, buffer);
+    }
+
+    public static Packet getPacketAndSetData(Packets packet, PacketBuffer buffer) {
         return switch(packet) {
             case ConnectRequest -> new ConnectRequest(buffer);
             default -> null;
         };
     }
 
-    public CPacket getPacketAndSetData(Packets packet, PacketBuffer buffer) {
-        return switch(packet) {
-            case ConnectRequest -> new ConnectRequest(buffer);
-            default -> null;
-        };
-    }
-
-    public Packets fromID(int ID) {
+    public static Packets fromID(int ID) {
         for(Packets packet : values()) {
             if(packet.ID == ID) return packet;
         }

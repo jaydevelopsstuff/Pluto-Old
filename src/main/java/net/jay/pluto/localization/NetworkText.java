@@ -1,7 +1,7 @@
 package net.jay.pluto.localization;
 
 import net.jay.pluto.net.PacketBuffer;
-import net.jay.pluto.util.TerrariaWriter;
+import net.jay.pluto.io.TerrariaWriter;
 
 import java.io.IOException;
 

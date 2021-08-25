@@ -6,18 +6,11 @@ import net.jay.pluto.net.packet.SPacket;
 
 public class ContinueConnecting implements SPacket {
     private static final Packets enumRepresentation = Packets.ContinueConnecting;
+    private static final int maxPacketDataSize = 1;
 
     private byte userSlot;
 
-    public ContinueConnecting() {
-
-    }
-
     public ContinueConnecting(byte userSlot) {
-        this.userSlot = userSlot;
-    }
-
-    public void setPacketData(byte userSlot) {
         this.userSlot = userSlot;
     }
 
@@ -32,6 +25,11 @@ public class ContinueConnecting implements SPacket {
     public PacketBuffer writePacketData(PacketBuffer buffer) {
         buffer.writeByte(userSlot);
         return buffer;
+    }
+
+    @Override
+    public int getMaxPacketDataSize() {
+        return maxPacketDataSize;
     }
 
     @Override

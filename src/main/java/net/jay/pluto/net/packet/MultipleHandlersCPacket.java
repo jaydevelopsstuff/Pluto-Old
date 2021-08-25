@@ -1,5 +1,6 @@
 package net.jay.pluto.net.packet;
 
+import net.jay.pluto.net.PacketBuffer;
 import net.jay.pluto.net.handlers.NetHandler;
 
 /**
@@ -8,4 +9,9 @@ import net.jay.pluto.net.handlers.NetHandler;
  * @param <V> Play Handler
  */
 public interface MultipleHandlersCPacket<T extends NetHandler, V extends NetHandler> extends Packet {
+    void readPacketData(PacketBuffer buffer);
+
+    void processPacketLogin(T handler);
+
+    void processPacketPlay(V handler);
 }

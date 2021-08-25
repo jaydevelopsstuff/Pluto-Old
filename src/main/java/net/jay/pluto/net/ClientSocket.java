@@ -1,13 +1,16 @@
 package net.jay.pluto.net;
 
+import net.jay.pluto.io.TerrariaReader;
+import net.jay.pluto.io.TerrariaWriter;
+import net.jay.pluto.localization.NetworkText;
+import net.jay.pluto.net.packet.Packet;
 import net.jay.pluto.net.packet.SPacket;
-import net.jay.pluto.util.TerrariaReader;
-import net.jay.pluto.util.TerrariaWriter;
+import net.jay.pluto.net.packet.packets.server.DisconnectClient;
 
 import java.io.IOException;
 import java.net.Socket;
 
-public class PlayerSocket extends Socket {
+public class ClientSocket extends Socket {
     private TerrariaReader reader;
     private TerrariaWriter writer;
 
@@ -16,9 +19,19 @@ public class PlayerSocket extends Socket {
         writer = new TerrariaWriter(getOutputStream());
     }
 
-    public void readData() throws IOException {
-        if(reader.available() == 0) return;
+    public Packet readPacket() throws IOException {
+        int available = reader.available();
+        if(available == 0) return null;
 
+        PacketBuffer buffer = new PacketBuffer(reader.readNBytes(available));
+
+        short messageLength = buffer.readShort();
+        int messageID = buffer.readByte();
+
+        Packets packetType = Packets.fromID(messageID);
+        if(packetType == null) return null;
+
+       return Packets.getPacketAndSetData(packetType, buffer);
     }
 
     public void sendPacket(SPacket packet) throws IOException {
@@ -44,6 +57,16 @@ public class PlayerSocket extends Socket {
         }
         writer.writeBuffer(buffer);
         writer.flush();
+    }
+
+    public void disconnectGracefully(String reason) throws IOException {
+        sendPacket(new DisconnectClient(new NetworkText(reason, NetworkText.Mode.LITERAL)));
+        close();
+    }
+
+    public void disconnectGracefully() throws IOException {
+        sendPacket(new DisconnectClient(new NetworkText("Disconnected", NetworkText.Mode.LITERAL)));
+        close();
     }
 
     public TerrariaReader getReader() {

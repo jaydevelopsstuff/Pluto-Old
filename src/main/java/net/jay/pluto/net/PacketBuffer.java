@@ -1,5 +1,7 @@
 package net.jay.pluto.net;
 
+import net.jay.pluto.util.TColor;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -30,6 +32,23 @@ public class PacketBuffer {
         return buffer;
     }
 
+    public int getAllocation() {
+        return buffer.length;
+    }
+
+    public void resetIndexes() {
+        resetReaderIndex();
+        resetWriterIndex();
+    }
+
+    public void resetReaderIndex() {
+        readerIndex = 0;
+    }
+
+    public void resetWriterIndex() {
+        writerIndex = 0;
+    }
+
 
     // READ
 
@@ -44,6 +63,14 @@ public class PacketBuffer {
         byte result = getByte(readerIndex);
         readerIndex++;
         return result;
+    }
+
+    public short readUnsignedByte() {
+        return (short)readUnsignedByteInt();
+    }
+
+    public int readUnsignedByteInt() {
+        return readByte() & 0xFF;
     }
 
     public short readShort() {
@@ -88,6 +115,12 @@ public class PacketBuffer {
         return result;
     }
 
+    public TColor readColor() {
+        TColor result = getColor(readerIndex);
+        readerIndex += 3;
+        return result;
+    }
+
     public boolean getBoolean(int index) {
         if(index < 0 || isntInBounds(index, 1)) throw new ArrayIndexOutOfBoundsException();
 
@@ -95,8 +128,6 @@ public class PacketBuffer {
     }
 
     public byte getByte(int index) {
-        System.out.println(index);
-        System.out.println(buffer.length);
         if(index < 0 || isntInBounds(index, 1)) throw new ArrayIndexOutOfBoundsException();
 
         return buffer[index];
@@ -176,6 +207,16 @@ public class PacketBuffer {
         return new StringAndTwoIntegers(new String(buffer, startIndex + 1, numBytes, StandardCharsets.UTF_8), numBytes, result.int2);
     }
 
+    public TColor getColor(int startIndex) {
+        if(startIndex < 0 || isntInBounds(startIndex, 3)) throw new ArrayIndexOutOfBoundsException();
+
+        byte red = readByte();
+        byte green = readByte();
+        byte blue = readByte();
+
+        return new TColor(red, green, blue);
+    }
+
 
     // WRITE
 
@@ -188,6 +229,11 @@ public class PacketBuffer {
     public void writeByte(byte b) {
         writeByte(b, writerIndex);
         writerIndex++;
+    }
+
+    public void writeByte(short s) {
+        if(s < -128 || s > 127) throw new IllegalArgumentException("Short must be between -128 and 127");
+        writeByte((byte)s);
     }
 
     public void writeShort(short s) {
@@ -306,6 +352,12 @@ public class PacketBuffer {
         writeBytes(s.getBytes(StandardCharsets.UTF_8), startIndex + 1);
 
         return numBytes + addonBytes;
+    }
+
+    public void writeColor(TColor color) {
+        writeByte((byte)color.getRed());
+        writeByte((byte)color.getGreen());
+        writeByte((byte)color.getBlue());
     }
 
 
