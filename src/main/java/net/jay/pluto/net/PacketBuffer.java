@@ -232,7 +232,7 @@ public class PacketBuffer {
     }
 
     public void writeByte(short s) {
-        if(s < -128 || s > 127) throw new IllegalArgumentException("Short must be between -128 and 127");
+        if(s < -128 || s > 255) throw new IllegalArgumentException("Short must be between -128 and 127");
         writeByte((byte)s);
     }
 

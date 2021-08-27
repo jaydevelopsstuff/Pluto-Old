@@ -1,7 +1,6 @@
 package net.jay.pluto.managers;
 
 import net.jay.pluto.entity.ManageablePlayer;
-import net.jay.pluto.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,10 @@ public class PlayerManager {
             if(player.getID() == ID) return player;
         }
         return null;
+    }
+
+    public void removePlayer(ManageablePlayer player) {
+        players.remove(player);
     }
 
     public int getOpenPlayerSlots() {

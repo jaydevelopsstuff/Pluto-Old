@@ -30,6 +30,7 @@ public class ClientSocket extends Socket {
 
         Packets packetType = Packets.fromID(messageID);
         if(packetType == null) return null;
+        System.out.println(packetType.name());
 
        return Packets.getPacketAndSetData(packetType, buffer);
     }

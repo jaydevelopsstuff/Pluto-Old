@@ -48,12 +48,23 @@ public class Client implements Access {
         socket.sendPacket(packet);
     }
 
+    public void boot(String reason) throws IOException {
+        disconnect(reason);
+    }
+
+    public void disconnect(String reason) throws IOException {
+        socket.disconnectGracefully(reason);
+        connectionManager.getNetHandler().handleDisconnect();
+        server.getNetManager().removeClient(this);
+    }
+
     public void boot() throws IOException {
         disconnect();
     }
 
     public void disconnect() throws IOException {
         socket.disconnectGracefully();
+        connectionManager.getNetHandler().handleDisconnect();
         server.getNetManager().removeClient(this);
     }
 

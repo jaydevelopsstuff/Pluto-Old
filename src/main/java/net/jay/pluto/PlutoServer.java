@@ -5,11 +5,13 @@ import net.jay.pluto.managers.PlayerManager;
 import net.jay.pluto.managers.NetManager;
 import net.jay.pluto.net.Client;
 
+import java.util.Arrays;
+
 public class PlutoServer {
     /** The instance for the running PlutoServer */
     private static PlutoServer instance;
 
-    private int nextPlayerID = 1;
+    private final boolean[] playerIDs = new boolean[256];
 
     // TODO Add password support
     private final boolean hasPassword = false;
@@ -26,6 +28,7 @@ public class PlutoServer {
     public PlutoServer() {
         // Set instance
         instance = this;
+        Arrays.fill(playerIDs, true);
     }
 
     /** Starts the server */
@@ -46,28 +49,34 @@ public class PlutoServer {
         netManager.trackClient(client);
     }
 
-    /** Gets the next player ID without advancing it */
+    /** Gets the next player ID without marking it as used */
     public int peekNextPlayerID() {
-        return nextPlayerID;
+        for(int i = 1; i < playerIDs.length; i++)
+            if(playerIDs[i]) return i;
+        // No ID is available (bruh)
+        return -1;
     }
 
     /** Takes a player ID for use (e.g. a new client connecting) */
     public int usePlayerID() {
-        int usedPlayerID = nextPlayerID;
-        nextPlayerID++;
-        return usedPlayerID;
+        for(int i = 0; i < playerIDs.length; i++) {
+            if(playerIDs[i]) {
+                playerIDs[i] = false;
+                return i;
+            }
+        }
+        // No ID is available (bruh)
+        return -1;
     }
 
     /**
-     * Frees up the specified player ID and updates all old Player ID
-     * @deprecated This should never be used, it will break things
+     * Frees up the specified player ID for later use
      * @param ID The ID to free
      */
-    @Deprecated
     public void freePlayerID(int ID) {
-        nextPlayerID--;
-        netManager.updateClientIDs(ID);
-        playerManager.updatePlayerIDs(ID);
+        for(int i = 0; i < playerIDs.length; i++) {
+            if(i == ID) playerIDs[i] = true;
+        }
     }
 
     public boolean isServerFull() {

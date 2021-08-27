@@ -51,4 +51,8 @@ public class ConnectionManager {
         if(netHandler instanceof IServerLoginNetHandler) packet.processPacketLogin(netHandler);
         else if(netHandler instanceof IServerPlayNetHandler) packet.processPacketPlay(netHandler);
     }
+
+    public NetHandler getNetHandler() {
+        return netHandler;
+    }
 }
