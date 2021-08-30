@@ -9,6 +9,7 @@ import net.jay.pluto.net.packet.packets.server.DisconnectClient;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Arrays;
 
 public class ClientSocket extends Socket {
     private TerrariaReader reader;
@@ -23,14 +24,16 @@ public class ClientSocket extends Socket {
         int available = reader.available();
         if(available == 0) return null;
 
-        PacketBuffer buffer = new PacketBuffer(reader.readNBytes(available));
+        short completeMessageLength = reader.readShort();
+        short messageLength = (short)(completeMessageLength - 2);
+        PacketBuffer buffer = new PacketBuffer(reader.readNBytes(messageLength - 2));
 
-        short messageLength = buffer.readShort();
         int messageID = buffer.readByte();
 
         Packets packetType = Packets.fromID(messageID);
         if(packetType == null) return null;
         System.out.println(packetType.name());
+        System.out.println(Arrays.toString(buffer.getBuffer()));
 
        return Packets.getPacketAndSetData(packetType, buffer);
     }
