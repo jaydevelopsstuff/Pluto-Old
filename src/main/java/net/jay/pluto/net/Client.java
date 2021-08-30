@@ -1,7 +1,7 @@
 package net.jay.pluto.net;
 
 import net.jay.pluto.Access;
-import net.jay.pluto.entity.Player;
+import net.jay.pluto.entity.player.BasicPlayer;
 import net.jay.pluto.net.handlers.NetHandler;
 import net.jay.pluto.net.packet.*;
 
@@ -24,14 +24,14 @@ public class Client implements Access {
         this.connectionManager = new ConnectionManager(socket, this);
     }
 
-    public Client(int clientID, ClientSocket socket, Player player) {
+    public Client(int clientID, ClientSocket socket, BasicPlayer player) {
         this.clientID = clientID;
         this.loggedIn = true;
         this.socket = socket;
         this.connectionManager = new ConnectionManager(socket, player, this);
     }
 
-    public void login(Player player) {
+    public void login(BasicPlayer player) {
         loggedIn = true;
         connectionManager = new ConnectionManager(socket, player, this);
     }

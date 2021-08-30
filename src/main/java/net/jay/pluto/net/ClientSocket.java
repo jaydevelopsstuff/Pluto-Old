@@ -26,12 +26,13 @@ public class ClientSocket extends Socket {
 
         short completeMessageLength = reader.readShort();
         short messageLength = (short)(completeMessageLength - 2);
-        PacketBuffer buffer = new PacketBuffer(reader.readNBytes(messageLength - 2));
+        PacketBuffer buffer = new PacketBuffer(reader.readNBytes(messageLength));
 
         int messageID = buffer.readByte();
 
         Packets packetType = Packets.fromID(messageID);
         if(packetType == null) return null;
+        // TODO Remove this when done debugging
         System.out.println(packetType.name());
         System.out.println(Arrays.toString(buffer.getBuffer()));
 

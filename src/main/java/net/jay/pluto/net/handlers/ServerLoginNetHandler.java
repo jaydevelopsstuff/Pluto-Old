@@ -58,7 +58,7 @@ public class ServerLoginNetHandler implements IServerLoginNetHandler, Access {
 
     @Override
     public void processPlayerSlot(PlayerSlot packet) {
-        System.out.println(packet);
+
     }
 
     @Override

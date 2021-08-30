@@ -1,6 +1,6 @@
 package net.jay.pluto.net;
 
-import net.jay.pluto.entity.Player;
+import net.jay.pluto.entity.player.BasicPlayer;
 import net.jay.pluto.net.handlers.IServerLoginNetHandler;
 import net.jay.pluto.net.handlers.IServerPlayNetHandler;
 import net.jay.pluto.net.handlers.NetHandler;
@@ -13,7 +13,7 @@ public class ConnectionManager {
     private final ClientSocket connection;
 
     private boolean isLoggedIn;
-    private final Player player;
+    private final BasicPlayer player;
 
     private NetHandler netHandler;
 
@@ -31,7 +31,7 @@ public class ConnectionManager {
      * @param connection The socket connection to this client
      * @param player The <code>Player</code> object for this client
      */
-    public ConnectionManager(ClientSocket connection, Player player, Client parent) {
+    public ConnectionManager(ClientSocket connection, BasicPlayer player, Client parent) {
         this.parent = parent;
         this.connection = connection;
         this.isLoggedIn = true;

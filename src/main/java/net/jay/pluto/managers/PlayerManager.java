@@ -1,6 +1,6 @@
 package net.jay.pluto.managers;
 
-import net.jay.pluto.entity.ManageablePlayer;
+import net.jay.pluto.entity.player.ManageablePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
