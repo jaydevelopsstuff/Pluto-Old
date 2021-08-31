@@ -33,11 +33,11 @@ public class PlayerArmor implements IContainer {
         if(slot < 0 || slot >= totalSize) throw new IllegalArgumentException("Slot number cannot be less than 0 or over the size of the container");
         switch(slot) {
             case 0, 1, 2 -> {
-                if(!(item instanceof ArmorItem)) throw new IllegalArgumentException("Item must be a subclass of ArmorItem");
+                if(!(item instanceof ArmorItem)) throw new IllegalArgumentException("Item must be an instance of AccessoryItem");
                 armor[slot] = (ArmorItem) item;
             }
             case 3, 4, 5 -> {
-                if(!(item instanceof ArmorItem)) throw new IllegalArgumentException("Item must be a subclass of ArmorItem");
+                if(!(item instanceof ArmorItem)) throw new IllegalArgumentException("Item must be an instance of AccessoryItem");
                 vanity[slot] = (ArmorItem) item;
             }
             case 6, 7, 8 -> dyes[slot] = item;
@@ -52,14 +52,8 @@ public class PlayerArmor implements IContainer {
 
     @Override
     public void clear() {
-        for(int i = 0; i < 3; i++) {
-            armor[i] = null;
-        }
-        for(int i = 0; i < 3; i++) {
-            vanity[i] = null;
-        }
-        for(int i = 0; i < 3; i++) {
-            dyes[i] = null;
-        }
+        Arrays.fill(armor, Item.Air);
+        Arrays.fill(vanity, Item.Air);
+        Arrays.fill(dyes, Item.Air);
     }
 }

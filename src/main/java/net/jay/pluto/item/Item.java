@@ -3,17 +3,20 @@ package net.jay.pluto.item;
 // TODO Finish this
 public class Item {
     public static final Item Air = new Item();
+    public static final Item Empty = Air;
 
-    private final int ID;
-    private final String name;
-    private final int maxStackSize;
-    private final Availability availability = Availability.ANY;
+    protected final int ID;
+    protected final Items enumType;
+    protected final String name;
+    protected final int maxStackSize;
+    protected final Availability availability = Availability.ANY;
 
-    private int stackSize;
+    protected int stackSize;
 
     public Item() {
         this.ID = Items.Air.ID;
         this.name = Items.Air.name;
+        this.enumType = Items.Air;
         this.maxStackSize = Items.Air.maxStackSize;
         this.stackSize = this.maxStackSize;
     }
@@ -23,6 +26,7 @@ public class Item {
         if(item == null) throw new IllegalArgumentException("Invalid ID");
         this.ID = ID;
         this.name = item.name;
+        this.enumType = item;
         this.maxStackSize = item.maxStackSize;
         this.stackSize = this.maxStackSize;
     }
@@ -31,27 +35,57 @@ public class Item {
         Items item = Items.fromID(ID);
         if(item == null) throw new IllegalArgumentException("Invalid ID");
         this.ID = ID;
+        this.enumType = item;
         this.name = item.name;
         this.maxStackSize = item.maxStackSize;
         if(stackSize > this.maxStackSize) throw new IllegalArgumentException("Stack size cannot be more than the max stack size for this item (" + this.maxStackSize + ")");
         this.stackSize = stackSize;
     }
 
-    public Item(Item item) {
-        if(item == null) throw new IllegalArgumentException();
+    public Item(Items item) {
+        if(item == null) throw new IllegalArgumentException("Invalid ID");
         this.ID = item.ID;
+        this.enumType = item;
         this.name = item.name;
         this.maxStackSize = item.maxStackSize;
         this.stackSize = this.maxStackSize;
     }
 
-    public Item(Item item, int stackSize) {
+    public Item(Items item, int stackSize) {
         if(item == null) throw new IllegalArgumentException();
         this.ID = item.ID;
+        this.enumType = item;
         this.name = item.name;
         this.maxStackSize = item.maxStackSize;
         if(stackSize > this.maxStackSize) throw new IllegalArgumentException("Stack size cannot be more than the max stack size for this item (" + this.maxStackSize + ")");
         this.stackSize = stackSize;
+    }
+
+    public static Item initializeFlexibly(int ID, int stackSize) {
+        Items item = Items.fromID(ID);
+        if(item == null) throw new IllegalArgumentException("Invalid ID");
+        return switch(item.type) {
+            case WEAPON -> new WeaponItem(item);
+            case ARMOR -> new ArmorItem(item, item.vanity);
+            case ACCESSORY -> new AccessoryItem(item, item.vanity);
+            default -> new Item(item, stackSize);
+        };
+    }
+
+    public enum Type {
+        WEAPON,
+        TOOL,
+        ARMOR,
+        ACCESSORY,
+        EQUIPMENT,
+        CONSUMABLES,
+        VANITY,
+        BLOCKS,
+        FURNITURE,
+        MATERIALS,
+        MISCELLANEOUS,
+        /** This should only be used for the Air item */
+        NONE
     }
 
     public enum Availability {

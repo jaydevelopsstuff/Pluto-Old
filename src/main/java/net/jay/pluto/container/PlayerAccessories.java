@@ -1,13 +1,16 @@
 package net.jay.pluto.container;
 
+import net.jay.pluto.item.AccessoryItem;
 import net.jay.pluto.item.ArmorItem;
 import net.jay.pluto.item.Item;
+
+import java.util.Arrays;
 
 public class PlayerAccessories implements IContainer {
     private static final int totalSize = 18;
 
-    private final ArmorItem[] accessories = new ArmorItem[6];
-    private final ArmorItem[] vanity = new ArmorItem[6];
+    private final AccessoryItem[] accessories = new AccessoryItem[6];
+    private final AccessoryItem[] vanity = new AccessoryItem[6];
     private final Item[] dyes = new Item[6];
 
     @Override
@@ -17,12 +20,29 @@ public class PlayerAccessories implements IContainer {
 
     @Override
     public Item getItem(int slot) {
-        return null;
+        if(slot < 0 || slot >= totalSize) throw new IllegalArgumentException("Slot number cannot be less than 0 or over the size of the container");
+        return switch(slot) {
+            case 0, 1, 2 -> accessories[slot];
+            case 3, 4, 5 -> vanity[slot - 3];
+            case 6, 7, 8 -> dyes[slot - 6];
+            default -> null;
+        };
     }
 
     @Override
     public void setItem(int slot, Item item) {
-
+        if(slot < 0 || slot >= totalSize) throw new IllegalArgumentException("Slot number cannot be less than 0 or over the size of the container");
+        switch(slot) {
+            case 0, 1, 2 -> {
+                if(!(item instanceof AccessoryItem)) throw new IllegalArgumentException("Item must be an instance of AccessoryItem");
+                accessories[slot] = (AccessoryItem)item;
+            }
+            case 3, 4, 5 -> {
+                if(!(item instanceof AccessoryItem)) throw new IllegalArgumentException("Item must be an instance of AccessoryItem");
+                vanity[slot] = (AccessoryItem)item;
+            }
+            case 6, 7, 8 -> dyes[slot] = item;
+        }
     }
 
     @Override
@@ -32,6 +52,8 @@ public class PlayerAccessories implements IContainer {
 
     @Override
     public void clear() {
-
+        Arrays.fill(accessories, Item.Air);
+        Arrays.fill(vanity, Item.Air);
+        Arrays.fill(dyes, Item.Air);
     }
 }

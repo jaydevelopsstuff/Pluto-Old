@@ -2,6 +2,8 @@ package net.jay.pluto.container;
 
 import net.jay.pluto.item.Item;
 
+import java.util.Arrays;
+
 public class PlayerInventory implements IContainer {
     private static final int size = 59;
     private final Item[] inventory = new Item[size];
@@ -35,8 +37,6 @@ public class PlayerInventory implements IContainer {
 
     @Override
     public void clear() {
-        for(int i = 0; i < size; i++) {
-            inventory[i] = null;
-        }
+        Arrays.fill(inventory, Item.Air);
     }
 }

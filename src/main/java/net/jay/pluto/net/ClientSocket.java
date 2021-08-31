@@ -33,8 +33,8 @@ public class ClientSocket extends Socket {
         Packets packetType = Packets.fromID(messageID);
         if(packetType == null) return null;
         // TODO Remove this when done debugging
-        System.out.println(packetType.name());
-        System.out.println(Arrays.toString(buffer.getBuffer()));
+        //System.out.println(packetType.name());
+        //System.out.println(Arrays.toString(buffer.getBuffer()));
 
        return Packets.getPacketAndSetData(packetType, buffer);
     }
