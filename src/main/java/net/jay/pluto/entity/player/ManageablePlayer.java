@@ -4,6 +4,7 @@ import net.jay.pluto.Access;
 import net.jay.pluto.container.PlayerAccessories;
 import net.jay.pluto.container.PlayerArmor;
 import net.jay.pluto.container.PlayerInventory;
+import net.jay.pluto.data.holders.CharacterInfo;
 import net.jay.pluto.net.Client;
 
 import java.io.IOException;
@@ -11,8 +12,8 @@ import java.io.IOException;
 public class ManageablePlayer extends BasicPlayer implements Access {
     private Client connectedClient;
 
-    public ManageablePlayer(int ID, PlayerInventory inventory, PlayerArmor armor, PlayerAccessories accessories) {
-        super(ID, inventory, armor, accessories);
+    public ManageablePlayer(int ID, String name, CharacterInfo characterInfo, PlayerInventory inventory, PlayerArmor armor, PlayerAccessories accessories) {
+        super(ID, name, characterInfo, inventory, armor, accessories);
     }
 
     public void boot(String reason) throws IOException {

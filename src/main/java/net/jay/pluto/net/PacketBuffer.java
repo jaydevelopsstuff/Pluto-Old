@@ -6,14 +6,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class PacketBuffer {
-    private byte[] buffer;
-    private boolean canWrite;
+    private final byte[] buffer;
+    private final boolean canWrite;
 
     private int readerIndex = 0;
     private int writerIndex = 0;
 
     public PacketBuffer(int allocation) {
         this.buffer = new byte[allocation];
+        // FIXME Terrible solution right now
         Arrays.fill(buffer, (byte)-128);
         canWrite = true;
     }

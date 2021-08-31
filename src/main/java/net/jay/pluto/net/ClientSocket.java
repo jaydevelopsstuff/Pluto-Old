@@ -9,11 +9,15 @@ import net.jay.pluto.net.packet.packets.server.DisconnectClient;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ClientSocket extends Socket {
     private TerrariaReader reader;
     private TerrariaWriter writer;
+
+    private final List<PacketBuffer> queuedPackets = new ArrayList<>();
 
     public void init() throws IOException {
         reader = new TerrariaReader(getInputStream());
@@ -32,13 +36,42 @@ public class ClientSocket extends Socket {
 
         Packets packetType = Packets.fromID(messageID);
         if(packetType == null) return null;
-        // TODO Remove this when done debugging
         //System.out.println(packetType.name());
         //System.out.println(Arrays.toString(buffer.getBuffer()));
 
        return Packets.getPacketAndSetData(packetType, buffer);
     }
 
+    public void queuePacket(SPacket packet) {
+        PacketBuffer tempBuffer = packet.writePacketData();
+
+        int bytesCount = 0;
+        for(byte b : tempBuffer.getBuffer()) {
+            if(b == -128) continue;
+            bytesCount++;
+        }
+
+        // 2 is for the short and the 1 is for the message type byte
+        bytesCount += 2 + 1;
+
+        PacketBuffer buffer = new PacketBuffer(bytesCount);
+        buffer.writeShort((short)bytesCount);
+        buffer.writeByte((byte)packet.getEnum().ID);
+
+
+        for(byte b : tempBuffer.getBuffer()) {
+            if(b == -128) continue;
+            buffer.writeByte(b);
+        }
+
+        queuedPackets.add(buffer);
+    }
+
+    /**
+     * Writes a packet to the stream and then flushes (sends) it, this is fine in most situations but in others you might want to use <code>queuePacket</code>
+     * @param packet The packet to be sent
+     * @throws IOException If the stream throws an exception when writing/flushing
+     */
     public void sendPacket(SPacket packet) throws IOException {
         PacketBuffer tempBuffer = packet.writePacketData();
 
@@ -61,6 +94,16 @@ public class ClientSocket extends Socket {
             buffer.writeByte(b);
         }
         writer.writeBuffer(buffer);
+        writer.flush();
+    }
+
+    public void flushPacketQueue() throws IOException {
+        int i = 0;
+        for(PacketBuffer packetBuffer : queuedPackets) {
+            writer.writeBuffer(packetBuffer);
+            queuedPackets.remove(i);
+            i++;
+        }
         writer.flush();
     }
 

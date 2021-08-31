@@ -1,6 +1,5 @@
 package net.jay.pluto.net;
 
-import net.jay.pluto.net.packet.CPacket;
 import net.jay.pluto.net.packet.Packet;
 import net.jay.pluto.net.packet.packets.both.PlayerInfo;
 import net.jay.pluto.net.packet.packets.both.PlayerSlot;
@@ -8,7 +7,10 @@ import net.jay.pluto.net.packet.packets.client.ClientUUID;
 import net.jay.pluto.net.packet.packets.client.ConnectRequest;
 import net.jay.pluto.net.packet.packets.client.RequestWorldData;
 
-/** An enum for all the Packet Types in Terraria, this was a pain to make so you better appreciate it :) */
+/**
+ * An enum for all the Packet Types in Terraria
+ * @author Jay
+ */
 public enum Packets {
     ConnectRequest(1, From.CLIENT),
     Disconnect(2, From.SERVER),

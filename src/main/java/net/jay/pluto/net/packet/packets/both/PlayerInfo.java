@@ -13,7 +13,7 @@ public class PlayerInfo implements MultipleHandlersBothPacket<IServerLoginNetHan
 
     public short playerID;
     public short skinVariant;
-    public short hair;
+    public short hairType;
     public String name;
     public short hairDye;
     public short hideVisuals;
@@ -33,10 +33,10 @@ public class PlayerInfo implements MultipleHandlersBothPacket<IServerLoginNetHan
         this.readPacketData(buffer);
     }
 
-    public PlayerInfo(short playerID, short skinVariant, short hair, String name, short hairDye, short hideVisuals, short hideVisuals2, short hideMisc, TColor hairColor, TColor skinColor, TColor eyeColor, TColor shirtColor, TColor underShirtColor, TColor pantsColor, TColor shoeColor, byte difficultyFlag, byte torchFlags) {
+    public PlayerInfo(short playerID, short skinVariant, short hairType, String name, short hairDye, short hideVisuals, short hideVisuals2, short hideMisc, TColor hairColor, TColor skinColor, TColor eyeColor, TColor shirtColor, TColor underShirtColor, TColor pantsColor, TColor shoeColor, byte difficultyFlag, byte torchFlags) {
         this.playerID = playerID;
         this.skinVariant = skinVariant;
-        this.hair = hair;
+        this.hairType = hairType;
         this.name = name;
         this.hairDye = hairDye;
         this.hideVisuals = hideVisuals;
@@ -57,7 +57,7 @@ public class PlayerInfo implements MultipleHandlersBothPacket<IServerLoginNetHan
     public void readPacketData(PacketBuffer buffer) {
         playerID = buffer.readUnsignedByte();
         skinVariant = buffer.readUnsignedByte();
-        hair = buffer.readUnsignedByte();
+        hairType = buffer.readUnsignedByte();
         name = buffer.readString();
         hairDye = buffer.readUnsignedByte();
         hideVisuals = buffer.readByte();
@@ -89,7 +89,7 @@ public class PlayerInfo implements MultipleHandlersBothPacket<IServerLoginNetHan
         PacketBuffer buffer = new PacketBuffer(maxPacketDataSize);
         buffer.writeByte(playerID);
         buffer.writeByte(skinVariant);
-        buffer.writeByte(hair);
+        buffer.writeByte(hairType);
         buffer.writeString(name);
         buffer.writeByte(hairDye);
         buffer.writeByte(hideVisuals);
@@ -112,7 +112,7 @@ public class PlayerInfo implements MultipleHandlersBothPacket<IServerLoginNetHan
         if(buffer.getAllocation() < maxPacketDataSize) throw new IllegalArgumentException("Buffer must have a length of at least " + maxPacketDataSize);
         buffer.writeByte(playerID);
         buffer.writeByte(skinVariant);
-        buffer.writeByte(hair);
+        buffer.writeByte(hairType);
         buffer.writeString(name);
         buffer.writeByte(hairDye);
         buffer.writeByte(hideVisuals);

@@ -1,6 +1,9 @@
 package net.jay.pluto.data.enums;
 
-/** All the skin variants, ordered as they are in the character creation screen */
+/**
+ * All the skin variants, ordered as they are in the character creation screen
+ * @author Jay
+ */
 public enum CharacterSkinVariant {
     //
     // Male

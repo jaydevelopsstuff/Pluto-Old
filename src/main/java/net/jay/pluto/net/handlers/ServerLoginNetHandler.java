@@ -43,8 +43,7 @@ public class ServerLoginNetHandler implements IServerLoginNetHandler, Access {
 
     @Override
     public void processPlayerInfo(PlayerInfo packet) {
-        System.out.println("Name: " + packet.name);
-        System.out.println("Skin: " + packet.skinVariant);
+
     }
 
     @Override
