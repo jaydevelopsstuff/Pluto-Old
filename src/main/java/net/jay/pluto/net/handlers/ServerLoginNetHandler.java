@@ -1,6 +1,6 @@
 package net.jay.pluto.net.handlers;
 
-import net.jay.pluto.Access;
+import net.jay.pluto.data.basicinterfaces.Access;
 import net.jay.pluto.Terraria;
 import net.jay.pluto.net.Client;
 import net.jay.pluto.net.packet.packets.both.PlayerInfo;

@@ -14,8 +14,6 @@ public class PacketBuffer {
 
     public PacketBuffer(int allocation) {
         this.buffer = new byte[allocation];
-        // FIXME Terrible solution right now
-        Arrays.fill(buffer, (byte)-128);
         canWrite = true;
     }
 
@@ -37,9 +35,8 @@ public class PacketBuffer {
         return buffer.length;
     }
 
-    public void resetIndexes() {
-        resetReaderIndex();
-        resetWriterIndex();
+    public int getWriterIndex() {
+        return writerIndex;
     }
 
     public void resetReaderIndex() {
@@ -48,6 +45,11 @@ public class PacketBuffer {
 
     public void resetWriterIndex() {
         writerIndex = 0;
+    }
+
+    public void resetIndexes() {
+        resetReaderIndex();
+        resetWriterIndex();
     }
 
 

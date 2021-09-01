@@ -1,13 +1,21 @@
 package net.jay.pluto.item;
 
-// TODO Finish this
+/**
+ * A class that represents a basic Terraria item
+ * @see Items
+ * @author Jay
+ */
 public class Item {
+    /** Air AKA nothing */
     public static final Item Air = new Item();
     public static final Item Empty = Air;
 
+    /** The internal ID of this item */
     protected final int ID;
     protected final Items enumType;
+    /** The name of this item */
     protected final String name;
+    /** The maximum stack size of this item (e.g. 999) */
     protected final int maxStackSize;
     protected final Availability availability = Availability.ANY;
 

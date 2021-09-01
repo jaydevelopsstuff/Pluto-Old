@@ -1,6 +1,6 @@
 package net.jay.pluto.entity.player;
 
-import net.jay.pluto.Access;
+import net.jay.pluto.data.basicinterfaces.Access;
 import net.jay.pluto.container.PlayerAccessories;
 import net.jay.pluto.container.PlayerArmor;
 import net.jay.pluto.container.PlayerInventory;
@@ -12,7 +12,12 @@ import java.io.IOException;
 public class ManageablePlayer extends BasicPlayer implements Access {
     private Client connectedClient;
 
-    public ManageablePlayer(int ID, String name, CharacterInfo characterInfo, PlayerInventory inventory, PlayerArmor armor, PlayerAccessories accessories) {
+    public ManageablePlayer(Client client, BasicPlayer player) {
+        super(player.getID(), player.getName(), player.getCharacterInfo(), player.getInventory(), player.getArmor(), player.getAccessories());
+        this.connectedClient = client;
+    }
+
+    private ManageablePlayer(int ID, String name, CharacterInfo characterInfo, PlayerInventory inventory, PlayerArmor armor, PlayerAccessories accessories) {
         super(ID, name, characterInfo, inventory, armor, accessories);
     }
 
@@ -31,5 +36,13 @@ public class ManageablePlayer extends BasicPlayer implements Access {
     public void disconnect() throws IOException {
         connectedClient.disconnect();
         server.getPlayerManager().removePlayer(this);
+    }
+
+    public Client getConnectedClient() {
+        return connectedClient;
+    }
+
+    public static ManageablePlayer toManageable(Client client, BasicPlayer player) {
+        return new ManageablePlayer(client, player);
     }
 }

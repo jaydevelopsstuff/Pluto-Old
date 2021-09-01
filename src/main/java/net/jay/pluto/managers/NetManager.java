@@ -7,8 +7,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Manages all things pertaining to lower level network logic
+ * @author Jay
+ */
 public class NetManager implements Manager {
+    /** The TCP server that manages lower level connection logic */
     private TCPServerManager tcpServer;
+    /** All the clients that are connected to the server */
     private final List<Client> connectedClients = new CopyOnWriteArrayList<>();
 
     public void startListening() {

@@ -1,6 +1,6 @@
 package net.jay.pluto.net;
 
-import net.jay.pluto.Access;
+import net.jay.pluto.data.basicinterfaces.Access;
 
 import java.io.IOException;
 import java.util.concurrent.Executor;

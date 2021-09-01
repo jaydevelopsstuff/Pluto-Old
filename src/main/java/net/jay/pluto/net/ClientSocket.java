@@ -17,6 +17,7 @@ public class ClientSocket extends Socket {
     private TerrariaReader reader;
     private TerrariaWriter writer;
 
+    /** A list that contains packets that are queued for sending, these are stored conveniently as <code>PacketBuffer</code>s so that they only contain their byte data */
     private final List<PacketBuffer> queuedPackets = new ArrayList<>();
 
     public void init() throws IOException {
@@ -24,6 +25,11 @@ public class ClientSocket extends Socket {
         writer = new TerrariaWriter(getOutputStream());
     }
 
+    /**
+     * Checks if a packet has been sent and if one has, it parses the data (bytes) to an easily readable packet
+     * @return The packet that has been read, this is null if no packet was sent
+     * @throws IOException
+     */
     public Packet readPacket() throws IOException {
         int available = reader.available();
         if(available == 0) return null;
@@ -42,26 +48,24 @@ public class ClientSocket extends Socket {
        return Packets.getPacketAndSetData(packetType, buffer);
     }
 
+    /**
+     * Adds a packet to the packet queue, this does not send the packet however, to flush (send) the packet queue to the client you need to use <code>flushPacketQueue</code>
+     * @param packet The packet to be queued
+     */
     public void queuePacket(SPacket packet) {
         PacketBuffer tempBuffer = packet.writePacketData();
 
-        int bytesCount = 0;
-        for(byte b : tempBuffer.getBuffer()) {
-            if(b == -128) continue;
-            bytesCount++;
-        }
-
+        int rawBytesCount = tempBuffer.getWriterIndex();
         // 2 is for the short and the 1 is for the message type byte
-        bytesCount += 2 + 1;
+        int bytesCount = rawBytesCount + 2 + 1;
 
         PacketBuffer buffer = new PacketBuffer(bytesCount);
         buffer.writeShort((short)bytesCount);
         buffer.writeByte((byte)packet.getEnum().ID);
 
 
-        for(byte b : tempBuffer.getBuffer()) {
-            if(b == -128) continue;
-            buffer.writeByte(b);
+        for(int i = 0; i < rawBytesCount; i++) {
+            buffer.writeByte(tempBuffer.getByte(i));
         }
 
         queuedPackets.add(buffer);
@@ -75,28 +79,24 @@ public class ClientSocket extends Socket {
     public void sendPacket(SPacket packet) throws IOException {
         PacketBuffer tempBuffer = packet.writePacketData();
 
-        int bytesCount = 0;
-        for(byte b : tempBuffer.getBuffer()) {
-            if(b == -128) continue;
-            bytesCount++;
-        }
-
+        int rawBytesCount = tempBuffer.getWriterIndex();
         // 2 is for the short and the 1 is for the message type byte
-        bytesCount += 2 + 1;
+        int bytesCount = rawBytesCount + 2 + 1;
 
         PacketBuffer buffer = new PacketBuffer(bytesCount);
         buffer.writeShort((short)bytesCount);
         buffer.writeByte((byte)packet.getEnum().ID);
 
 
-        for(byte b : tempBuffer.getBuffer()) {
-            if(b == -128) continue;
-            buffer.writeByte(b);
+        for(int i = 0; i < rawBytesCount; i++) {
+            buffer.writeByte(tempBuffer.getByte(i));
         }
+
         writer.writeBuffer(buffer);
         writer.flush();
     }
 
+    /** Flushes (sends) all the <code>PacketBuffer</code>s from <code>queuedPackets</code> to the client  */
     public void flushPacketQueue() throws IOException {
         int i = 0;
         for(PacketBuffer packetBuffer : queuedPackets) {

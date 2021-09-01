@@ -1,6 +1,6 @@
 package net.jay.pluto.managers;
 
-import net.jay.pluto.Access;
+import net.jay.pluto.data.basicinterfaces.Access;
 import net.jay.pluto.net.Client;
 
 import java.io.IOException;
