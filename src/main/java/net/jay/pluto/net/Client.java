@@ -1,6 +1,6 @@
 package net.jay.pluto.net;
 
-import net.jay.pluto.data.basicinterfaces.Access;
+import net.jay.pluto.data.interfaces.Access;
 import net.jay.pluto.entity.player.BasicPlayer;
 import net.jay.pluto.net.handlers.NetHandler;
 import net.jay.pluto.net.packet.*;

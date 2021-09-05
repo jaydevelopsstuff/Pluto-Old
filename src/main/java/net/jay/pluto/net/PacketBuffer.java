@@ -6,6 +6,10 @@ import java.io.DataInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+/**
+ * A way of easily manipulating & sending a byte array, this is little endian, in accordance with C#'s BinaryReader/BinaryWriter
+ * @author Jay
+ */
 public class PacketBuffer {
     private final byte[] buffer;
     private final boolean canWrite;
@@ -144,7 +148,6 @@ public class PacketBuffer {
         byte ch2 = buffer[startIndex + 1];
 
         // The & 0xFF makes ch1 an unsigned byte, this fixes some issues I've had because C# bytes are unsigned by default, I'm making an assumption this won't bite me in the ass later
-        // Also, might need to add this to other methods like getInt in the future :/
         return (short)((ch1 & 0xFF) | (ch2 << 8));
     }
 
@@ -156,13 +159,14 @@ public class PacketBuffer {
         byte ch3 = buffer[startIndex + 2];
         byte ch4 = buffer[startIndex + 3];
 
-        return ((ch1) + (ch2 << 8) + (ch3 << 16) + (ch4 << 24));
+        return ((ch1 & 0xFF) | (ch2 << 8) | (ch3 << 16) | (ch4 << 24));
     }
 
     public long getLong(int startIndex) {
         if(startIndex < 0 || isntInBounds(startIndex, 8)) throw new ArrayIndexOutOfBoundsException();
 
         // Pretty ugly but oh well, might improve later
+        // Needs to be updated, this may very well be broken
         byte ch1 = buffer[startIndex];
         byte ch2 = buffer[startIndex + 1];
         byte ch3 = buffer[startIndex + 2];

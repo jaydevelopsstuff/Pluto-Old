@@ -1,4 +1,4 @@
-package net.jay.pluto.data.basicinterfaces;
+package net.jay.pluto.data.interfaces;
 
 import net.jay.pluto.PlutoServer;
 

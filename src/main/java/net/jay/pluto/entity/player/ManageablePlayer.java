@@ -1,10 +1,6 @@
 package net.jay.pluto.entity.player;
 
-import net.jay.pluto.data.basicinterfaces.Access;
-import net.jay.pluto.container.PlayerAccessories;
-import net.jay.pluto.container.PlayerArmor;
-import net.jay.pluto.container.PlayerInventory;
-import net.jay.pluto.data.holders.CharacterInfo;
+import net.jay.pluto.data.interfaces.Access;
 import net.jay.pluto.net.Client;
 
 import java.io.IOException;

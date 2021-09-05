@@ -1,6 +1,6 @@
 package net.jay.pluto.net.handlers;
 
-import net.jay.pluto.data.basicinterfaces.Access;
+import net.jay.pluto.data.interfaces.Access;
 import net.jay.pluto.Terraria;
 import net.jay.pluto.data.enums.CharacterSkinVariant;
 import net.jay.pluto.data.holders.CharacterInfo;

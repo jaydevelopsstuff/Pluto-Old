@@ -1,10 +1,8 @@
 package net.jay.pluto.net;
 
-import net.jay.pluto.data.basicinterfaces.Access;
+import net.jay.pluto.data.interfaces.Access;
 
 import java.io.IOException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class TCPServerManager implements Access {
     private final int port;

@@ -1,9 +1,9 @@
 package net.jay.pluto;
 
-import net.jay.pluto.managers.ListeningManager;
-import net.jay.pluto.managers.PlayerManager;
-import net.jay.pluto.managers.NetManager;
+import net.jay.pluto.managers.*;
 import net.jay.pluto.net.Client;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 
@@ -13,10 +13,12 @@ public class PlutoServer {
 
     private final boolean[] playerIDs = new boolean[256];
 
-    // TODO Add password support
-    private final boolean hasPassword = false;
-    private final String password = null;
+    private final Logger logger = LogManager.getLogger("Pluto");
 
+    /** Manages the server's file interactions */
+    private FileManager fileManager;
+    /** Manages server configurations */
+    private ConfigManager configManager;
     /** Manages all connected clients, lower level TCP communication */
     private NetManager netManager;
     /** Manages/tracks all connected players */
@@ -33,6 +35,9 @@ public class PlutoServer {
 
     /** Starts the server */
     public void start() {
+        logger.info("Starting server");
+        fileManager = new FileManager();
+        configManager = new ConfigManager();
         netManager = new NetManager();
         playerManager = new PlayerManager(255);
         listeningManager = new ListeningManager();
@@ -81,6 +86,10 @@ public class PlutoServer {
 
     public boolean isServerFull() {
         return playerManager.getOpenPlayerSlots() <= 0;
+    }
+
+    public Logger getLogger() {
+        return logger;
     }
 
     public NetManager getNetManager() {

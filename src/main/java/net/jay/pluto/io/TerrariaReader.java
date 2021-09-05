@@ -31,7 +31,7 @@ public class TerrariaReader extends InputStream {
     public final void readFully(byte[] b, int off, int len) throws IOException {
         Objects.checkFromIndexSize(off, len, b.length);
         int n = 0;
-        while (n < len) {
+        while(n < len) {
             int count = in.read(b, off + n, len - n);
             if (count < 0)
                 throw new EOFException();
