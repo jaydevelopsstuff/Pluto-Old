@@ -33,4 +33,11 @@ public enum CharacterSkinVariant {
     CharacterSkinVariant(int ID) {
         this.ID = ID;
     }
+
+    public static CharacterSkinVariant fromID(int ID) {
+        for(CharacterSkinVariant skinVariant : values()) {
+            if(skinVariant.ID == ID) return skinVariant;
+        }
+        throw new IllegalArgumentException("ID is not valid");
+    }
 }

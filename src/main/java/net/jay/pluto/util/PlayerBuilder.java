@@ -12,11 +12,21 @@ public class PlayerBuilder {
     private final Client client;
 
     private final int ID;
+    private String uuid;
     private String name;
     private CharacterInfo characterInfo;
     private PlayerInventory inventory;
     private PlayerArmor armor;
     private PlayerAccessories accessories;
+
+    public PlayerBuilder(Client client) {
+        if(client.getClientID() < 0) throw new IllegalArgumentException("ID must be equal to or more than 0");
+        this.ID = client.getClientID();
+        this.client = client;
+        this.inventory = new PlayerInventory();
+        this.armor = new PlayerArmor();
+        this.accessories = new PlayerAccessories();
+    }
 
     public PlayerBuilder(int ID, Client client) {
         if(ID < 0) throw new IllegalArgumentException("ID must be equal to or more than 0");
@@ -27,20 +37,56 @@ public class PlayerBuilder {
         this.accessories = new PlayerAccessories();
     }
 
+    public Client getClient() {
+        return client;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public CharacterInfo getCharacterInfo() {
+        return characterInfo;
     }
 
     public void setCharacterInfo(CharacterInfo characterInfo) {
         this.characterInfo = characterInfo;
     }
 
+    public PlayerInventory getInventory() {
+        return inventory;
+    }
+
     public void setInventory(PlayerInventory inventory) {
         this.inventory = inventory;
     }
 
+    public PlayerArmor getArmor() {
+        return armor;
+    }
+
     public void setArmor(PlayerArmor armor) {
         this.armor = armor;
+    }
+
+    public PlayerAccessories getAccessories() {
+        return accessories;
     }
 
     public void setAccessories(PlayerAccessories accessories) {
@@ -48,7 +94,7 @@ public class PlayerBuilder {
     }
 
     public BasicPlayer buildBasic() {
-        return new BasicPlayer(ID, name, characterInfo, inventory, armor, accessories);
+        return new BasicPlayer(ID, uuid, name, characterInfo, inventory, armor, accessories);
     }
 
     public ManageablePlayer build() {

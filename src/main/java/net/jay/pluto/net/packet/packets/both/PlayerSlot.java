@@ -11,7 +11,7 @@ public class PlayerSlot implements MultipleHandlersBothPacket<IServerLoginNetHan
     private static final int maxPacketDataSize = 8;
 
     public short playerID;
-    public short slotID;
+    public short slot;
     public short stack;
     public short prefix;
     public short itemNetID;
@@ -20,29 +20,29 @@ public class PlayerSlot implements MultipleHandlersBothPacket<IServerLoginNetHan
         this.readPacketData(buffer);
     }
 
-    public PlayerSlot(short playerID, short slotID, short stack, short prefix, short itemNetID) {
+    public PlayerSlot(short playerID, short slot, short stack, short prefix, short itemNetID) {
         this.playerID = playerID;
-        this.slotID = slotID;
+        this.slot = slot;
         this.stack = stack;
         this.prefix = prefix;
         this.itemNetID = itemNetID;
     }
 
-
     @Override
     public void readPacketData(PacketBuffer buffer) {
         playerID = buffer.readUnsignedByte();
-        slotID = buffer.readShort();
+        slot = buffer.readShort();
         stack = buffer.readShort();
         prefix = buffer.readUnsignedByte();
         itemNetID = buffer.readShort();
+        System.out.println("Netty: " + itemNetID);
     }
 
     @Override
     public PacketBuffer writePacketData() {
         PacketBuffer buffer = new PacketBuffer(maxPacketDataSize);
         buffer.writeByte(playerID);
-        buffer.writeShort(slotID);
+        buffer.writeShort(slot);
         buffer.writeShort(stack);
         buffer.writeByte(prefix);
         buffer.writeShort(itemNetID);
@@ -52,7 +52,7 @@ public class PlayerSlot implements MultipleHandlersBothPacket<IServerLoginNetHan
     @Override
     public PacketBuffer writePacketData(PacketBuffer buffer) {
         buffer.writeByte(playerID);
-        buffer.writeShort(slotID);
+        buffer.writeShort(slot);
         buffer.writeShort(stack);
         buffer.writeByte(prefix);
         buffer.writeShort(itemNetID);

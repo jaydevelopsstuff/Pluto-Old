@@ -13,6 +13,7 @@ public class Item {
     /** The internal ID of this item */
     protected final int ID;
     protected final Items enumType;
+    protected final int prefix;
     /** The name of this item */
     protected final String name;
     /** The maximum stack size of this item (e.g. 999) */
@@ -23,60 +24,66 @@ public class Item {
 
     public Item() {
         this.ID = Items.Air.ID;
-        this.name = Items.Air.name;
         this.enumType = Items.Air;
+        this.prefix = 0;
+        this.name = Items.Air.name;
         this.maxStackSize = Items.Air.maxStackSize;
         this.stackSize = this.maxStackSize;
     }
 
-    public Item(int ID) {
+    public Item(int ID, int prefix) {
         Items item = Items.fromID(ID);
         if(item == null) throw new IllegalArgumentException("Invalid ID");
         this.ID = ID;
-        this.name = item.name;
         this.enumType = item;
+        this.prefix = prefix;
+        this.name = item.name;
         this.maxStackSize = item.maxStackSize;
         this.stackSize = this.maxStackSize;
     }
 
-    public Item(int ID, int stackSize) {
+    public Item(int ID, int prefix, int stackSize) {
         Items item = Items.fromID(ID);
+        System.out.println(ID);
         if(item == null) throw new IllegalArgumentException("Invalid ID");
         this.ID = ID;
         this.enumType = item;
+        this.prefix = prefix;
         this.name = item.name;
         this.maxStackSize = item.maxStackSize;
         if(stackSize > this.maxStackSize) throw new IllegalArgumentException("Stack size cannot be more than the max stack size for this item (" + this.maxStackSize + ")");
         this.stackSize = stackSize;
     }
 
-    public Item(Items item) {
+    public Item(Items item, int prefix) {
         if(item == null) throw new IllegalArgumentException("Invalid ID");
         this.ID = item.ID;
         this.enumType = item;
+        this.prefix = prefix;
         this.name = item.name;
         this.maxStackSize = item.maxStackSize;
         this.stackSize = this.maxStackSize;
     }
 
-    public Item(Items item, int stackSize) {
+    public Item(Items item, int prefix, int stackSize) {
         if(item == null) throw new IllegalArgumentException();
         this.ID = item.ID;
         this.enumType = item;
+        this.prefix = prefix;
         this.name = item.name;
         this.maxStackSize = item.maxStackSize;
         if(stackSize > this.maxStackSize) throw new IllegalArgumentException("Stack size cannot be more than the max stack size for this item (" + this.maxStackSize + ")");
         this.stackSize = stackSize;
     }
 
-    public static Item initializeFlexibly(int ID, int stackSize) {
+    public static Item initializeFlexibly(int ID, int prefix, int stackSize) {
         Items item = Items.fromID(ID);
         if(item == null) throw new IllegalArgumentException("Invalid ID");
         return switch(item.type) {
-            case WEAPON -> new WeaponItem(item);
-            case ARMOR -> new ArmorItem(item, item.vanity);
-            case ACCESSORY -> new AccessoryItem(item, item.vanity);
-            default -> new Item(item, stackSize);
+            case WEAPON -> new WeaponItem(item, prefix);
+            case ARMOR -> new ArmorItem(item, prefix, item.vanity);
+            case ACCESSORY -> new AccessoryItem(item, prefix, item.vanity);
+            default -> new Item(item, prefix, stackSize);
         };
     }
 
@@ -86,7 +93,7 @@ public class Item {
         ARMOR,
         ACCESSORY,
         EQUIPMENT,
-        CONSUMABLES,
+        CONSUMABLE,
         VANITY,
         BLOCKS,
         FURNITURE,

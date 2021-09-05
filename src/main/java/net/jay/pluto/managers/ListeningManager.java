@@ -30,6 +30,12 @@ public class ListeningManager implements Manager, Access {
                     e.printStackTrace();
                 }
             }
+            try {
+                // This is for performance
+                Thread.sleep(1);
+            } catch(InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

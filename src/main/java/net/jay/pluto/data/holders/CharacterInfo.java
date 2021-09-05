@@ -12,6 +12,16 @@ public class CharacterInfo {
     private TColor shirtColor;
     private TColor underShirtColor;
 
+    public CharacterInfo(CharacterSkinVariant skinVariant, int hairType, TColor hairColor, TColor skinColor, TColor eyeColor, TColor shirtColor, TColor underShirtColor) {
+        this.skinVariant = skinVariant;
+        this.hairType = hairType;
+        this.hairColor = hairColor;
+        this.skinColor = skinColor;
+        this.eyeColor = eyeColor;
+        this.shirtColor = shirtColor;
+        this.underShirtColor = underShirtColor;
+    }
+
     public CharacterSkinVariant getSkinVariant() {
         return skinVariant;
     }

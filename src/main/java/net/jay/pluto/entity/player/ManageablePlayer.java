@@ -10,15 +10,11 @@ import net.jay.pluto.net.Client;
 import java.io.IOException;
 
 public class ManageablePlayer extends BasicPlayer implements Access {
-    private Client connectedClient;
+    private final Client connectedClient;
 
     public ManageablePlayer(Client client, BasicPlayer player) {
-        super(player.getID(), player.getName(), player.getCharacterInfo(), player.getInventory(), player.getArmor(), player.getAccessories());
+        super(player.getID(), player.getUuid(), player.getName(), player.getCharacterInfo(), player.getInventory(), player.getArmor(), player.getAccessories());
         this.connectedClient = client;
-    }
-
-    private ManageablePlayer(int ID, String name, CharacterInfo characterInfo, PlayerInventory inventory, PlayerArmor armor, PlayerAccessories accessories) {
-        super(ID, name, characterInfo, inventory, armor, accessories);
     }
 
     public void boot(String reason) throws IOException {

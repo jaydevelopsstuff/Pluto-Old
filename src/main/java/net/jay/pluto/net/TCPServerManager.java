@@ -12,13 +12,11 @@ public class TCPServerManager implements Access {
     private TServerSocket tcpServer;
 
     private final Thread listenerThread;
-    private final Executor executor;
 
     public TCPServerManager(int port) {
         this.port = port;
-        this.executor = Executors.newSingleThreadExecutor();
 
-        listenerThread = new Thread(this::startServerAndListen, "Connect Listener Thread");
+        listenerThread = new Thread(this::startServerAndListen, "TCP Listener Thread");
         listenerThread.start();
     }
 
@@ -27,7 +25,7 @@ public class TCPServerManager implements Access {
             tcpServer = new TServerSocket(port);
 
             while(!listenerThread.isInterrupted()) {
-                ClientSocket connectedSocket = (ClientSocket) tcpServer.accept();
+                ClientSocket connectedSocket = (ClientSocket)tcpServer.accept();
                 connectedSocket.init();
                 System.out.println("Somebody connected");
 

@@ -36,7 +36,9 @@ public class ClientSocket extends Socket {
 
         short completeMessageLength = reader.readShort();
         short messageLength = (short)(completeMessageLength - 2);
-        PacketBuffer buffer = new PacketBuffer(reader.readNBytes(messageLength));
+        byte[] boofer = reader.readNBytes(messageLength);
+        System.out.println(Arrays.toString(boofer));
+        PacketBuffer buffer = new PacketBuffer(boofer);
 
         int messageID = buffer.readByte();
 

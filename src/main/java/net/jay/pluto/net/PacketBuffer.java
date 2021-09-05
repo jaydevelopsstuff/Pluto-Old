@@ -2,6 +2,7 @@ package net.jay.pluto.net;
 
 import net.jay.pluto.util.TColor;
 
+import java.io.DataInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -142,7 +143,9 @@ public class PacketBuffer {
         byte ch1 = buffer[startIndex];
         byte ch2 = buffer[startIndex + 1];
 
-        return (short)((ch1) + (ch2 << 8));
+        // The & 0xFF makes ch1 an unsigned byte, this fixes some issues I've had because C# bytes are unsigned by default, I'm making an assumption this won't bite me in the ass later
+        // Also, might need to add this to other methods like getInt in the future :/
+        return (short)((ch1 & 0xFF) | (ch2 << 8));
     }
 
     public int getInt(int startIndex) {
@@ -235,7 +238,7 @@ public class PacketBuffer {
     }
 
     public void writeByte(short s) {
-        if(s < -128 || s > 255) throw new IllegalArgumentException("Short must be between -128 and 127");
+        if(s < -128 || s > 255) throw new IllegalArgumentException("Short must be between -128 and 255");
         writeByte((byte)s);
     }
 

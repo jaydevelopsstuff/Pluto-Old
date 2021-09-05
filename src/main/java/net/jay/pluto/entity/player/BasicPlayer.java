@@ -8,8 +8,9 @@ import net.jay.pluto.entity.Entity;
 import net.jay.pluto.item.Item;
 
 public class BasicPlayer extends Entity {
-    private int ID;
+    private final int ID;
 
+    private final String uuid;
     private final String name;
     private CharacterInfo characterInfo;
 
@@ -18,8 +19,9 @@ public class BasicPlayer extends Entity {
     private final PlayerAccessories accessories;
     private Item trash;
 
-    public BasicPlayer(int ID, String name, CharacterInfo characterInfo, PlayerInventory inventory, PlayerArmor armor, PlayerAccessories accessories) {
+    public BasicPlayer(int ID, String uuid, String name, CharacterInfo characterInfo, PlayerInventory inventory, PlayerArmor armor, PlayerAccessories accessories) {
         this.ID = ID;
+        this.uuid = uuid;
         this.name = name;
         this.characterInfo = characterInfo;
         this.inventory = inventory;
@@ -31,12 +33,8 @@ public class BasicPlayer extends Entity {
         return ID;
     }
 
-    /**
-     * Sets the ID for this player, the ID of the player and the <code>Client</code> attached to it should always be synchronized
-     * @param ID The ID to set
-     */
-    public void setID(int ID) {
-        this.ID = ID;
+    public String getUuid() {
+        return uuid;
     }
 
     public String getName() {

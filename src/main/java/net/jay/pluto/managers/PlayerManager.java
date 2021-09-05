@@ -15,7 +15,7 @@ public class PlayerManager {
 
     public void updatePlayerIDs(int removedPlayerID) {
         for(ManageablePlayer player : players) {
-            if(player.getID() > removedPlayerID) player.setID(player.getID() - 1);
+            //if(player.getID() > removedPlayerID) player.setID(player.getID() - 1);
         }
     }
 

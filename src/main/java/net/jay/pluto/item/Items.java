@@ -8,13 +8,14 @@ package net.jay.pluto.item;
 public enum Items {
     /** This represents an empty slot/item */
     Air(0, "Air", Item.Type.NONE, 0),
-    Mushroom(5, "Mushroom", Item.Type.CONSUMABLES, StandardStackSizes.Thirty),
+    Mushroom(5, "Mushroom", Item.Type.CONSUMABLE, StandardStackSizes.Thirty),
     CopperBow(3504, "Copper Bow", Item.Type.WEAPON, StandardStackSizes.Single),
     CopperHammer(3505, "Copper Hammer", Item.Type.TOOL, StandardStackSizes.Single),
     CopperAxe(3506, "Copper Axe", Item.Type.TOOL, StandardStackSizes.Single),
     CopperShortsword(3507, "Copper Shortsword", Item.Type.WEAPON, StandardStackSizes.Single),
     CopperBroadsword(3508, "Copper Broadsword", Item.Type.WEAPON, StandardStackSizes.Single),
     CopperPickaxe(3509, "Copper Pickaxe", Item.Type.TOOL, StandardStackSizes.Single),
+    Zenith(4956, "Zenith", Item.Type.WEAPON, StandardStackSizes.Single),
     DarkSideHallow(5087, "Dark Side of the Hallow", Item.Type.FURNITURE, StandardStackSizes.NinetyNine);
 
     /** The ID of this item */
