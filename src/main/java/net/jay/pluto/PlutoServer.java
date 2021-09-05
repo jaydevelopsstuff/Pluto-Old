@@ -38,12 +38,17 @@ public class PlutoServer {
         logger.info("Starting server");
         fileManager = new FileManager();
         configManager = new ConfigManager();
-        netManager = new NetManager();
+        netManager = new NetManager(7777);
         playerManager = new PlayerManager(255);
         listeningManager = new ListeningManager();
 
         netManager.startListening();
         listeningManager.startClientListening();
+    }
+
+    /** Shuts down the server */
+    public void shutdown() {
+
     }
 
     /**
@@ -88,7 +93,7 @@ public class PlutoServer {
         return playerManager.getOpenPlayerSlots() <= 0;
     }
 
-    public Logger getLogger() {
+    public Logger getMainLogger() {
         return logger;
     }
 

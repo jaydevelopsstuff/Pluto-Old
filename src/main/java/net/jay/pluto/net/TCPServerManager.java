@@ -25,7 +25,6 @@ public class TCPServerManager implements Access {
             while(!listenerThread.isInterrupted()) {
                 ClientSocket connectedSocket = (ClientSocket)tcpServer.accept();
                 connectedSocket.init();
-                System.out.println("Somebody connected");
 
                 // Disconnect if the server is full, otherwise start tracking client
                 if(server.isServerFull()) connectedSocket.disconnectGracefully("Server is full");

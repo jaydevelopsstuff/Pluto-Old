@@ -72,6 +72,12 @@ public class Client implements Access {
         return clientID;
     }
 
+    public String getIP() {
+        String address = socket.getRemoteSocketAddress().toString();
+        address = address.replace("/", "").substring(0, address.indexOf(":") - 1);
+        return address;
+    }
+
     public boolean isLoggedIn() {
         return loggedIn;
     }
