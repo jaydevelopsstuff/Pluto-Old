@@ -36,16 +36,13 @@ public class ClientSocket extends Socket {
 
         short completeMessageLength = reader.readShort();
         short messageLength = (short)(completeMessageLength - 2);
-        byte[] boofer = reader.readNBytes(messageLength);
-        System.out.println(Arrays.toString(boofer));
-        PacketBuffer buffer = new PacketBuffer(boofer);
+        PacketBuffer buffer = new PacketBuffer(reader.readNBytes(messageLength));
 
         int messageID = buffer.readByte();
 
         Packets packetType = Packets.fromID(messageID);
         if(packetType == null) return null;
-        //System.out.println(packetType.name());
-        //System.out.println(Arrays.toString(buffer.getBuffer()));
+        System.out.println(packetType.name());
 
        return Packets.getPacketAndSetData(packetType, buffer);
     }

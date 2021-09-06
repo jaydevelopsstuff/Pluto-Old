@@ -75,26 +75,16 @@ public class PlayerInfo implements MultipleHandlersBothPacket<IServerLoginNetHan
     }
 
     @Override
-    public void processPacketLogin(IServerLoginNetHandler handler) {
-        handler.processPlayerInfo(this);
-    }
-
-    @Override
-    public void processPacketPlay(IServerPlayNetHandler handler) {
-
-    }
-
-    @Override
     public PacketBuffer writePacketData() {
         PacketBuffer buffer = new PacketBuffer(maxPacketDataSize);
-        buffer.writeByte(playerID);
-        buffer.writeByte(skinVariant);
-        buffer.writeByte(hairType);
+        buffer.writeUnsignedByte(playerID);
+        buffer.writeUnsignedByte(skinVariant);
+        buffer.writeUnsignedByte(hairType);
         buffer.writeString(name);
-        buffer.writeByte(hairDye);
-        buffer.writeByte(hideVisuals);
-        buffer.writeByte(hideVisuals2);
-        buffer.writeByte(hideMisc);
+        buffer.writeUnsignedByte(hairDye);
+        buffer.writeUnsignedByte(hideVisuals);
+        buffer.writeUnsignedByte(hideVisuals2);
+        buffer.writeUnsignedByte(hideMisc);
         buffer.writeColor(hairColor);
         buffer.writeColor(skinColor);
         buffer.writeColor(eyeColor);
@@ -110,14 +100,14 @@ public class PlayerInfo implements MultipleHandlersBothPacket<IServerLoginNetHan
     @Override
     public PacketBuffer writePacketData(PacketBuffer buffer) {
         if(buffer.getAllocation() < maxPacketDataSize) throw new IllegalArgumentException("Buffer must have a length of at least " + maxPacketDataSize);
-        buffer.writeByte(playerID);
-        buffer.writeByte(skinVariant);
-        buffer.writeByte(hairType);
+        buffer.writeUnsignedByte(playerID);
+        buffer.writeUnsignedByte(skinVariant);
+        buffer.writeUnsignedByte(hairType);
         buffer.writeString(name);
-        buffer.writeByte(hairDye);
-        buffer.writeByte(hideVisuals);
-        buffer.writeByte(hideVisuals2);
-        buffer.writeByte(hideMisc);
+        buffer.writeUnsignedByte(hairDye);
+        buffer.writeUnsignedByte(hideVisuals);
+        buffer.writeUnsignedByte(hideVisuals2);
+        buffer.writeUnsignedByte(hideMisc);
         buffer.writeColor(hairColor);
         buffer.writeColor(skinColor);
         buffer.writeColor(eyeColor);
@@ -128,6 +118,16 @@ public class PlayerInfo implements MultipleHandlersBothPacket<IServerLoginNetHan
         buffer.writeByte(difficultyFlag);
         buffer.writeByte(torchFlags);
         return buffer;
+    }
+
+    @Override
+    public void processPacketLogin(IServerLoginNetHandler handler) {
+        handler.processPlayerInfo(this);
+    }
+
+    @Override
+    public void processPacketPlay(IServerPlayNetHandler handler) {
+
     }
 
     @Override

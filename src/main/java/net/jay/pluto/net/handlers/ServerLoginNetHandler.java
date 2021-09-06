@@ -6,8 +6,7 @@ import net.jay.pluto.data.enums.CharacterSkinVariant;
 import net.jay.pluto.data.holders.CharacterInfo;
 import net.jay.pluto.item.Item;
 import net.jay.pluto.net.Client;
-import net.jay.pluto.net.packet.packets.both.PlayerInfo;
-import net.jay.pluto.net.packet.packets.both.PlayerSlot;
+import net.jay.pluto.net.packet.packets.both.*;
 import net.jay.pluto.net.packet.packets.client.ClientUUID;
 import net.jay.pluto.net.packet.packets.client.ConnectRequest;
 import net.jay.pluto.net.packet.packets.client.PasswordSend;
@@ -16,6 +15,7 @@ import net.jay.pluto.net.packet.packets.server.ContinueConnecting;
 import net.jay.pluto.util.PlayerBuilder;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class ServerLoginNetHandler implements IServerLoginNetHandler, Access {
     private final Client client;
@@ -61,6 +61,7 @@ public class ServerLoginNetHandler implements IServerLoginNetHandler, Access {
                 e.printStackTrace();
             }
         }
+        playerBuilder.setName(packet.name);
         if(characterInfo == null) return;
         playerBuilder.setCharacterInfo(characterInfo);
     }
@@ -72,7 +73,26 @@ public class ServerLoginNetHandler implements IServerLoginNetHandler, Access {
     }
 
     @Override
-    public void processRequestWorldData(RequestWorldData packet) {
+    public void processPlayerHP(PlayerHP packet) {
+        if(packet.HP < 0 || packet.maxHP < 0 || packet.HP > 600 || packet.maxHP > 600) {
+            try {
+                client.disconnect("Invalid packet");
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        playerBuilder.setHP(packet.HP);
+        playerBuilder.setMaxHP(packet.maxHP);
+    }
+
+    @Override
+    public void processManaEffect(ManaEffect packet) {
+
+    }
+
+    @Override
+    public void processPlayerBuff(PlayerBuff packet) {
 
     }
 
@@ -83,12 +103,22 @@ public class ServerLoginNetHandler implements IServerLoginNetHandler, Access {
         try {
             item = new Item(packet.itemNetID, packet.prefix, packet.stack);
         } catch(IllegalArgumentException exception) {
-            System.out.println("Illegal ID: " + packet.itemNetID);
+            // Until we get all terraria items in the Items enum this is gonna show up
+            // Later on this will cause the player to be kicked for sending suspicious packets or smthn
+            mainLogger.debug(client.getIP() + " sent an invalid item in PlayerSlot packet");
             return;
         }
         // Inventory
         if(slot < 58) playerBuilder.getInventory().setItem(packet.slot, item);
+        if(slot > 59) {
+            mainLogger.info("gaming");
+        }
         // TODO Figure the rest of this out
+    }
+
+    @Override
+    public void processRequestWorldData(RequestWorldData packet) {
+
     }
 
     @Override

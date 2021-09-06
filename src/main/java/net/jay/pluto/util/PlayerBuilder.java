@@ -14,6 +14,8 @@ public class PlayerBuilder {
     private final int ID;
     private String uuid;
     private String name;
+    private int HP;
+    private int maxHP;
     private CharacterInfo characterInfo;
     private PlayerInventory inventory;
     private PlayerArmor armor;
@@ -59,6 +61,22 @@ public class PlayerBuilder {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getHP() {
+        return HP;
+    }
+
+    public void setHP(int HP) {
+        this.HP = HP;
+    }
+
+    public int getMaxHP() {
+        return maxHP;
+    }
+
+    public void setMaxHP(int maxHP) {
+        this.maxHP = maxHP;
     }
 
     public CharacterInfo getCharacterInfo() {

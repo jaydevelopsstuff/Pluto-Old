@@ -4,10 +4,11 @@ import net.jay.pluto.container.PlayerAccessories;
 import net.jay.pluto.container.PlayerArmor;
 import net.jay.pluto.container.PlayerInventory;
 import net.jay.pluto.data.holders.CharacterInfo;
-import net.jay.pluto.entity.Entity;
+import net.jay.pluto.entity.LivingEntity;
 import net.jay.pluto.item.Item;
 
-public class BasicPlayer extends Entity {
+// TODO Finish heal, damage and kill logic
+public class BasicPlayer extends LivingEntity {
     private final int ID;
 
     private final String uuid;
@@ -27,6 +28,41 @@ public class BasicPlayer extends Entity {
         this.inventory = inventory;
         this.armor = armor;
         this.accessories = accessories;
+    }
+
+    @Override
+    public void kill() {
+        alive = false;
+        HP = 0;
+    }
+
+    @Override
+    public void damage(int amount) {
+        if(amount < 0) throw new IllegalArgumentException("Damage amount must be 0 or more");
+        HP -= amount;
+        if(HP <= 0) {
+            alive = false;
+            HP = 0;
+        } else {
+
+        }
+    }
+
+    @Override
+    public void heal(int amount) {
+        if(amount < 0) throw new IllegalArgumentException("Heal amount must be 0 or more");
+        HP += amount;
+        if(HP > maxHP) HP = maxHP;
+    }
+
+    @Override
+    public void setHP(int HP) {
+        if(HP < 0) throw new IllegalArgumentException("HP cannot be below zero");
+        this.HP = Math.min(HP, maxHP);
+    }
+
+    public void healToMax() {
+        setHP(maxHP);
     }
 
     public int getID() {

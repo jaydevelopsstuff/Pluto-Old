@@ -44,7 +44,6 @@ public class Item {
 
     public Item(int ID, int prefix, int stackSize) {
         Items item = Items.fromID(ID);
-        System.out.println(ID);
         if(item == null) throw new IllegalArgumentException("Invalid ID");
         this.ID = ID;
         this.enumType = item;

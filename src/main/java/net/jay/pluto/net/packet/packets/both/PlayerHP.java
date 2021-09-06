@@ -6,61 +6,52 @@ import net.jay.pluto.net.handlers.IServerLoginNetHandler;
 import net.jay.pluto.net.handlers.IServerPlayNetHandler;
 import net.jay.pluto.net.packet.MultipleHandlersBothPacket;
 
-public class PlayerSlot implements MultipleHandlersBothPacket<IServerLoginNetHandler, IServerPlayNetHandler> {
-    private static final Packets enumRepresentation = Packets.PlayerSlot;
-    private static final int maxPacketDataSize = 8;
+public class PlayerHP implements MultipleHandlersBothPacket<IServerLoginNetHandler, IServerPlayNetHandler> {
+    private static final Packets enumRepresentation = Packets.PlayerHp;
+    private static final int maxPacketDataSize = 5;
 
     public short playerID;
-    public short slot;
-    public short stack;
-    public short prefix;
-    public short itemNetID;
+    public short HP;
+    public short maxHP;
 
-    public PlayerSlot(PacketBuffer buffer) {
+    public PlayerHP(PacketBuffer buffer) {
         this.readPacketData(buffer);
     }
 
-    public PlayerSlot(short playerID, short slot, short stack, short prefix, short itemNetID) {
+    public PlayerHP(short playerID, short HP, short maxHP) {
         this.playerID = playerID;
-        this.slot = slot;
-        this.stack = stack;
-        this.prefix = prefix;
-        this.itemNetID = itemNetID;
+        this.HP = HP;
+        this.maxHP = maxHP;
     }
 
     @Override
     public void readPacketData(PacketBuffer buffer) {
         playerID = buffer.readUnsignedByte();
-        slot = buffer.readShort();
-        stack = buffer.readShort();
-        prefix = buffer.readUnsignedByte();
-        itemNetID = buffer.readShort();
+        HP = buffer.readShort();
+        maxHP = buffer.readShort();
     }
 
     @Override
     public PacketBuffer writePacketData() {
         PacketBuffer buffer = new PacketBuffer(maxPacketDataSize);
         buffer.writeUnsignedByte(playerID);
-        buffer.writeShort(slot);
-        buffer.writeShort(stack);
-        buffer.writeUnsignedByte(prefix);
-        buffer.writeShort(itemNetID);
+        buffer.writeShort(HP);
+        buffer.writeShort(maxHP);
         return buffer;
     }
 
     @Override
     public PacketBuffer writePacketData(PacketBuffer buffer) {
+        if(buffer.getAllocation() < maxPacketDataSize) throw new IllegalArgumentException("Buffer must have a length of at least " + maxPacketDataSize);
         buffer.writeUnsignedByte(playerID);
-        buffer.writeShort(slot);
-        buffer.writeShort(stack);
-        buffer.writeUnsignedByte(prefix);
-        buffer.writeShort(itemNetID);
+        buffer.writeShort(HP);
+        buffer.writeShort(maxHP);
         return buffer;
     }
 
     @Override
     public void processPacketLogin(IServerLoginNetHandler handler) {
-        handler.processPlayerSlot(this);
+
     }
 
     @Override

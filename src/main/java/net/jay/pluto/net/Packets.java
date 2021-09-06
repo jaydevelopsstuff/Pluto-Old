@@ -51,7 +51,7 @@ public enum Packets {
     NpcTalk(40, From.BOTH),
     PlayerItemAnimation(41, From.BOTH),
     PlayerMana(41, From.BOTH),
-    EffectMana(42, From.BOTH),
+    ManaEffect(42, From.BOTH),
     PlayerTeam(45, From.BOTH),
     SignRead(46, From.CLIENT),
     SignNew(47, From.BOTH), // This guy's weird

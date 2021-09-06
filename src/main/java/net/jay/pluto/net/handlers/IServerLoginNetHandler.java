@@ -1,7 +1,6 @@
 package net.jay.pluto.net.handlers;
 
-import net.jay.pluto.net.packet.packets.both.PlayerInfo;
-import net.jay.pluto.net.packet.packets.both.PlayerSlot;
+import net.jay.pluto.net.packet.packets.both.*;
 import net.jay.pluto.net.packet.packets.client.ClientUUID;
 import net.jay.pluto.net.packet.packets.client.ConnectRequest;
 import net.jay.pluto.net.packet.packets.client.PasswordSend;
@@ -16,7 +15,13 @@ public interface IServerLoginNetHandler extends NetHandler {
 
     void processClientUUID(ClientUUID packet);
 
-    void processRequestWorldData(RequestWorldData packet);
+    void processPlayerHP(PlayerHP packet);
+
+    void processManaEffect(ManaEffect packet);
+
+    void processPlayerBuff(PlayerBuff packet);
 
     void processPlayerSlot(PlayerSlot packet);
+
+    void processRequestWorldData(RequestWorldData packet);
 }

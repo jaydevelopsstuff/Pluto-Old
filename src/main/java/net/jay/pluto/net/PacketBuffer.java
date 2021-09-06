@@ -2,9 +2,7 @@ package net.jay.pluto.net;
 
 import net.jay.pluto.util.TColor;
 
-import java.io.DataInputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 /**
  * A way of easily manipulating & sending a byte array, this is little endian, in accordance with C#'s BinaryReader/BinaryWriter
@@ -241,8 +239,9 @@ public class PacketBuffer {
         writerIndex++;
     }
 
-    public void writeByte(short s) {
-        if(s < -128 || s > 255) throw new IllegalArgumentException("Short must be between -128 and 255");
+    /** Writes an unsigned byte */
+    public void writeUnsignedByte(short s) {
+        if(s < 0 || s > 255) throw new IllegalArgumentException("Short must be between 0 and 255");
         writeByte((byte)s);
     }
 
