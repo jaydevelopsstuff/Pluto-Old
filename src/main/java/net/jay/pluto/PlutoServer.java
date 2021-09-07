@@ -27,6 +27,9 @@ public class PlutoServer {
     private PlayerManager playerManager;
     /** Manages listeners that wait for conditions to be reached */
     private ListeningManager listeningManager;
+    /** Manages command receiving, parsing, and handling */
+    private CommandManager commandManager;
+    private ConsoleManager consoleManager;
 
     /** Creates a new <code>PlutoServer</code>, this class should never be initialized more than once */
     public PlutoServer() {
@@ -46,6 +49,7 @@ public class PlutoServer {
         logger.info("Starting server...");
 
         logger.info("Initializing managers");
+
         configManager = new ConfigManager();
         logger.debug("Initialized Config Manager");
         netManager = new NetManager(7777);
@@ -54,6 +58,11 @@ public class PlutoServer {
         logger.debug("Initialized Player Manager");
         listeningManager = new ListeningManager();
         logger.debug("Initialized Listening Manager");
+        commandManager = new CommandManager();
+        logger.debug("Initialized Command Manager");
+        consoleManager = new ConsoleManager();
+        logger.debug("Initialized Console Manager");
+
         logger.info("Finished initializing managers");
 
         netManager.startListening();
@@ -97,11 +106,11 @@ public class PlutoServer {
         netManager.trackClient(client);
     }
 
-    /** Gets the next player ID without marking it as used */
-    public int peekNextPlayerID() {
+    /** Gets the next available player ID without marking it as used */
+    public int peekNextAvailablePlayerID() {
         for(int i = 1; i < playerIDs.length; i++)
             if(playerIDs[i]) return i;
-        // No ID is available (bruh)
+        // No ID is available
         return -1;
     }
 
@@ -153,6 +162,10 @@ public class PlutoServer {
 
     public ListeningManager getListeningManager() {
         return listeningManager;
+    }
+
+    public CommandManager getCommandManager() {
+        return commandManager;
     }
 
     public static PlutoServer getInstance() {

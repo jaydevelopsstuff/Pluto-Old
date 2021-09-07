@@ -10,14 +10,14 @@ public class Permission {
 
     public Permission(String name, String ID, IntegratedGroups defaultPermissionGroup) {
         this.name = name;
-        this.ID = ID;
+        this.ID = "permissions." + ID;
         this.childPermissions = new Permission[0];
         this.defaultPermissionGroup = defaultPermissionGroup;
     }
 
     public Permission(String name, String ID, Permission[] childPermissions, IntegratedGroups defaultPermissionGroup) {
         this.name = name;
-        this.ID = ID;
+        this.ID = "permissions." + ID;
         this.childPermissions = childPermissions;
         this.defaultPermissionGroup = defaultPermissionGroup;
     }
