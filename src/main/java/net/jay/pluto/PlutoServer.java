@@ -11,6 +11,8 @@ public class PlutoServer {
     /** The instance for the running PlutoServer */
     private static PlutoServer instance;
 
+    public final String plutoDir = "./pluto/";
+
     private final boolean[] playerIDs = new boolean[256];
 
     private final Logger logger = LogManager.getLogger("Pluto");
@@ -35,20 +37,56 @@ public class PlutoServer {
 
     /** Starts the server */
     public void start() {
-        logger.info("Starting server");
+        // Has to be initialized before others
         fileManager = new FileManager();
+
+        clearOldLogs();
+        logger.debug("Cleared old logs");
+
+        logger.info("Starting server...");
+
+        logger.info("Initializing managers");
         configManager = new ConfigManager();
+        logger.debug("Initialized Config Manager");
         netManager = new NetManager(7777);
+        logger.debug("Initialized Net Manager");
         playerManager = new PlayerManager(255);
+        logger.debug("Initialized Player Manager");
         listeningManager = new ListeningManager();
+        logger.debug("Initialized Listening Manager");
+        logger.info("Finished initializing managers");
 
         netManager.startListening();
         listeningManager.startClientListening();
+
+        logger.info("Server started");
     }
 
     /** Shuts down the server */
     public void shutdown() {
+        logger.info("Shutting down server...");
 
+        logger.info("Shutting down managers");
+        listeningManager.shutdown();
+        logger.debug("Listening Manager shut down");
+        playerManager.shutdown();
+        logger.debug("Player Manager shut down");
+        netManager.shutdown();
+        logger.debug("Net Manager shut down");
+        configManager.shutdown();
+        logger.debug("File Manager shut down");
+        fileManager.shutdown();
+
+        logger.info("Server shut down");
+    }
+
+    public void clearOldLogs() {
+        fileManager.clear(plutoDir + "logs/latest.log", (success) -> {
+            if(!success) logger.warn("Was unable to clear latest.log");
+        });
+        fileManager.clear(plutoDir + "logs/debug.log", (success) -> {
+            if(!success) logger.warn("Was unable to clear debug.log");
+        });
     }
 
     /**
@@ -97,12 +135,24 @@ public class PlutoServer {
         return logger;
     }
 
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    public ConfigManager getConfigManager() {
+        return configManager;
+    }
+
     public NetManager getNetManager() {
         return netManager;
     }
 
     public PlayerManager getPlayerManager() {
         return playerManager;
+    }
+
+    public ListeningManager getListeningManager() {
+        return listeningManager;
     }
 
     public static PlutoServer getInstance() {

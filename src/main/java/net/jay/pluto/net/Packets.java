@@ -1,8 +1,7 @@
 package net.jay.pluto.net;
 
 import net.jay.pluto.net.packet.Packet;
-import net.jay.pluto.net.packet.packets.both.PlayerInfo;
-import net.jay.pluto.net.packet.packets.both.PlayerSlot;
+import net.jay.pluto.net.packet.packets.both.*;
 import net.jay.pluto.net.packet.packets.client.ClientUUID;
 import net.jay.pluto.net.packet.packets.client.ConnectRequest;
 import net.jay.pluto.net.packet.packets.client.RequestWorldData;
@@ -168,6 +167,9 @@ public enum Packets {
             case PlayerInfo -> new PlayerInfo(buffer);
             case PlayerSlot -> new PlayerSlot(buffer);
             case RequestWorldData -> new RequestWorldData();
+            case PlayerHp -> new PlayerHP(buffer);
+            case ManaEffect -> new ManaEffect(buffer);
+            //case PlayerBuff -> new PlayerBuff(buffer);
             case ClientUUID -> new ClientUUID(buffer);
             default -> null;
         };

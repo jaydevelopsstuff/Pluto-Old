@@ -51,7 +51,7 @@ public class PlayerHP implements MultipleHandlersBothPacket<IServerLoginNetHandl
 
     @Override
     public void processPacketLogin(IServerLoginNetHandler handler) {
-
+        handler.processPlayerHP(this);
     }
 
     @Override

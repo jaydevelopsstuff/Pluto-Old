@@ -16,6 +16,8 @@ public class PlayerBuilder {
     private String name;
     private int HP;
     private int maxHP;
+    private int mana;
+    private int maxMana;
     private CharacterInfo characterInfo;
     private PlayerInventory inventory;
     private PlayerArmor armor;
@@ -79,6 +81,22 @@ public class PlayerBuilder {
         this.maxHP = maxHP;
     }
 
+    public int getMana() {
+        return mana;
+    }
+
+    public void setMana(int mana) {
+        this.mana = mana;
+    }
+
+    public int getMaxMana() {
+        return maxMana;
+    }
+
+    public void setMaxMana(int maxMana) {
+        this.maxMana = maxMana;
+    }
+
     public CharacterInfo getCharacterInfo() {
         return characterInfo;
     }
@@ -112,7 +130,7 @@ public class PlayerBuilder {
     }
 
     public BasicPlayer buildBasic() {
-        return new BasicPlayer(ID, uuid, name, characterInfo, inventory, armor, accessories);
+        return new BasicPlayer(ID, uuid, name, characterInfo, HP, maxHP, mana, maxMana, inventory, armor, accessories);
     }
 
     public ManageablePlayer build() {

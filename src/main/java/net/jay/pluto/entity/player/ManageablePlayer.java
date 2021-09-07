@@ -9,7 +9,7 @@ public class ManageablePlayer extends BasicPlayer implements Access {
     private final Client connectedClient;
 
     public ManageablePlayer(Client client, BasicPlayer player) {
-        super(player.getID(), player.getUuid(), player.getName(), player.getCharacterInfo(), player.getInventory(), player.getArmor(), player.getAccessories());
+        super(player.getID(), player.getUuid(), player.getName(), player.getCharacterInfo(), player.getHP(), player.getMaxHP(), player.getMana(), player.getMaxMana(), player.getInventory(), player.getArmor(), player.getAccessories());
         this.connectedClient = client;
     }
 

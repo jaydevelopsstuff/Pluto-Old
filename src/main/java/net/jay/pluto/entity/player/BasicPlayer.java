@@ -9,22 +9,29 @@ import net.jay.pluto.item.Item;
 
 // TODO Finish heal, damage and kill logic
 public class BasicPlayer extends LivingEntity {
-    private final int ID;
+    protected final int ID;
 
-    private final String uuid;
-    private final String name;
-    private CharacterInfo characterInfo;
+    protected final String uuid;
+    protected final String name;
+    protected CharacterInfo characterInfo;
 
-    private final PlayerInventory inventory;
-    private final PlayerArmor armor;
-    private final PlayerAccessories accessories;
-    private Item trash;
+    protected int mana;
+    protected int maxMana;
 
-    public BasicPlayer(int ID, String uuid, String name, CharacterInfo characterInfo, PlayerInventory inventory, PlayerArmor armor, PlayerAccessories accessories) {
+    protected final PlayerInventory inventory;
+    protected final PlayerArmor armor;
+    protected final PlayerAccessories accessories;
+    protected Item trash;
+
+    public BasicPlayer(int ID, String uuid, String name, CharacterInfo characterInfo, int HP, int maxHP, int mana, int maxMana, PlayerInventory inventory, PlayerArmor armor, PlayerAccessories accessories) {
         this.ID = ID;
         this.uuid = uuid;
         this.name = name;
         this.characterInfo = characterInfo;
+        this.HP = HP;
+        this.maxHP = maxHP;
+        this.mana = mana;
+        this.maxMana = maxMana;
         this.inventory = inventory;
         this.armor = armor;
         this.accessories = accessories;
@@ -61,6 +68,11 @@ public class BasicPlayer extends LivingEntity {
         this.HP = Math.min(HP, maxHP);
     }
 
+    public void setMana(int mana) {
+        if(mana < 0) throw new IllegalArgumentException("Mana cannot be below zero");
+        this.HP = Math.min(mana, maxMana);
+    }
+
     public void healToMax() {
         setHP(maxHP);
     }
@@ -83,6 +95,14 @@ public class BasicPlayer extends LivingEntity {
 
     public void setCharacterInfo(CharacterInfo characterInfo) {
         this.characterInfo = characterInfo;
+    }
+
+    public int getMana() {
+        return mana;
+    }
+
+    public int getMaxMana() {
+        return maxMana;
     }
 
     public PlayerInventory getInventory() {

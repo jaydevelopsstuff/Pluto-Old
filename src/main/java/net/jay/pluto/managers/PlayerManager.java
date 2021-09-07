@@ -5,7 +5,7 @@ import net.jay.pluto.entity.player.ManageablePlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerManager {
+public class PlayerManager implements Manager {
     private final int maxPlayers;
     private final List<ManageablePlayer> players = new ArrayList<>();
 
@@ -32,5 +32,10 @@ public class PlayerManager {
 
     public int getOpenPlayerSlots() {
         return maxPlayers - players.size();
+    }
+
+    @Override
+    public void shutdown() {
+
     }
 }

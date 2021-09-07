@@ -36,7 +36,7 @@ public class PlayerBuff implements MultipleHandlersBothPacket<IServerLoginNetHan
 
     @Override
     public void processPacketLogin(IServerLoginNetHandler handler) {
-
+        handler.processPlayerBuff(this);
     }
 
     @Override

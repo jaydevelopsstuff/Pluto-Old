@@ -88,7 +88,15 @@ public class ServerLoginNetHandler implements IServerLoginNetHandler, Access {
 
     @Override
     public void processManaEffect(ManaEffect packet) {
-
+        if(packet.manaAmount < 0 || packet.manaAmount > 400) {
+            try {
+                client.disconnect("Invalid packet");
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        playerBuilder.setMana(packet.manaAmount);
     }
 
     @Override
@@ -110,9 +118,6 @@ public class ServerLoginNetHandler implements IServerLoginNetHandler, Access {
         }
         // Inventory
         if(slot < 58) playerBuilder.getInventory().setItem(packet.slot, item);
-        if(slot > 59) {
-            mainLogger.info("gaming");
-        }
         // TODO Figure the rest of this out
     }
 
