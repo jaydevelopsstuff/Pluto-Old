@@ -1,5 +1,8 @@
 package net.jay.pluto.world.loading;
 
+import net.jay.pluto.io.TerrariaReader;
+import net.jay.pluto.world.WorldMetadata;
+
 import java.io.FileNotFoundException;
 
 public class StandardWorldLoader extends AbstractWorldLoader {
@@ -9,6 +12,13 @@ public class StandardWorldLoader extends AbstractWorldLoader {
 
     public StandardWorldLoader(String directory, String worldName) throws FileNotFoundException {
         super(directory, worldName);
+    }
+
+    @Override
+    public WorldMetadata getMetadata() {
+        TerrariaReader privateReader = new TerrariaReader(inputStream);
+
+        return null;
     }
 
     @Override
