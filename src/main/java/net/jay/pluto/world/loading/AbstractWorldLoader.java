@@ -23,19 +23,19 @@ public abstract class AbstractWorldLoader {
         this(directory + "/" + worldName + ".wld");
     }
 
-    public abstract void saveWorld();
+    public abstract void loadWorld();
 
-    protected abstract void saveHeader();
+    protected abstract void loadHeader();
 
-    protected abstract void saveTiles();
+    protected abstract void loadTiles();
 
-    protected abstract void saveChests();
+    protected abstract void loadChests();
 
-    protected abstract void saveSigns();
+    protected abstract void loadSigns();
 
-    protected abstract void saveDummies();
+    protected abstract void loadDummies();
 
-    protected abstract void saveNPCs();
+    protected abstract void loadNPCs();
 
-    protected abstract void saveFooter();
+    protected abstract void loadFooter();
 }

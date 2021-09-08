@@ -12,42 +12,44 @@ public class StandardWorldLoader extends AbstractWorldLoader {
     }
 
     @Override
-    public void saveWorld() {
+    public void loadWorld() {
 
     }
 
     @Override
-    protected void saveHeader() {
+    protected void loadHeader() {
 
     }
 
     @Override
-    protected void saveTiles() {
+    protected void loadTiles() {
 
     }
 
     @Override
-    protected void saveChests() {
+    protected void loadChests() {
 
     }
 
     @Override
-    protected void saveSigns() {
+    protected void loadSigns() {
 
     }
 
     @Override
-    protected void saveDummies() {
+    protected void loadDummies() {
 
     }
 
     @Override
-    protected void saveNPCs() {
+    protected void loadNPCs() {
 
     }
 
     @Override
-    protected void saveFooter() {
+    protected void loadFooter() {
 
     }
+
+
 }

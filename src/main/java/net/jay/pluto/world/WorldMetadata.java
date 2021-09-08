@@ -1,8 +1,5 @@
 package net.jay.pluto.world;
 
-import net.jay.pluto.io.TerrariaReader;
-
-import java.io.InputStream;
 import java.time.LocalDateTime;
 
 public class WorldMetadata {
