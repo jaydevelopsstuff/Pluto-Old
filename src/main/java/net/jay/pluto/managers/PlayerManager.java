@@ -13,6 +13,11 @@ public class PlayerManager implements Manager {
         this.maxPlayers = maxPlayers;
     }
 
+    @Override
+    public void initialize() {
+
+    }
+
     public void updatePlayerIDs(int removedPlayerID) {
         for(ManageablePlayer player : players) {
             //if(player.getID() > removedPlayerID) player.setID(player.getID() - 1);
@@ -37,5 +42,9 @@ public class PlayerManager implements Manager {
     @Override
     public void shutdown() {
 
+    }
+
+    public List<ManageablePlayer> getConnectedPlayers() {
+        return players;
     }
 }

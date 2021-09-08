@@ -4,6 +4,7 @@ import net.jay.pluto.data.interfaces.Access;
 import net.jay.pluto.entity.player.BasicPlayer;
 import net.jay.pluto.net.handlers.NetHandler;
 import net.jay.pluto.net.packet.*;
+import net.jay.pluto.net.packet.packets.server.KeepAlive;
 
 import java.io.IOException;
 
@@ -46,6 +47,10 @@ public class Client implements Access {
 
     public void sendPacket(SPacket packet) throws IOException {
         socket.sendPacket(packet);
+    }
+
+    public void sendKeepAlive() throws IOException {
+        socket.sendPacket(new KeepAlive());
     }
 
     public void boot(String reason) throws IOException {

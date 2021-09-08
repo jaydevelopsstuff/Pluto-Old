@@ -27,9 +27,14 @@ public class NetManager implements Manager {
         this.port = port;
     }
 
+    @Override
+    public void initialize() {
+
+    }
+
     public void startListening() {
-        logger.info("Started listening on port " + port);
         tcpServer = new TCPServerManager(port);
+        logger.info("Started listening on port " + port);
     }
 
     public void trackClient(Client client) {

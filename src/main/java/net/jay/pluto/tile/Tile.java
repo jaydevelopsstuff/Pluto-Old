@@ -19,7 +19,11 @@ public class Tile {
      * <br> <br>
      * First 3 bits are allocated for combinations to check what <code>Modification</code> this tile has
      * <br>
-     * The 5 other bits are currently unused
+     * The next 3 bits are for the <code>WireType</code> this tile has
+     * <br>
+     * The 2 bits after that are for whether the block has an actuator on it and whether its actuated
+     * <br><br>
+     * If this byte is 0 (all bits 0/false) then this block is "plain"
      */
     private byte flags = 0;
 
@@ -70,6 +74,68 @@ public class Tile {
                 setBitFlag(2, true);
             }
         }
+    }
+
+    public WireType getWireType() {
+        boolean b4 = getBitFlag(3);
+        boolean b5 = getBitFlag(4);
+
+        if(!b4 && !b5) return null;
+        if(b4 && !b5) return WireType.Blue;
+        if(!b4 && b5) return WireType.Green;
+        if(b4 && b5) return WireType.Yellow;
+        throw new IllegalStateException();
+    }
+
+    public void setWireType(WireType type) {
+        if(type == null) {
+            setBitFlag(3, false);
+            setBitFlag(4, false);
+            setBitFlag(5, false);
+            return;
+        }
+        switch(type) {
+            case Red -> {
+                setBitFlag(3, true);
+                setBitFlag(4, false);
+                setBitFlag(5, false);
+            }
+            case Blue -> {
+                setBitFlag(3, true);
+                setBitFlag(4, true);
+                setBitFlag(5, false);
+            }
+            case Green -> {
+                setBitFlag(3, true);
+                setBitFlag(4, true);
+                setBitFlag(5, true);
+            }
+            case Yellow -> {
+                setBitFlag(3, false);
+                setBitFlag(4, true);
+                setBitFlag(5, true);
+            }
+        }
+    }
+
+    public boolean hasActuator() {
+        return getBitFlag(6);
+    }
+
+    public void placeActuator() {
+        setBitFlag(6, true);
+    }
+
+    public void removeActuator() {
+        setBitFlag(6, false);
+    }
+
+    public boolean isActuated() {
+        return getBitFlag(7);
+    }
+
+    public void setActuated(boolean actuated) {
+        setBitFlag(7, actuated);
     }
 
     private boolean getBitFlag(int index) {

@@ -15,12 +15,8 @@ public class CommandManager implements Manager {
     private final List<Command> registeredCommands = new ArrayList<>();
     private final List<Command> commandQueue = new CopyOnWriteArrayList<>();
 
-    public CommandManager() {
-        this.running = true;
-        initialize();
-    }
-
-    private void initialize() {
+    public void initialize() {
+        running = true;
         registeredCommands.add(new HelpCommand());
         new Thread(this::startCommandQueueExecutionThreaded, "Command Executor").start();
     }

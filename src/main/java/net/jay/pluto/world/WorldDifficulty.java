@@ -1,4 +1,4 @@
-package net.jay.pluto.data.enums;
+package net.jay.pluto.world;
 
 public enum WorldDifficulty {
     Journey,

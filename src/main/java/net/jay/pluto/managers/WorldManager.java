@@ -1,6 +1,6 @@
 package net.jay.pluto.managers;
 
-public class GroupManager implements Manager {
+public class WorldManager implements Manager {
     @Override
     public void initialize() {
 

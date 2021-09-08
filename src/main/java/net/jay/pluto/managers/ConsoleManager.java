@@ -11,12 +11,9 @@ public class ConsoleManager implements Manager, Access {
 
     private Thread listeningThread;
 
-    public ConsoleManager() {
+    @Override
+    public void initialize() {
         running = true;
-        initialize();
-    }
-
-    private void initialize() {
         input = new Scanner(System.in);
 
         new Thread(this::startConsoleListeningThreaded, "Console Reader").start();

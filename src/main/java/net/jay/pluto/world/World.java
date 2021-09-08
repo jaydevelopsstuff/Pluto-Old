@@ -1,6 +1,6 @@
-package net.jay.pluto.data;
+package net.jay.pluto.world;
 
-import net.jay.pluto.data.holders.WorldMetadata;
+
 import net.jay.pluto.tile.Tile;
 
 public class World {

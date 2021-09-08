@@ -11,8 +11,6 @@ public class PlutoServer {
     /** The instance for the running PlutoServer */
     private static PlutoServer instance;
 
-    public final String plutoDir = "./pluto/";
-
     private final boolean[] playerIDs = new boolean[256];
 
     private final Logger logger = LogManager.getLogger("Pluto");
@@ -46,27 +44,51 @@ public class PlutoServer {
         clearOldLogs();
         logger.debug("Cleared old logs");
 
+
         logger.info("Starting server...");
+
+
+        logger.info("Setting up managers");
+
+        logger.debug("Setting up Config Manager");
+        configManager = new ConfigManager();
+        logger.debug("Setting up Net Manager");
+        netManager = new NetManager(7777);
+        logger.debug("Setting up Player Manager");
+        playerManager = new PlayerManager(255);
+        logger.debug("Setting up Listening Manager");
+        listeningManager = new ListeningManager();
+        logger.debug("Setting up Command Manager");
+        commandManager = new CommandManager();
+        logger.debug("Setting up Console Manager");
+        consoleManager = new ConsoleManager();
+
+        logger.info("Finished setting up managers");
+
 
         logger.info("Initializing managers");
 
-        configManager = new ConfigManager();
-        logger.debug("Initialized Config Manager");
-        netManager = new NetManager(7777);
-        logger.debug("Initialized Net Manager");
-        playerManager = new PlayerManager(255);
-        logger.debug("Initialized Player Manager");
-        listeningManager = new ListeningManager();
-        logger.debug("Initialized Listening Manager");
-        commandManager = new CommandManager();
-        logger.debug("Initialized Command Manager");
-        consoleManager = new ConsoleManager();
-        logger.debug("Initialized Console Manager");
+        logger.debug("Initializing Config Manager");
+        configManager.initialize();
+        logger.debug("Initializing Net Manager");
+        netManager.initialize();
+        logger.debug("Initializing Player Manager");
+        playerManager.initialize();
+        logger.debug("Initializing Listening Manager");
+        listeningManager.initialize();
+        logger.debug("Initializing Command Manager");
+        commandManager.initialize();
+        logger.debug("Initializing Console Manager");
+        configManager.initialize();
 
         logger.info("Finished initializing managers");
 
+        logger.debug("Starting TCP listening");
         netManager.startListening();
+        logger.debug("Starting client packet listening");
         listeningManager.startClientListening();
+        logger.debug("Starting keep alive loop");
+        listeningManager.startKeepAliveLoop();
 
         logger.info("Server started");
     }
@@ -90,10 +112,10 @@ public class PlutoServer {
     }
 
     public void clearOldLogs() {
-        fileManager.clear(plutoDir + "logs/latest.log", (success) -> {
+        fileManager.clear("logs/latest.log", (success) -> {
             if(!success) logger.warn("Was unable to clear latest.log");
         });
-        fileManager.clear(plutoDir + "logs/debug.log", (success) -> {
+        fileManager.clear("logs/debug.log", (success) -> {
             if(!success) logger.warn("Was unable to clear debug.log");
         });
     }

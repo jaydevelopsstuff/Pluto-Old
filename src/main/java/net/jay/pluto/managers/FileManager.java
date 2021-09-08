@@ -12,6 +12,11 @@ public class FileManager implements Manager {
         this.executor = Executors.newSingleThreadExecutor();
     }
 
+    @Override
+    public void initialize() {
+
+    }
+
     public void write(String content, String file) {
         write(content, new File(file));
     }

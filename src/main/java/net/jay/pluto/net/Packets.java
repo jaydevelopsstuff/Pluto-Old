@@ -11,6 +11,7 @@ import net.jay.pluto.net.packet.packets.client.RequestWorldData;
  * @author Jay
  */
 public enum Packets {
+    KeepAlive(0, From.SERVER), // Technically not a real packet
     ConnectRequest(1, From.CLIENT),
     Disconnect(2, From.SERVER),
     ContinueConnecting(3, From.SERVER),

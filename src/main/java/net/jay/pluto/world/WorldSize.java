@@ -1,4 +1,4 @@
-package net.jay.pluto.data.enums;
+package net.jay.pluto.world;
 
 public enum WorldSize {
     SMALL(4200, 1200),
