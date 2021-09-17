@@ -230,6 +230,12 @@ public class PacketBuffer {
     // WRITE
 
 
+    /** Writes an unsigned byte */
+    public void writeUnsignedByte(short s) {
+        if(s < 0 || s > 255) throw new IllegalArgumentException("Short must be between 0 and 255");
+        writeByte((byte)s);
+    }
+
     public void writeBoolean(boolean b) {
         writeBoolean(b, writerIndex);
         writerIndex++;
@@ -238,12 +244,6 @@ public class PacketBuffer {
     public void writeByte(byte b) {
         writeByte(b, writerIndex);
         writerIndex++;
-    }
-
-    /** Writes an unsigned byte */
-    public void writeUnsignedByte(short s) {
-        if(s < 0 || s > 255) throw new IllegalArgumentException("Short must be between 0 and 255");
-        writeByte((byte)s);
     }
 
     public void writeShort(short s) {
