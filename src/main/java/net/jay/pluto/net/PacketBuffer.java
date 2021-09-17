@@ -59,6 +59,12 @@ public class PacketBuffer {
     // READ
 
 
+    public short readUnsignedByte() {
+        short result = getUnsignedByte(readerIndex);
+        readerIndex++;
+        return result;
+    }
+
     public boolean readBoolean() {
         boolean result = getBoolean(readerIndex);
         readerIndex++;
@@ -69,14 +75,6 @@ public class PacketBuffer {
         byte result = getByte(readerIndex);
         readerIndex++;
         return result;
-    }
-
-    public short readUnsignedByte() {
-        return (short)readUnsignedByteInt();
-    }
-
-    public int readUnsignedByteInt() {
-        return readByte() & 0xFF;
     }
 
     public short readShort() {
@@ -127,10 +125,14 @@ public class PacketBuffer {
         return result;
     }
 
+    public short getUnsignedByte(int index) {
+        return (short)(getByte(index) & 0xFF);
+    }
+
     public boolean getBoolean(int index) {
         if(index < 0 || isntInBounds(index, 1)) throw new ArrayIndexOutOfBoundsException();
 
-        return buffer[index] != 0;
+        return getUnsignedByte(index) != 0;
     }
 
     public byte getByte(int index) {
@@ -142,22 +144,21 @@ public class PacketBuffer {
     public short getShort(int startIndex) {
         if(startIndex < 0 || isntInBounds(startIndex, 2)) throw new ArrayIndexOutOfBoundsException();
 
-        byte ch1 = buffer[startIndex];
-        byte ch2 = buffer[startIndex + 1];
+        short b1 = getUnsignedByte(startIndex);
+        short b2 = getUnsignedByte(startIndex + 1);
 
-        // The & 0xFF makes ch1 an unsigned byte, this fixes some issues I've had because C# bytes are unsigned by default, I'm making an assumption this won't bite me in the ass later
-        return (short)((ch1 & 0xFF) | (ch2 << 8));
+        return (short)((b1) | (b2 << 8));
     }
 
     public int getInt(int startIndex) {
         if(startIndex < 0 || isntInBounds(startIndex, 4)) throw new ArrayIndexOutOfBoundsException();
 
-        byte ch1 = buffer[startIndex];
-        byte ch2 = buffer[startIndex + 1];
-        byte ch3 = buffer[startIndex + 2];
-        byte ch4 = buffer[startIndex + 3];
+        short b1 = getUnsignedByte(startIndex);
+        short b2 = getUnsignedByte(startIndex + 1);
+        short b3 = getUnsignedByte(startIndex + 2);
+        short b4 = getUnsignedByte(startIndex + 3);
 
-        return ((ch1 & 0xFF) | (ch2 << 8) | (ch3 << 16) | (ch4 << 24));
+        return ((b1 & 0xFF) | (b2 << 8) | (b3 << 16) | (b4 << 24));
     }
 
     public long getLong(int startIndex) {
@@ -165,18 +166,18 @@ public class PacketBuffer {
 
         // Pretty ugly but oh well, might improve later
         // Needs to be updated, this may very well be broken
-        byte ch1 = buffer[startIndex];
-        byte ch2 = buffer[startIndex + 1];
-        byte ch3 = buffer[startIndex + 2];
-        byte ch4 = buffer[startIndex + 3];
-        byte ch5 = buffer[startIndex + 4];
-        byte ch6 = buffer[startIndex + 5];
-        byte ch7 = buffer[startIndex + 6];
-        byte ch8 = buffer[startIndex + 7];
+        short b1 = buffer[startIndex];
+        short b2 = buffer[startIndex + 1];
+        short b3 = buffer[startIndex + 2];
+        short b4 = buffer[startIndex + 3];
+        short b5 = buffer[startIndex + 4];
+        short b6 = buffer[startIndex + 5];
+        short b7 = buffer[startIndex + 6];
+        short b8 = buffer[startIndex + 7];
 
-        int num = (ch1| (ch2 << 8) | (ch3 << 16) | (ch4 << 24));
-        int num2 = (ch5 | (ch6 << 8) | (ch7 << 16) | (ch8 << 24));
-        return (((long)num2 << 32) | num);
+        int num = (b1 | (b2 << 8) | (b3 << 16) | (b4 << 24));
+        int num2 = (b5 | (b6 << 8) | (b7 << 16) | (b8 << 24));
+        return (num | ((long)num2 << 32));
     }
 
     public float getFloat(int startIndex) {
