@@ -58,7 +58,6 @@ public class PacketBuffer {
 
     // READ
 
-
     public short readUnsignedByte() {
         short result = getUnsignedByte(readerIndex);
         readerIndex++;
