@@ -2,9 +2,12 @@ package net.jay.pluto;
 
 import net.jay.pluto.managers.*;
 import net.jay.pluto.net.Client;
+import net.jay.pluto.world.loading.ReLogicWorldLoader;
+import net.jay.pluto.world.loading.WorldLoadingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class PlutoServer {
@@ -82,6 +85,14 @@ public class PlutoServer {
         configManager.initialize();
 
         logger.info("Finished initializing managers");
+
+        try {
+            new ReLogicWorldLoader("world.wld").loadWorld();
+        } catch (WorldLoadingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         logger.debug("Starting TCP listening");
         netManager.startListening();

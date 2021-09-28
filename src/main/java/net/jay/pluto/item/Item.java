@@ -15,9 +15,9 @@ public class Item {
     protected final Items enumType;
     protected final int prefix;
     /** The name of this item */
-    protected final String name;
+    protected String name;
     /** The maximum stack size of this item (e.g. 999) */
-    protected final int maxStackSize;
+    protected int maxStackSize;
     protected final Availability availability = Availability.ANY;
 
     protected int stackSize;
@@ -43,19 +43,20 @@ public class Item {
     }
 
     public Item(int ID, int prefix, int stackSize) {
+        // TODO Remove temp fix once Items enum is done
         Items item = Items.fromID(ID);
-        if(item == null) throw new IllegalArgumentException("Invalid ID");
+        //if(item == null) throw new IllegalArgumentException("Invalid ID");
         this.ID = ID;
         this.enumType = item;
         this.prefix = prefix;
-        this.name = item.name;
-        this.maxStackSize = item.maxStackSize;
-        if(stackSize > this.maxStackSize) throw new IllegalArgumentException("Stack size cannot be more than the max stack size for this item (" + this.maxStackSize + ")");
+        //this.name = item.name;
+        //this.maxStackSize = item.maxStackSize;
+        //if(stackSize > this.maxStackSize) throw new IllegalArgumentException("Stack size cannot be more than the max stack size for this item (" + this.maxStackSize + ")");
         this.stackSize = stackSize;
     }
 
     public Item(Items item, int prefix) {
-        if(item == null) throw new IllegalArgumentException("Invalid ID");
+        if(item == null) throw new IllegalArgumentException("Item cannot be null");
         this.ID = item.ID;
         this.enumType = item;
         this.prefix = prefix;

@@ -5,11 +5,11 @@
             <PatternLayout pattern="[%level] [%d{HH:mm:ss}] [%logger]: %msg%n"/>
         </Console>
 
-        <File name="DefaultLog" fileName="pluto/logs/latest.log">
+        <File name="DefaultLog" fileName="logs/latest.log">
             <PatternLayout pattern="[%level] [%d{HH:mm:ss.SSS}] [%logger]: %msg%n"/>
         </File>
 
-        <File name="DebugLog" fileName="pluto/logs/debug.log">
+        <File name="DebugLog" fileName="logs/debug.log">
             <PatternLayout pattern="[%level] [%d{HH:mm:ss.SSS}] [%t] [%logger]: %msg%n"/>
         </File>
     </Appenders>

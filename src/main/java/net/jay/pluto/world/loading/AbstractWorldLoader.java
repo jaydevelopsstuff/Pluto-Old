@@ -6,6 +6,7 @@ import net.jay.pluto.world.WorldMetadata;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public abstract class AbstractWorldLoader {
     protected final String worldPath;
@@ -26,21 +27,5 @@ public abstract class AbstractWorldLoader {
         this(directory + "/" + worldName + ".wld");
     }
 
-    public abstract WorldMetadata getMetadata();
-
-    public abstract void loadWorld();
-
-    protected abstract void loadHeader();
-
-    protected abstract void loadTiles();
-
-    protected abstract void loadChests();
-
-    protected abstract void loadSigns();
-
-    protected abstract void loadDummies();
-
-    protected abstract void loadNPCs();
-
-    protected abstract void loadFooter();
+    public abstract void loadWorld() throws WorldLoadingException, IOException;
 }

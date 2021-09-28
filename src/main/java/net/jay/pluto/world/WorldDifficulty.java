@@ -1,8 +1,21 @@
 package net.jay.pluto.world;
 
 public enum WorldDifficulty {
-    Journey,
-    Classic,
-    Expert,
-    Master
+    Journey(-1),
+    Classic(0),
+    Expert(1),
+    Master(2);
+
+    public final int ID;
+
+    WorldDifficulty(int ID) {
+        this.ID = ID;
+    }
+
+    public static WorldDifficulty fromID(int ID) {
+        for(WorldDifficulty worldDifficulty : values()) {
+            if(worldDifficulty.ID == ID) return worldDifficulty;
+        }
+        return null;
+    }
 }

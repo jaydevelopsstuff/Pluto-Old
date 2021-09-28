@@ -25,18 +25,4 @@ public abstract class AbstractWorldSaver implements Access {
     }
 
     public abstract void saveWorld();
-
-    protected abstract void saveHeader();
-
-    protected abstract void saveTiles();
-
-    protected abstract void saveChests();
-
-    protected abstract void saveSigns();
-
-    protected abstract void saveDummies();
-
-    protected abstract void saveNPCs();
-
-    protected abstract void saveFooter();
 }

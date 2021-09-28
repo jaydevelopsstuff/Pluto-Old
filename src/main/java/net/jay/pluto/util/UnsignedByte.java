@@ -1,7 +1,7 @@
 package net.jay.pluto.util;
 
 public class UnsignedByte {
-    private final byte value;
+    private byte value;
 
     public UnsignedByte(byte value) {
         this.value = value;
@@ -18,6 +18,15 @@ public class UnsignedByte {
 
     public int readReal() {
         return value & 0xFF;
+    }
+
+    public void setRaw(byte b) {
+        value = b;
+    }
+
+    public void setReal(int i) {
+        if(value < 0 || value > 255) throw new IllegalArgumentException("Value must be between 0 and 255");
+        value = (byte)i;
     }
 
     public static short toShort(byte value) {

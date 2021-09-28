@@ -147,7 +147,7 @@ public class PacketBuffer {
         short b1 = getUnsignedByte(startIndex);
         short b2 = getUnsignedByte(startIndex + 1);
 
-        return (short)((b1) | (b2 << 8));
+        return (short)(b1 | (b2 << 8));
     }
 
     public int getInt(int startIndex) {
@@ -158,7 +158,7 @@ public class PacketBuffer {
         short b3 = getUnsignedByte(startIndex + 2);
         short b4 = getUnsignedByte(startIndex + 3);
 
-        return ((b1 & 0xFF) | (b2 << 8) | (b3 << 16) | (b4 << 24));
+        return (b1 | (b2 << 8) | (b3 << 16) | (b4 << 24));
     }
 
     public long getLong(int startIndex) {

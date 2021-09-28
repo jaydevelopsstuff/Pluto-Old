@@ -1,31 +1,96 @@
-package net.jay.pluto.tile;
+package net.jay.pluto.world.tile;
 
 /**
- * The class for a Terraria tile, this class is optimized for minimal memory use
- * @see Tiles
+ * The class for a Terraria "Block", this class is optimized for minimal memory use
+ * @see Blocks
  * @author Jay
  */
-public class Tile {
+public class Block {
     /** The internal ID of this tile */
     private short ID;
 
-    /** The x position of this tile */
-    private short x;
-    /** The y position of this tile */
-    private short y;
+    private short u;
+
+    private short v;
+
+    private byte color;
 
     /**
-     * The bit by bit flags for this tile, this reduces the memory needed per tile
+     * The bit by bit flags for this block, this reduces the memory needed per block
      * <br> <br>
-     * First 3 bits are allocated for combinations to check what <code>Modification</code> this tile has
+     * First 3 bits are allocated for combinations to check what <code>Modification</code> this block has
      * <br>
-     * The next 3 bits are for the <code>WireType</code> this tile has
-     * <br>
-     * The 2 bits after that are for whether the block has an actuator on it and whether its actuated
+     * The last 5 bits are currently unused
      * <br><br>
      * If this byte is 0 (all bits 0/false) then this block is "plain"
      */
     private byte flags = 0;
+
+    public Block(short ID) {
+        this.ID = ID;
+    }
+
+    public Block(int ID) {
+        this((short)ID);
+        if(ID < Short.MIN_VALUE || ID > Short.MAX_VALUE) throw new IllegalArgumentException("ID must be in range of signed short");
+    }
+
+    public Block(Blocks block) {
+        this(block.ID);
+    }
+
+    public Blocks getType() {
+        return Blocks.fromID(ID);
+    }
+
+    public void setType(Blocks block) {
+        ID = (short)block.ID;
+        u = -1;
+        v = -1;
+    }
+
+    public String getName() {
+        Blocks tileType = Blocks.fromID(ID);
+        if(tileType == null) return null;
+        return tileType.name;
+    }
+
+    public short getID() {
+        return ID;
+    }
+
+    public void setID(short ID) {
+        this.ID = ID;
+    }
+
+    public void setID(int ID) {
+        if(ID < Short.MIN_VALUE || ID > Short.MAX_VALUE) throw new IllegalArgumentException("ID must be in the range of signed short");
+        setID((short)ID);
+    }
+
+    public short getU() {
+        return u;
+    }
+
+    public void setU(short u) {
+        this.u = u;
+    }
+
+    public short getV() {
+        return v;
+    }
+
+    public void setV(short v) {
+        this.v = v;
+    }
+
+    public byte getColor() {
+        return color;
+    }
+
+    public void setColor(byte color) {
+        this.color = color;
+    }
 
     public Modification getModification() {
         boolean b1 = getBitFlag(0);
@@ -76,68 +141,6 @@ public class Tile {
         }
     }
 
-    public WireType getWireType() {
-        boolean b4 = getBitFlag(3);
-        boolean b5 = getBitFlag(4);
-
-        if(!b4 && !b5) return null;
-        if(b4 && !b5) return WireType.Blue;
-        if(!b4 && b5) return WireType.Green;
-        if(b4 && b5) return WireType.Yellow;
-        throw new IllegalStateException();
-    }
-
-    public void setWireType(WireType type) {
-        if(type == null) {
-            setBitFlag(3, false);
-            setBitFlag(4, false);
-            setBitFlag(5, false);
-            return;
-        }
-        switch(type) {
-            case Red -> {
-                setBitFlag(3, true);
-                setBitFlag(4, false);
-                setBitFlag(5, false);
-            }
-            case Blue -> {
-                setBitFlag(3, true);
-                setBitFlag(4, true);
-                setBitFlag(5, false);
-            }
-            case Green -> {
-                setBitFlag(3, true);
-                setBitFlag(4, true);
-                setBitFlag(5, true);
-            }
-            case Yellow -> {
-                setBitFlag(3, false);
-                setBitFlag(4, true);
-                setBitFlag(5, true);
-            }
-        }
-    }
-
-    public boolean hasActuator() {
-        return getBitFlag(6);
-    }
-
-    public void placeActuator() {
-        setBitFlag(6, true);
-    }
-
-    public void removeActuator() {
-        setBitFlag(6, false);
-    }
-
-    public boolean isActuated() {
-        return getBitFlag(7);
-    }
-
-    public void setActuated(boolean actuated) {
-        setBitFlag(7, actuated);
-    }
-
     private boolean getBitFlag(int index) {
         return ((flags >> index) & 1) == 1;
     }
@@ -158,6 +161,13 @@ public class Tile {
 
         Modification(int ID) {
             this.ID = ID;
+        }
+
+        public static Modification fromID(int ID) {
+            for(Modification modification : values()) {
+                if(modification.ID == ID) return modification;
+            }
+            return null;
         }
     }
 }

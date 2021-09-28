@@ -14,6 +14,8 @@ public class TerrariaReader extends InputStream {
 
     private final InputStream in;
 
+    private long position = 0;
+
     public TerrariaReader(InputStream in) {
         this.in = in;
     }
@@ -25,58 +27,61 @@ public class TerrariaReader extends InputStream {
 
     @Override
     public int read() throws IOException {
+        position++;
         return in.read();
     }
 
-    public final void readFully(byte[] b, int off, int len) throws IOException {
-        Objects.checkFromIndexSize(off, len, b.length);
-        int n = 0;
-        while(n < len) {
-            int count = in.read(b, off + n, len - n);
-            if (count < 0)
-                throw new EOFException();
-            n += count;
-        }
+    @Override
+    public int read(byte[] b) throws IOException {
+        int bytesRead = in.read(b);
+        position += bytesRead;
+        return bytesRead;
+    }
+
+    public short readUnsignedByte() throws IOException {
+        return (short)read();
     }
 
     public boolean readBoolean() throws IOException {
-        return read() != 0;
+        return readByte() != 0;
     }
 
     public byte readByte() throws IOException {
-        byte b = (byte)in.read();
-
-        if(b == -1) throw new EOFException();
-
-        return b;
+        return (byte)readUnsignedByte();
     }
 
     public short readShort() throws IOException {
-        int ch1 = in.read();
-        int ch2 = in.read();
+        int ch1 = readUnsignedByte();
+        int ch2 = readUnsignedByte();
         if ((ch1 | ch2) < 0)
             throw new EOFException();
         return (short)((ch1) + (ch2 << 8));
     }
 
     public int readInt() throws IOException {
-        int ch1 = in.read();
-        int ch2 = in.read();
-        int ch3 = in.read();
-        int ch4 = in.read();
+        int ch1 = readUnsignedByte();
+        int ch2 = readUnsignedByte();
+        int ch3 = readUnsignedByte();
+        int ch4 = readUnsignedByte();
         if ((ch1 | ch2 | ch3 | ch4) < 0)
             throw new EOFException();
         return ((ch1) + (ch2 << 8) + (ch3 << 16) + (ch4 << 24));
     }
 
     public long readLong() throws IOException {
-        byte[] readBuffer = new byte[8];
+        short b1 = readUnsignedByte();
+        short b2 = readUnsignedByte();
+        short b3 = readUnsignedByte();
+        short b4 = readUnsignedByte();
+        short b5 = readUnsignedByte();
+        short b6 = readUnsignedByte();
+        short b7 = readUnsignedByte();
+        short b8 = readUnsignedByte();
 
-        readFully(readBuffer, 0, 8);
+        int num = (b1 | (b2 << 8) | (b3 << 16) | (b4 << 24));
+        int num2 = (b5 | (b6 << 8) | (b7 << 16) | (b8 << 24));
 
-        int num = (readBuffer[0] | (readBuffer[1] << 8) | (readBuffer[2] << 16) | (readBuffer[3] << 24));
-        int num2 = (readBuffer[4] | (readBuffer[5] << 8) | (readBuffer[6] << 16) | (readBuffer[7] << 24));
-        return (((long)num2 << 32) | num);
+        return ((num | (long)num2 << 32));
     }
 
     public float readFloat() throws IOException {
@@ -91,7 +96,7 @@ public class TerrariaReader extends InputStream {
         int bytesLength = read7BitEncodedInt();
 
         byte[] buffer = new byte[bytesLength];
-        if(in.read(buffer) < 0) throw new EOFException();
+        if(read(buffer) < 0) throw new EOFException();
 
         return new String(buffer, encoding);
     }
@@ -120,5 +125,9 @@ public class TerrariaReader extends InputStream {
             if((b & 0x80) == 0) more = false;
         }
         return count;
+    }
+
+    public long getPosition() {
+        return position;
     }
 }

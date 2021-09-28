@@ -1,4 +1,4 @@
-package net.jay.pluto.tile;
+package net.jay.pluto.world.tile;
 
 public enum WireType {
     Red,

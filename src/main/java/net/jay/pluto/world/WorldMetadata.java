@@ -1,61 +1,48 @@
 package net.jay.pluto.world;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 public class WorldMetadata {
+    private int versionNumber;
+
     private boolean favorited;
-
-    private int seed;
-    private String seedText;
-
-    private String worldGenVersion;
+    private BigInteger revision;
 
     private String name;
 
     private LocalDateTime creationTime;
 
-    private WorldDifficulty difficulty;
-
-    private boolean drunk;
-
-    private WorldEvil evil;
-
-    private WorldSize size;
-
-    public WorldMetadata(int seed, String seedText, String worldGenVersion, String name, LocalDateTime creationTime, WorldDifficulty difficulty, boolean drunk, WorldEvil evil, WorldSize size) {
-        this.seed = seed;
-        this.seedText = seedText;
-        this.worldGenVersion = worldGenVersion;
+    public WorldMetadata(int versionNumber, boolean favorited, BigInteger revision, String name, LocalDateTime creationTime) {
+        this.versionNumber = versionNumber;
+        this.favorited = favorited;
+        this.revision = revision;
         this.name = name;
         this.creationTime = creationTime;
-        this.difficulty = difficulty;
-        this.drunk = drunk;
-        this.evil = evil;
-        this.size = size;
     }
 
-    public int getSeed() {
-        return seed;
+    public int getVersionNumber() {
+        return versionNumber;
     }
 
-    public void setSeed(int seed) {
-        this.seed = seed;
+    public boolean isFavorited() {
+        return favorited;
     }
 
-    public String getSeedText() {
-        return seedText;
+    public void setFavorited(boolean favorited) {
+        this.favorited = favorited;
     }
 
-    public void setSeedText(String seedText) {
-        this.seedText = seedText;
+    public BigInteger getRevision() {
+        return revision;
     }
 
-    public String getWorldGenVersion() {
-        return worldGenVersion;
+    public void setRevision(BigInteger revision) {
+        this.revision = revision;
     }
 
-    public void setWorldGenVersion(String worldGenVersion) {
-        this.worldGenVersion = worldGenVersion;
+    public void setVersionNumber(int versionNumber) {
+        this.versionNumber = versionNumber;
     }
 
     public String getName() {
@@ -72,45 +59,5 @@ public class WorldMetadata {
 
     public void setCreationTime(LocalDateTime creationTime) {
         this.creationTime = creationTime;
-    }
-
-    public WorldDifficulty getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(WorldDifficulty difficulty) {
-        this.difficulty = difficulty;
-    }
-
-    public boolean isDrunk() {
-        return drunk;
-    }
-
-    public void setDrunk(boolean drunk) {
-        this.drunk = drunk;
-    }
-
-    public WorldEvil getEvil() {
-        return evil;
-    }
-
-    public void setEvil(WorldEvil evil) {
-        this.evil = evil;
-    }
-
-    public WorldSize getSize() {
-        return size;
-    }
-
-    public void setSize(WorldSize size) {
-        this.size = size;
-    }
-
-    public int getWorldWidth() {
-        return size.width;
-    }
-
-    public int getWorldHeight() {
-        return size.height;
     }
 }

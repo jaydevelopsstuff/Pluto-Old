@@ -1,20 +1,26 @@
 package net.jay.pluto.world;
 
+import net.jay.pluto.world.tile.Tile;
 
-import net.jay.pluto.tile.Tile;
+import java.util.UUID;
 
 public class World {
-    private int seed;
-    private String seedText;
-
+    private int versionNumber;
     private WorldMetadata metadata;
+    private UUID uuid;
+    private int seed;
+    private String rawSeed;
+    private int worldGenVersion;
+    private WorldDifficulty worldDifficulty;
+    private int maxTilesX;
+    private int maxTilesY;
+
+
 
     /** A 2D array of all tiles in the world */
     private final Tile[][] tiles;
 
-    public World(String seedText, int seed, WorldMetadata metadata) {
-        this.seedText = seedText;
-        this.seed = seed;
+    public World(WorldMetadata metadata) {
         this.metadata = metadata;
 
         this.tiles = new Tile[getWorldWidth()][getWorldHeight()];
@@ -36,8 +42,8 @@ public class World {
         return seed;
     }
 
-    public String getSeedText() {
-        return seedText;
+    public String getRawSeed() {
+        return rawSeed;
     }
 
     public WorldMetadata getMetadata() {
@@ -45,11 +51,11 @@ public class World {
     }
 
     public int getWorldWidth() {
-        return metadata.getWorldWidth();
+        return maxTilesX;
     }
 
     public int getWorldHeight() {
-        return metadata.getWorldHeight();
+        return maxTilesY;
     }
 
     public Tile[][] getTiles() {
