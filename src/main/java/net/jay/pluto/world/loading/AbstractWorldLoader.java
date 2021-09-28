@@ -1,6 +1,7 @@
 package net.jay.pluto.world.loading;
 
 import net.jay.pluto.io.TerrariaReader;
+import net.jay.pluto.world.World;
 import net.jay.pluto.world.WorldMetadata;
 
 import java.io.File;
@@ -28,4 +29,6 @@ public abstract class AbstractWorldLoader {
     }
 
     public abstract void loadWorld() throws WorldLoadingException, IOException;
+
+    public abstract World build();
 }

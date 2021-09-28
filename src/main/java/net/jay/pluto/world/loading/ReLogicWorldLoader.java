@@ -7,15 +7,15 @@ import net.jay.pluto.entity.npc.NPC;
 import net.jay.pluto.entity.tileentity.*;
 import net.jay.pluto.item.Item;
 import net.jay.pluto.util.Vector2;
-import net.jay.pluto.world.PressurePlate;
+import net.jay.pluto.world.*;
 import net.jay.pluto.world.sign.Sign;
 import net.jay.pluto.world.tile.Block;
 import net.jay.pluto.world.tile.Tile;
 import net.jay.pluto.world.tile.Wall;
 import net.jay.pluto.world.tile.WireType;
 import net.jay.pluto.util.UnsignedByte;
-import net.jay.pluto.world.WorldDifficulty;
-import net.jay.pluto.world.WorldEvil;
+import net.jay.pluto.world.tracking.DownedTracker;
+import net.jay.pluto.world.tracking.SavedTracker;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -72,7 +72,7 @@ public class ReLogicWorldLoader extends AbstractWorldLoader {
     private double worldSurface;
     private double rockLayer;
     private double time;
-    private boolean dayTime;
+    private boolean daytime;
     private int moonPhase;
     private boolean bloodMoon;
     private boolean eclipse;
@@ -225,6 +225,119 @@ public class ReLogicWorldLoader extends AbstractWorldLoader {
         loadFooter();
     }
 
+    @Override
+    public World build() {
+        DownedTracker downedTracker = new DownedTracker();
+        downedTracker.setClownDowned(downedClown);
+        downedTracker.setKingSlimeDowned(downedKingSlime);
+        downedTracker.setGoblinsDowned(downedGoblins);
+        downedTracker.setQueenBeeDowned(downedQueenBee);
+        // Hmm
+        downedTracker.setWallOfFleshDowned(hardmode);
+        downedTracker.setQueenSlimeDowned(downedQueenSlime);
+        downedTracker.setDestroyerDowned(downedMech1);
+        // 2 other mechs need to be found
+        downedTracker.setPiratesDowned(downedPirates);
+        downedTracker.setPlanteraDowned(downedPlantera);
+        downedTracker.setGolemDowned(downedGolem);
+        downedTracker.setMourningWoodDowned(downedMourningWood);
+        downedTracker.setPumpkingDowned(downedPumpking);
+        downedTracker.setEverscreamDowned(downedEverscream);
+        downedTracker.setSantankDowned(downedSantank);
+        downedTracker.setIceQueenDowned(downedIceQueen);
+        downedTracker.setDukeFishronDowned(downedFishron);
+        downedTracker.setDD2T1Downed(downedDD2InvasionT1);
+        downedTracker.setDD2T2Downed(downedDD2InvasionT2);
+        downedTracker.setDD2T3Downed(downedDD2InvasionT3);
+        downedTracker.setEmpressOfLightDowned(downedEmpressOfLight);
+        downedTracker.setMartiansDowned(downedMartians);
+        downedTracker.setLunaticCultistDowned(downedAncientCultist);
+        downedTracker.setSolarPillarDowned(downedSolarPillar);
+        downedTracker.setVortexPillarDowned(downedVortexPillar);
+        downedTracker.setNebulaPillarDowned(downedNebulaPillar);
+        downedTracker.setStardustPillarDowned(downedStardustPillar);
+        downedTracker.setMoonLordDowned(downedMoonLord);
+
+        SavedTracker savedTracker = new SavedTracker();
+        savedTracker.setAnglerSaved(savedAngler);
+        savedTracker.setGoblinSaved(savedGoblin);
+        savedTracker.setMechanicSaved(savedMechanic);
+        savedTracker.setGolferSaved(savedGolfer);
+        savedTracker.setBartenderSaved(savedBartender);
+        savedTracker.setWizardSaved(savedWizard);
+        savedTracker.setStylistSaved(savedStylist);
+        savedTracker.setTaxCollectorSaved(savedTaxCollecter);
+
+        BoringWorldInfo boringWorldInfo = new BoringWorldInfo();
+        boringWorldInfo.setSpawnMeteor(spawnMeteor);
+        boringWorldInfo.setShadowOrbSmashed(shadowOrbSmashed);
+        boringWorldInfo.setShadowOrbCount(shadowOrbCount);
+        boringWorldInfo.setAltarCount(altarCount);
+        boringWorldInfo.setInvasionDelay(invasionDelay);
+        boringWorldInfo.setInvasionStartSize(invasionStartSize);
+        boringWorldInfo.setInvasionSize(invasionSize);
+        boringWorldInfo.setInvasionType(invasionType);
+        boringWorldInfo.setInvasionX(invasionX);
+        boringWorldInfo.setSlimeRainTime(slimeRainTime);
+        boringWorldInfo.setSundialCooldown(sundialCooldown);
+        boringWorldInfo.setRainTime(rainTime);
+        boringWorldInfo.setMaxRain(maxRain);
+        boringWorldInfo.setHardmodeOre1TileID(hardmodeOre1TileID);
+        boringWorldInfo.setHardmodeOre2TileID(hardmodeOre2TileID);
+        boringWorldInfo.setHardmodeore3TileID(hardmodeore3TileID);
+        boringWorldInfo.setBgTree(bgTree);
+        boringWorldInfo.setBgCorruption(bgCorruption);
+        boringWorldInfo.setBgJungle(bgJungle);
+        boringWorldInfo.setBgSnow(bgSnow);
+        boringWorldInfo.setBgHallow(bgHallow);
+        boringWorldInfo.setBgEvil(bgEvil);
+        boringWorldInfo.setBgDesert(bgDesert);
+        boringWorldInfo.setBgOcean(bgOcean);
+        boringWorldInfo.setCloudBackgroundActive(cloudBackgroundActive);
+        boringWorldInfo.setNumClouds(numClouds);
+        boringWorldInfo.setWindSpeedTarget(windSpeedTarget);
+        boringWorldInfo.setAnglerQuest(anglerQuest);
+        boringWorldInfo.setCultistDelay(cultistDelay);
+        boringWorldInfo.setFastForwardTime(fastForwardTime);
+        boringWorldInfo.setSolarPillarActive(solarPillarActive);
+        boringWorldInfo.setVortexPillarActive(vortexPillarActive);
+        boringWorldInfo.setNebulaPillarActive(nebulaPillarActive);
+        boringWorldInfo.setStardustPillarActive(stardustPillarActive);
+        boringWorldInfo.setLunarApocalypse(lunarApocalypse);
+        boringWorldInfo.setPartyManual(partyManual);
+        boringWorldInfo.setPartyGenuine(partyGenuine);
+        boringWorldInfo.setPartyCooldown(partyCooldown);
+        boringWorldInfo.setSandstormActive(sandstormActive);
+        boringWorldInfo.setSandstormTimeLeft(sandstormTimeLeft);
+        boringWorldInfo.setSandstormSeverity(sandstormSeverity);
+        boringWorldInfo.setSandstormIntendedSeverity(sandstormIntendedSeverity);
+        boringWorldInfo.setBgMushroom(bgMushroom);
+        boringWorldInfo.setBgUnderworld(bgUnderworld);
+        boringWorldInfo.setBgTree2(bgTree2);
+        boringWorldInfo.setBgTree3(bgTree3);
+        boringWorldInfo.setBgTree4(bgTree4);
+        boringWorldInfo.setCombatBookUsed(combatBookUsed);
+        boringWorldInfo.setLanternNightCooldown(lanternNightCooldown);
+        boringWorldInfo.setLanternNightGenuine(lanternNightGenuine);
+        boringWorldInfo.setLanternNightManual(lanternNightManual);
+        boringWorldInfo.setLanternNightNextGenuine(lanternNightNextGenuine);
+        boringWorldInfo.setForceHalloweenForToday(forceHalloweenForToday);
+        boringWorldInfo.setForceXMasForToday(forceXMasForToday);
+        boringWorldInfo.setOre1TileID(ore1TileID);
+        boringWorldInfo.setOre2TileID(ore2TileID);
+        boringWorldInfo.setOre3TileID(ore3TileID);
+        boringWorldInfo.setOre4TileID(ore4TileID);
+        boringWorldInfo.setBoughtCat(boughtCat);
+        boringWorldInfo.setBoughtDog(boughtDog);
+        boringWorldInfo.setBoughtBunny(boughtBunny);
+
+        World world = new World(new WorldMetadata(favorited, revision, null), uuid, name, rawSeed, worldGenVersion, maxTilesX, maxTilesY, difficulty, evil, spawnTileX, spawnTileY, daytime, time, raining, downedTracker, savedTracker, boringWorldInfo, tiles, chests, signs, npcs, mobs, tileEntities, pressurePlates);
+        // Get rid of dead memory
+        tiles = null;
+        return world;
+    }
+
+
     protected void loadFileFormatHeader() throws WorldLoadingException, IOException {
         versionNumber = reader.readInt();
 
@@ -323,7 +436,7 @@ public class ReLogicWorldLoader extends AbstractWorldLoader {
         worldSurface = reader.readDouble();
         rockLayer = reader.readDouble();
         time = reader.readDouble();
-        dayTime = reader.readBoolean();
+        daytime = reader.readBoolean();
         moonPhase = reader.readInt();
         bloodMoon = reader.readBoolean();
         eclipse = reader.readBoolean();

@@ -1,28 +1,18 @@
 package net.jay.pluto.world;
 
-import java.math.BigInteger;
+
 import java.time.LocalDateTime;
 
 public class WorldMetadata {
-    private int versionNumber;
-
     private boolean favorited;
-    private BigInteger revision;
-
-    private String name;
+    private long revision;
 
     private LocalDateTime creationTime;
 
-    public WorldMetadata(int versionNumber, boolean favorited, BigInteger revision, String name, LocalDateTime creationTime) {
-        this.versionNumber = versionNumber;
+    public WorldMetadata(boolean favorited, long revision, LocalDateTime creationTime) {
         this.favorited = favorited;
         this.revision = revision;
-        this.name = name;
         this.creationTime = creationTime;
-    }
-
-    public int getVersionNumber() {
-        return versionNumber;
     }
 
     public boolean isFavorited() {
@@ -33,24 +23,12 @@ public class WorldMetadata {
         this.favorited = favorited;
     }
 
-    public BigInteger getRevision() {
+    public long getRevision() {
         return revision;
     }
 
-    public void setRevision(BigInteger revision) {
+    public void setRevision(long revision) {
         this.revision = revision;
-    }
-
-    public void setVersionNumber(int versionNumber) {
-        this.versionNumber = versionNumber;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public LocalDateTime getCreationTime() {
