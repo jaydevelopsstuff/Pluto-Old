@@ -13,7 +13,12 @@ public class Wall {
     }
 
     public Wall(Walls wall) {
+        // this(wall.ID);
+    }
 
+    public boolean sameAs(Wall wall) {
+        if(wall == null) return false;
+        return ID == wall.ID && color == wall.color;
     }
 
     public short getID() {

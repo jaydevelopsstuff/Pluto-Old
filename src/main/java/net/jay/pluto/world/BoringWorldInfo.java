@@ -2,6 +2,29 @@ package net.jay.pluto.world;
 
 // Consider migrating lunar data to somewhere else (like a manager)
 public class BoringWorldInfo {
+    private boolean[] tileImportants;
+
+    private byte moonType;
+    private int moonPhase;
+    private int treeX0;
+    private int treeX1;
+    private int treeX2;
+    private int treeStyle0;
+    private int treeStyle1;
+    private int treeStyle2;
+    private int treeStyle3;
+    private int caveBackX0;
+    private int caveBackX1;
+    private int caveBackX2;
+    private int caveBackStyle0;
+    private int caveBackStyle1;
+    private int caveBackStyle2;
+    private int caveBackStyle3;
+    private int iceBackStyle;
+    private int jungleBackStyle;
+    private int hellBackStyle;
+    private double worldSurface;
+    private double rockLayer;
     private boolean spawnMeteor;
     private boolean shadowOrbSmashed;
     private byte shadowOrbCount;
@@ -24,7 +47,7 @@ public class BoringWorldInfo {
     private int bgJungle;
     private int bgSnow;
     private int bgHallow;
-    private int bgEvil;
+    private int bgCrimson;
     private int bgDesert;
     private int bgOcean;
     private int cloudBackgroundActive;
@@ -64,6 +87,182 @@ public class BoringWorldInfo {
     private boolean boughtCat;
     private boolean boughtDog;
     private boolean boughtBunny;
+
+    public boolean[] getTileImportants() {
+        return tileImportants;
+    }
+
+    public void setTileImportants(boolean[] tileImportants) {
+        this.tileImportants = tileImportants;
+    }
+
+    public byte getMoonType() {
+        return moonType;
+    }
+
+    public void setMoonType(byte moonType) {
+        this.moonType = moonType;
+    }
+
+    public int getMoonPhase() {
+        return moonPhase;
+    }
+
+    public void setMoonPhase(int moonPhase) {
+        this.moonPhase = moonPhase;
+    }
+
+    public int getTreeX0() {
+        return treeX0;
+    }
+
+    public void setTreeX0(int treeX0) {
+        this.treeX0 = treeX0;
+    }
+
+    public int getTreeX1() {
+        return treeX1;
+    }
+
+    public void setTreeX1(int treeX1) {
+        this.treeX1 = treeX1;
+    }
+
+    public int getTreeX2() {
+        return treeX2;
+    }
+
+    public void setTreeX2(int treeX2) {
+        this.treeX2 = treeX2;
+    }
+
+    public int getTreeStyle0() {
+        return treeStyle0;
+    }
+
+    public void setTreeStyle0(int treeStyle0) {
+        this.treeStyle0 = treeStyle0;
+    }
+
+    public int getTreeStyle1() {
+        return treeStyle1;
+    }
+
+    public void setTreeStyle1(int treeStyle1) {
+        this.treeStyle1 = treeStyle1;
+    }
+
+    public int getTreeStyle2() {
+        return treeStyle2;
+    }
+
+    public void setTreeStyle2(int treeStyle2) {
+        this.treeStyle2 = treeStyle2;
+    }
+
+    public int getTreeStyle3() {
+        return treeStyle3;
+    }
+
+    public void setTreeStyle3(int treeStyle3) {
+        this.treeStyle3 = treeStyle3;
+    }
+
+    public int getCaveBackX0() {
+        return caveBackX0;
+    }
+
+    public void setCaveBackX0(int caveBackX0) {
+        this.caveBackX0 = caveBackX0;
+    }
+
+    public int getCaveBackX1() {
+        return caveBackX1;
+    }
+
+    public void setCaveBackX1(int caveBackX1) {
+        this.caveBackX1 = caveBackX1;
+    }
+
+    public int getCaveBackX2() {
+        return caveBackX2;
+    }
+
+    public void setCaveBackX2(int caveBackX2) {
+        this.caveBackX2 = caveBackX2;
+    }
+
+    public int getCaveBackStyle0() {
+        return caveBackStyle0;
+    }
+
+    public void setCaveBackStyle0(int caveBackStyle0) {
+        this.caveBackStyle0 = caveBackStyle0;
+    }
+
+    public int getCaveBackStyle1() {
+        return caveBackStyle1;
+    }
+
+    public void setCaveBackStyle1(int caveBackStyle1) {
+        this.caveBackStyle1 = caveBackStyle1;
+    }
+
+    public int getCaveBackStyle2() {
+        return caveBackStyle2;
+    }
+
+    public void setCaveBackStyle2(int caveBackStyle2) {
+        this.caveBackStyle2 = caveBackStyle2;
+    }
+
+    public int getCaveBackStyle3() {
+        return caveBackStyle3;
+    }
+
+    public void setCaveBackStyle3(int caveBackStyle3) {
+        this.caveBackStyle3 = caveBackStyle3;
+    }
+
+    public int getIceBackStyle() {
+        return iceBackStyle;
+    }
+
+    public void setIceBackStyle(int iceBackStyle) {
+        this.iceBackStyle = iceBackStyle;
+    }
+
+    public int getJungleBackStyle() {
+        return jungleBackStyle;
+    }
+
+    public void setJungleBackStyle(int jungleBackStyle) {
+        this.jungleBackStyle = jungleBackStyle;
+    }
+
+    public int getHellBackStyle() {
+        return hellBackStyle;
+    }
+
+    public void setHellBackStyle(int hellBackStyle) {
+        this.hellBackStyle = hellBackStyle;
+    }
+
+    public double getWorldSurface() {
+        return worldSurface;
+    }
+
+    public void setWorldSurface(double worldSurface) {
+        this.worldSurface = worldSurface;
+    }
+
+    public double getRockLayer() {
+        return rockLayer;
+    }
+
+    public void setRockLayer(double rockLayer) {
+        this.rockLayer = rockLayer;
+    }
 
     public boolean isShadowOrbSmashed() {
         return shadowOrbSmashed;
@@ -225,12 +424,12 @@ public class BoringWorldInfo {
         this.bgHallow = bgHallow;
     }
 
-    public int getBgEvil() {
-        return bgEvil;
+    public int getBgCrimson() {
+        return bgCrimson;
     }
 
-    public void setBgEvil(int bgEvil) {
-        this.bgEvil = bgEvil;
+    public void setBgCrimson(int bgCrimson) {
+        this.bgCrimson = bgCrimson;
     }
 
     public int getBgDesert() {

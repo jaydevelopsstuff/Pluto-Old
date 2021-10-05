@@ -4,26 +4,18 @@ import net.jay.pluto.net.PacketBuffer;
 import net.jay.pluto.net.Packets;
 import net.jay.pluto.net.packet.SPacket;
 
-public class ContinueConnecting implements SPacket {
-    private static final Packets enumRepresentation = Packets.ContinueConnecting;
-    private static final int maxPacketDataSize = 1;
-
-    public short userSlot;
-
-    public ContinueConnecting(short userSlot) {
-        this.userSlot = userSlot;
-    }
+public class CompleteConnectionAndSpawn implements SPacket {
+    private static final Packets enumRepresentation = Packets.CompleteConnectionAndSpawn;
+    private static final int maxPacketDataSize = 0;
 
     @Override
     public PacketBuffer writePacketData() {
-        PacketBuffer buffer = new PacketBuffer(1);
-        buffer.writeUnsignedByte(userSlot);
+        PacketBuffer buffer = new PacketBuffer(0);
         return buffer;
     }
 
     @Override
     public PacketBuffer writePacketData(PacketBuffer buffer) {
-        buffer.writeUnsignedByte(userSlot);
         return buffer;
     }
 

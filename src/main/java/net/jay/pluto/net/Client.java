@@ -37,6 +37,10 @@ public class Client implements Access {
         connectionManager = new ConnectionManager(socket, player, this);
     }
 
+    public void sendKeepAlive() throws IOException {
+        socket.sendPacket(new KeepAlive());
+    }
+
     public void readPacket() throws IOException {
         Packet packet = socket.readPacket();
         if(packet == null) return;
@@ -49,8 +53,12 @@ public class Client implements Access {
         socket.sendPacket(packet);
     }
 
-    public void sendKeepAlive() throws IOException {
-        socket.sendPacket(new KeepAlive());
+    public void queuePacket(SPacket packet) throws IOException {
+        socket.queuePacket(packet);
+    }
+
+    public void flushPacketQueue() throws IOException {
+        socket.flushPacketQueue();
     }
 
     public void boot(String reason) throws IOException {

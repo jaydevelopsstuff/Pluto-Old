@@ -1,15 +1,15 @@
 package net.jay.pluto.world;
 
 public enum WorldDifficulty {
-    Journey(-1),
+    Journey(3),
     Classic(0),
     Expert(1),
     Master(2);
 
-    public final int ID;
+    public final byte ID;
 
     WorldDifficulty(int ID) {
-        this.ID = ID;
+        this.ID = (byte)ID;
     }
 
     public static WorldDifficulty fromID(int ID) {

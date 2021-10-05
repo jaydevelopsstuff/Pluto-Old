@@ -9,16 +9,15 @@ import net.jay.pluto.net.packet.packets.server.DisconnectClient;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ClientSocket extends Socket {
     private TerrariaReader reader;
     private TerrariaWriter writer;
 
     /** A list that contains packets that are queued for sending, these are stored conveniently as <code>PacketBuffer</code>s so that they only contain their byte data */
-    private final List<PacketBuffer> queuedPackets = new ArrayList<>();
+    private final List<PacketBuffer> queuedPackets = new CopyOnWriteArrayList<>();
 
     public void init() throws IOException {
         reader = new TerrariaReader(getInputStream());
@@ -97,12 +96,8 @@ public class ClientSocket extends Socket {
 
     /** Flushes (sends) all the <code>PacketBuffer</code>s from <code>queuedPackets</code> to the client  */
     public void flushPacketQueue() throws IOException {
-        int i = 0;
-        for(PacketBuffer packetBuffer : queuedPackets) {
-            writer.writeBuffer(packetBuffer);
-            queuedPackets.remove(i);
-            i++;
-        }
+        for(PacketBuffer packetBuffer : queuedPackets) writer.writeBuffer(packetBuffer);
+        queuedPackets.clear();
         writer.flush();
     }
 

@@ -4,26 +4,26 @@ import net.jay.pluto.net.PacketBuffer;
 import net.jay.pluto.net.Packets;
 import net.jay.pluto.net.packet.SPacket;
 
-public class ContinueConnecting implements SPacket {
-    private static final Packets enumRepresentation = Packets.ContinueConnecting;
-    private static final int maxPacketDataSize = 1;
+public class MoonLordCountdown implements SPacket {
+    private static final Packets enumRepresentation = Packets.MoonLordCountdown;
+    private static final int maxPacketDataSize = 4;
 
-    public short userSlot;
+    public int moonLordCountdown;
 
-    public ContinueConnecting(short userSlot) {
-        this.userSlot = userSlot;
+    public MoonLordCountdown(int moonLordCountdown) {
+        this.moonLordCountdown = moonLordCountdown;
     }
 
     @Override
     public PacketBuffer writePacketData() {
-        PacketBuffer buffer = new PacketBuffer(1);
-        buffer.writeUnsignedByte(userSlot);
+        PacketBuffer buffer = new PacketBuffer(maxPacketDataSize);
+        buffer.writeInt(moonLordCountdown);
         return buffer;
     }
 
     @Override
     public PacketBuffer writePacketData(PacketBuffer buffer) {
-        buffer.writeUnsignedByte(userSlot);
+        buffer.writeInt(moonLordCountdown);
         return buffer;
     }
 

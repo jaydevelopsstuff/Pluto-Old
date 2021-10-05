@@ -2,6 +2,7 @@ package net.jay.pluto;
 
 import net.jay.pluto.managers.*;
 import net.jay.pluto.net.Client;
+import net.jay.pluto.world.World;
 import net.jay.pluto.world.loading.ReLogicWorldLoader;
 import net.jay.pluto.world.loading.WorldLoadingException;
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +18,9 @@ public class PlutoServer {
     private final boolean[] playerIDs = new boolean[256];
 
     private final Logger logger = LogManager.getLogger("Pluto");
+
+    /** The current loaded world */
+    private World world;
 
     /** Manages the server's file interactions */
     private FileManager fileManager;
@@ -87,7 +91,9 @@ public class PlutoServer {
         logger.info("Finished initializing managers");
 
         try {
-            new ReLogicWorldLoader("world.wld").loadWorld();
+            ReLogicWorldLoader reLogicWorldLoader = new ReLogicWorldLoader("world.wld");
+            reLogicWorldLoader.loadWorld();
+            world = reLogicWorldLoader.build();
         } catch (WorldLoadingException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -167,6 +173,10 @@ public class PlutoServer {
         for(int i = 0; i < playerIDs.length; i++) {
             if(i == ID) playerIDs[i] = true;
         }
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     public boolean isServerFull() {

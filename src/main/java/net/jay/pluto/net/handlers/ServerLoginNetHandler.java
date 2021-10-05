@@ -1,18 +1,18 @@
 package net.jay.pluto.net.handlers;
 
+import net.jay.pluto.container.Chest;
 import net.jay.pluto.data.interfaces.Access;
 import net.jay.pluto.Terraria;
 import net.jay.pluto.data.enums.CharacterSkinVariant;
 import net.jay.pluto.data.holders.CharacterInfo;
+import net.jay.pluto.entity.tileentity.TileEntity;
 import net.jay.pluto.item.Item;
 import net.jay.pluto.net.Client;
 import net.jay.pluto.net.packet.packets.both.*;
-import net.jay.pluto.net.packet.packets.client.ClientUUID;
-import net.jay.pluto.net.packet.packets.client.ConnectRequest;
-import net.jay.pluto.net.packet.packets.client.PasswordSend;
-import net.jay.pluto.net.packet.packets.client.RequestWorldData;
-import net.jay.pluto.net.packet.packets.server.ContinueConnecting;
+import net.jay.pluto.net.packet.packets.client.*;
+import net.jay.pluto.net.packet.packets.server.*;
 import net.jay.pluto.util.PlayerBuilder;
+import net.jay.pluto.world.sign.Sign;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -123,8 +123,18 @@ public class ServerLoginNetHandler implements IServerLoginNetHandler, Access {
 
     @Override
     public void processRequestWorldData(RequestWorldData packet) {
-
+        try {
+            client.sendPacket(new WorldInfo(server.getWorld()));
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    @Override
+    public void processRequestEssentialTiles(RequestEssentialTiles packet) {
+        world.acceptAndSpawnPlayer(client, packet);
+    }
+
 
     @Override
     public void handleDisconnect() {

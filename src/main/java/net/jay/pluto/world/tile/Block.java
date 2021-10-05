@@ -39,59 +39,6 @@ public class Block {
         this(block.ID);
     }
 
-    public Blocks getType() {
-        return Blocks.fromID(ID);
-    }
-
-    public void setType(Blocks block) {
-        ID = (short)block.ID;
-        u = -1;
-        v = -1;
-    }
-
-    public String getName() {
-        Blocks tileType = Blocks.fromID(ID);
-        if(tileType == null) return null;
-        return tileType.name;
-    }
-
-    public short getID() {
-        return ID;
-    }
-
-    public void setID(short ID) {
-        this.ID = ID;
-    }
-
-    public void setID(int ID) {
-        if(ID < Short.MIN_VALUE || ID > Short.MAX_VALUE) throw new IllegalArgumentException("ID must be in the range of signed short");
-        setID((short)ID);
-    }
-
-    public short getU() {
-        return u;
-    }
-
-    public void setU(short u) {
-        this.u = u;
-    }
-
-    public short getV() {
-        return v;
-    }
-
-    public void setV(short v) {
-        this.v = v;
-    }
-
-    public byte getColor() {
-        return color;
-    }
-
-    public void setColor(byte color) {
-        this.color = color;
-    }
-
     public Modification getModification() {
         boolean b1 = getBitFlag(0);
         boolean b2 = getBitFlag(1);
@@ -139,6 +86,66 @@ public class Block {
                 setBitFlag(2, true);
             }
         }
+    }
+
+    public boolean sameAs(Block block) {
+        if(block == null) return false;
+        return ID == block.ID && u == block.u && v == block.v && block.color == color && block.flags == flags;
+    }
+
+    public Blocks getType() {
+        return Blocks.fromID(ID);
+    }
+
+    public void setType(Blocks block) {
+        ID = (short)block.ID;
+        u = -1;
+        v = -1;
+    }
+
+    public String getName() {
+        Blocks tileType = Blocks.fromID(ID);
+        if(tileType == null) return null;
+        return tileType.name;
+    }
+
+    public short getID() {
+        return ID;
+    }
+
+    public void setID(short ID) {
+        this.ID = ID;
+        this.u = -1;
+        this.v = -1;
+    }
+
+    public void setID(int ID) {
+        if(ID < Short.MIN_VALUE || ID > Short.MAX_VALUE) throw new IllegalArgumentException("ID must be in the range of signed short");
+        setID((short)ID);
+    }
+
+    public short getU() {
+        return u;
+    }
+
+    public void setU(short u) {
+        this.u = u;
+    }
+
+    public short getV() {
+        return v;
+    }
+
+    public void setV(short v) {
+        this.v = v;
+    }
+
+    public byte getColor() {
+        return color;
+    }
+
+    public void setColor(byte color) {
+        this.color = color;
     }
 
     private boolean getBitFlag(int index) {

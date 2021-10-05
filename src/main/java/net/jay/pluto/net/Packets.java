@@ -4,6 +4,7 @@ import net.jay.pluto.net.packet.Packet;
 import net.jay.pluto.net.packet.packets.both.*;
 import net.jay.pluto.net.packet.packets.client.ClientUUID;
 import net.jay.pluto.net.packet.packets.client.ConnectRequest;
+import net.jay.pluto.net.packet.packets.client.RequestEssentialTiles;
 import net.jay.pluto.net.packet.packets.client.RequestWorldData;
 
 /**
@@ -21,7 +22,7 @@ public enum Packets {
     WorldInfo(7, From.SERVER),
     RequestEssentialTiles(8, From.CLIENT),
     Status(9, From.SERVER),
-    SendTileSection(10, From.SERVER),
+    SendSection(10, From.SERVER),
     SectionTileFrame(11, From.SERVER),
     PlayerSpawn(12, From.CLIENT),
     PlayerUpdate(13, From.BOTH),
@@ -56,7 +57,7 @@ public enum Packets {
     SignRead(46, From.CLIENT),
     SignNew(47, From.BOTH), // This guy's weird
     LiquidSet(48, From.BOTH),
-    PlayerSpawnSelf(49, From.SERVER),
+    CompleteConnectionAndSpawn(49, From.SERVER),
     PlayerBuff(50, From.BOTH),
     NpcSpecialEffect(51, From.BOTH),
     ChestUnlock(52, From.BOTH),
@@ -168,6 +169,7 @@ public enum Packets {
             case PlayerInfo -> new PlayerInfo(buffer);
             case PlayerSlot -> new PlayerSlot(buffer);
             case RequestWorldData -> new RequestWorldData();
+            case RequestEssentialTiles -> new RequestEssentialTiles(buffer);
             case PlayerHp -> new PlayerHP(buffer);
             case ManaEffect -> new ManaEffect(buffer);
             //case PlayerBuff -> new PlayerBuff(buffer);

@@ -55,6 +55,14 @@ public class PacketBuffer {
         resetWriterIndex();
     }
 
+    public PacketBuffer toUnreadOnly() {
+        byte[] unreadBytes = new byte[getAllocation() - readerIndex];
+
+        if(getAllocation() - readerIndex >= 0) System.arraycopy(buffer, readerIndex, unreadBytes, 0, getAllocation() - readerIndex);
+
+        return new PacketBuffer(unreadBytes);
+    }
+
 
     // READ
 
@@ -244,6 +252,10 @@ public class PacketBuffer {
     public void writeByte(byte b) {
         writeByte(b, writerIndex);
         writerIndex++;
+    }
+
+    public void writeBytes(byte[] b) {
+        writeBytes(b, writerIndex);
     }
 
     public void writeShort(short s) {

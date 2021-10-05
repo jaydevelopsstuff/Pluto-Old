@@ -269,6 +269,7 @@ public class ReLogicWorldLoader extends AbstractWorldLoader {
         savedTracker.setTaxCollectorSaved(savedTaxCollecter);
 
         BoringWorldInfo boringWorldInfo = new BoringWorldInfo();
+        boringWorldInfo.setTileImportants(importance);
         boringWorldInfo.setSpawnMeteor(spawnMeteor);
         boringWorldInfo.setShadowOrbSmashed(shadowOrbSmashed);
         boringWorldInfo.setShadowOrbCount(shadowOrbCount);
@@ -290,7 +291,7 @@ public class ReLogicWorldLoader extends AbstractWorldLoader {
         boringWorldInfo.setBgJungle(bgJungle);
         boringWorldInfo.setBgSnow(bgSnow);
         boringWorldInfo.setBgHallow(bgHallow);
-        boringWorldInfo.setBgEvil(bgEvil);
+        boringWorldInfo.setBgCrimson(bgEvil);
         boringWorldInfo.setBgDesert(bgDesert);
         boringWorldInfo.setBgOcean(bgOcean);
         boringWorldInfo.setCloudBackgroundActive(cloudBackgroundActive);
@@ -331,7 +332,7 @@ public class ReLogicWorldLoader extends AbstractWorldLoader {
         boringWorldInfo.setBoughtDog(boughtDog);
         boringWorldInfo.setBoughtBunny(boughtBunny);
 
-        World world = new World(new WorldMetadata(favorited, revision, null), uuid, name, rawSeed, worldGenVersion, maxTilesX, maxTilesY, difficulty, evil, spawnTileX, spawnTileY, daytime, time, raining, downedTracker, savedTracker, boringWorldInfo, tiles, chests, signs, npcs, mobs, tileEntities, pressurePlates);
+        World world = new World(new WorldMetadata(favorited, revision, null), uuid, worldID, name, rawSeed, worldGenVersion, maxTilesX, maxTilesY, difficulty, evil, spawnTileX, spawnTileY, hardmode, daytime, time, bloodMoon, eclipse, raining, downedTracker, savedTracker, boringWorldInfo, tiles, chests, signs, npcs, mobs, tileEntities, pressurePlates);
         // Get rid of dead memory
         tiles = null;
         return world;

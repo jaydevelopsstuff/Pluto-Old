@@ -15,9 +15,8 @@ public class Tile {
      * <br>
      * The next 5 bits are for the type of wire there is (this is an inefficient use of bits, but I don't really care
      * <br><br>
-     * If this byte is 0 (all bits 0/false) then this block is "plain"
      */
-    private byte flags = 0;
+    private byte flags = 0b00100000;
 
     public Tile(Block block) {
         this.block = block;
@@ -48,22 +47,6 @@ public class Tile {
         this(block, wall);
         this.x = (short)x;
         this.y = (short)y;
-    }
-
-    public boolean hasActuator() {
-        return getBitFlag(0);
-    }
-
-    public void placeActuator() {
-        setBitFlag(0, true);
-    }
-
-    public void removeActuator() {
-        setBitFlag(0, false);
-    }
-
-    public boolean isActuated() {
-        return getBitFlag(1);
     }
 
     public WireType getWire() {
@@ -116,8 +99,35 @@ public class Tile {
         }
     }
 
+    public boolean hasActuator() {
+        return getBitFlag(0);
+    }
+
+    public void placeActuator() {
+        setBitFlag(0, true);
+    }
+
+    public void removeActuator() {
+        setBitFlag(0, false);
+    }
+
+    public boolean isActuated() {
+        return getBitFlag(1);
+    }
+
     public void setActuated(boolean actuated) {
         setBitFlag(1, actuated);
+    }
+
+    public boolean isEmpty() {
+        return block == null && wall == null;
+    }
+
+    public boolean sameAs(Tile tile) {
+        if(isEmpty() && tile.isEmpty() && flags == tile.flags) return true;
+        if(block == null) return tile.block == null;
+        if(wall == null) return tile.wall == null;
+        return block.sameAs(tile.block) && wall.sameAs(tile.wall) && flags == tile.flags;
     }
 
     public Tile copy() {
