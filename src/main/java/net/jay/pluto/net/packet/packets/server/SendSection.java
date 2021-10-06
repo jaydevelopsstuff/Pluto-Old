@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.zip.Deflater;
 
 public class SendSection implements SPacket {
     private static final Packets enumRepresentation = Packets.SendSection;
@@ -66,7 +67,7 @@ public class SendSection implements SPacket {
         buffer.writeInt(startY);
         buffer.writeShort(width);
         buffer.writeShort(height);
-        buffer = writeTiles(buffer, compressed);
+        buffer.writeBytes(compress(writeTilesUncompressed()));
         buffer.writeShort((short)chests.length);
         // Chest data
         buffer.writeShort((short)signs.length);
@@ -83,7 +84,7 @@ public class SendSection implements SPacket {
         buffer.writeInt(startY);
         buffer.writeShort(width);
         buffer.writeShort(height);
-        buffer = writeTiles(buffer, compressed);
+        buffer.writeBytes(compress(writeTilesUncompressed()));
         buffer.writeShort((short)chests.length);
         // Chest data
         buffer.writeShort((short)signs.length);
@@ -93,34 +94,53 @@ public class SendSection implements SPacket {
         return buffer;
     }
 
-    private PacketBuffer writeTiles(PacketBuffer buffer, boolean compressed) {
-        for(int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+    private byte[] compress(byte[] uncompressed) {
+        if(!compressed) return uncompressed;
+
+        Deflater deflater = new Deflater();
+        deflater.setInput(uncompressed);
+        deflater.finish();
+
+        byte[] bigBuffer = new byte[maxPacketDataSize / 2];
+
+        int actualSize = deflater.deflate(bigBuffer);
+
+        byte[] actualBuffer = new byte[actualSize];
+
+        System.arraycopy(bigBuffer, 0, actualBuffer, 0, actualSize);
+
+        return actualBuffer;
+    }
+
+    private byte[] writeTilesUncompressed() {
+        PacketBuffer buffer = new PacketBuffer(maxPacketDataSize);
+
+        int bytesWritten = 0;
+        for(int y = 0; y < height; y++) {
+            for(int x = 0; x < width; x++) {
                 Tile tile = tiles[x][y];
 
                 List<Byte> tileData = serializeTileData(tile);
 
-                if(compressed) {
-                    short rleCount = 0;
-                    int nextY = y;
-                    int remainingY = height - y - 1;
-                    while(remainingY > 0 && tile.sameAs(tiles[x][nextY])) {
-                        rleCount++;
-                        remainingY--;
-                        nextY++;
-                    }
+                short rleCount = 0;
+                int nextY = y;
+                int remainingY = height - y - 1;
+                while(remainingY > 0 && tile.sameAs(tiles[x][nextY])) {
+                    rleCount++;
+                    remainingY--;
+                    nextY++;
+                }
 
-                    if(rleCount > 0) {
-                        y = y + rleCount;
+                if(rleCount > 0) {
+                    y = y + rleCount;
 
-                        tileData.add((byte)(rleCount));
+                    tileData.add((byte)(rleCount));
 
-                        if(rleCount <= 255) tileData.set(0, (byte)(tileData.get(0) | 64));
-                        else {
-                            tileData.set(0, (byte)(tileData.get(0) | 128));
+                    if(rleCount <= 255) tileData.set(0, (byte)(tileData.get(0) | 64));
+                    else {
+                        tileData.set(0, (byte)(tileData.get(0) | 128));
 
-                            tileData.add((byte)(rleCount >> 8));
-                        }
+                        tileData.add((byte)(rleCount >> 8));
                     }
                 }
 
@@ -133,10 +153,14 @@ public class SendSection implements SPacket {
                 }
 
                 buffer.writeBytes(realTileData);
+                bytesWritten += realTileData.length;
             }
         }
 
-        return buffer;
+        byte[] actualBytes = new byte[bytesWritten];
+        System.arraycopy(buffer.getBuffer(), 0, actualBytes, 0, bytesWritten);
+
+        return actualBytes;
     }
 
     private List<Byte> serializeTileData(Tile tile) {

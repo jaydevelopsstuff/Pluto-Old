@@ -126,6 +126,7 @@ public class World implements Access {
                 }
             }
         }
+
         try {
             client.sendPacket(new SectionsFrame((short)spawnSectionX, (short)spawnSectionY, (short)spawnSectionXEnd, (short)spawnSectionYEnd));
         } catch (IOException e) {
