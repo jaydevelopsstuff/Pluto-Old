@@ -32,6 +32,8 @@ public class World implements Access {
     private WorldEvil evil;
     private int spawnX;
     private int spawnY;
+    private int dungeonX;
+    private int dungeonY;
 
     private boolean hardmode;
 
@@ -56,7 +58,7 @@ public class World implements Access {
     private TileEntity[] tileEntities;
     private PressurePlate[] pressurePlates;
 
-    public World(WorldMetadata metadata, UUID uuid, int ID, String name, String rawSeed, long worldGenVersion, int maxTilesX, int maxTilesY, WorldDifficulty worldDifficulty, WorldEvil evil, int spawnX, int spawnY, boolean hardmode, boolean daytime, double time, boolean bloodMoon, boolean eclipse, boolean raining, DownedTracker downedTracker, SavedTracker savedTracker, BoringWorldInfo boringInfo, Tile[][] tiles, Chest[] chests, Sign[] signs, NPC[] npcs, Mob[] mobs, TileEntity[] tileEntities, PressurePlate[] pressurePlates) {
+    public World(WorldMetadata metadata, UUID uuid, int ID, String name, String rawSeed, long worldGenVersion, int maxTilesX, int maxTilesY, WorldDifficulty worldDifficulty, WorldEvil evil, int spawnX, int spawnY, int dungeonX, int dungeonY, boolean hardmode, boolean daytime, double time, boolean bloodMoon, boolean eclipse, boolean raining, DownedTracker downedTracker, SavedTracker savedTracker, BoringWorldInfo boringInfo, Tile[][] tiles, Chest[] chests, Sign[] signs, NPC[] npcs, Mob[] mobs, TileEntity[] tileEntities, PressurePlate[] pressurePlates) {
         this.metadata = metadata;
         this.uuid = uuid;
         this.ID = ID;
@@ -71,6 +73,8 @@ public class World implements Access {
         this.evil = evil;
         this.spawnX = spawnX;
         this.spawnY = spawnY;
+        this.dungeonX = dungeonX;
+        this.dungeonY = dungeonY;
         this.hardmode = hardmode;
         this.daytime = daytime;
         this.time = time;
@@ -109,7 +113,7 @@ public class World implements Access {
         //if (y1 < 0)y1 = 0;
         if(spawnSectionYEnd >= getMaxSectionY()) spawnSectionYEnd = getMaxSectionY() - 1;
 
-        /*for(int sectionX = spawnSectionX; sectionX < spawnSectionXEnd; sectionX++) {
+        for(int sectionX = spawnSectionX; sectionX < spawnSectionXEnd; sectionX++) {
             for (int sectionY = spawnSectionY; sectionY < spawnSectionYEnd; sectionY++) {
                 int tempYSection = sectionY * 150;
                 while (tempYSection < sectionY * 150 + 150) {
@@ -126,9 +130,9 @@ public class World implements Access {
             client.sendPacket(new SectionsFrame((short)spawnSectionX, (short)spawnSectionY, (short)spawnSectionXEnd, (short)spawnSectionYEnd));
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
 
-        for(int i = 0; i < world.getMaxTilesX() / 100; i++) {
+        /*for(int i = 0; i < world.getMaxTilesX() / 100; i++) {
             try {
                 client.sendPacket(new SendSection((short)i * 100, (short)0, (short)100, (short)maxTilesY, getTiles(i * 100, 0, 100, maxTilesY), new Chest[0], new Sign[0], new TileEntity[0]));
             } catch (IOException e) {
@@ -140,7 +144,7 @@ public class World implements Access {
             client.sendPacket(new SectionsFrame((short)0, (short)0, (short)(maxTilesX / 200), (short)(maxTilesY / 150)));
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
         if(customSpawn) {
             int customSpawnSectionX = customSpawnX / 200 - 2;
@@ -174,6 +178,7 @@ public class World implements Access {
         }
 
         try {
+            client.sendPacket(new FinishedConnectingToServer());
             client.sendPacket(new CompleteConnectionAndSpawn());
         } catch (IOException e) {
             e.printStackTrace();
@@ -254,6 +259,14 @@ public class World implements Access {
 
     public int getSpawnY() {
         return spawnY;
+    }
+
+    public int getDungeonX() {
+        return dungeonX;
+    }
+
+    public int getDungeonY() {
+        return dungeonY;
     }
 
     public boolean isHardmode() {

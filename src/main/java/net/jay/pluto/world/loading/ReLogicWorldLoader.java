@@ -174,6 +174,7 @@ public class ReLogicWorldLoader extends AbstractWorldLoader {
     private boolean lanternNightGenuine;
     private boolean lanternNightManual;
     private boolean lanternNightNextGenuine;
+    private int[] treeTops = new int[13];
     private boolean forceHalloweenForToday;
     private boolean forceXMasForToday;
     private int ore1TileID;
@@ -269,6 +270,28 @@ public class ReLogicWorldLoader extends AbstractWorldLoader {
         savedTracker.setTaxCollectorSaved(savedTaxCollecter);
 
         BoringWorldInfo boringWorldInfo = new BoringWorldInfo();
+        boringWorldInfo.setMoonType(moonType);
+        boringWorldInfo.setMoonPhase(moonPhase);
+        boringWorldInfo.setTreeX0(treeX0);
+        boringWorldInfo.setTreeX1(treeX1);
+        boringWorldInfo.setTreeX2(treeX2);
+        boringWorldInfo.setTreeStyle0(treeStyle0);
+        boringWorldInfo.setTreeStyle1(treeStyle1);
+        boringWorldInfo.setTreeStyle2(treeStyle2);
+        boringWorldInfo.setTreeStyle3(treeStyle3);
+        boringWorldInfo.setCaveBackX0(caveBackX0);
+        boringWorldInfo.setCaveBackX1(caveBackX1);
+        boringWorldInfo.setCaveBackX2(caveBackX2);
+        boringWorldInfo.setIceBackStyle(iceBackStyle);
+        boringWorldInfo.setJungleBackStyle(jungleBackStyle);
+        boringWorldInfo.setHellBackStyle(hellBackStyle);
+        boringWorldInfo.setCaveBackStyle0(caveBackStyle0);
+        boringWorldInfo.setCaveBackStyle1(caveBackStyle1);
+        boringWorldInfo.setCaveBackStyle2(caveBackStyle2);
+        boringWorldInfo.setCaveBackStyle3(caveBackStyle3);
+        boringWorldInfo.setWorldSurface(worldSurface);
+        boringWorldInfo.setRockLayer(rockLayer);
+        boringWorldInfo.setTreeTops(treeTops);
         boringWorldInfo.setTileImportants(importance);
         boringWorldInfo.setSpawnMeteor(spawnMeteor);
         boringWorldInfo.setShadowOrbSmashed(shadowOrbSmashed);
@@ -332,7 +355,7 @@ public class ReLogicWorldLoader extends AbstractWorldLoader {
         boringWorldInfo.setBoughtDog(boughtDog);
         boringWorldInfo.setBoughtBunny(boughtBunny);
 
-        World world = new World(new WorldMetadata(favorited, revision, null), uuid, worldID, name, rawSeed, worldGenVersion, maxTilesX, maxTilesY, difficulty, evil, spawnTileX, spawnTileY, hardmode, daytime, time, bloodMoon, eclipse, raining, downedTracker, savedTracker, boringWorldInfo, tiles, chests, signs, npcs, mobs, tileEntities, pressurePlates);
+        World world = new World(new WorldMetadata(favorited, revision, null), uuid, worldID, name, rawSeed, worldGenVersion, maxTilesX, maxTilesY, difficulty, evil, spawnTileX, spawnTileY, dungeonX, dungeonY, hardmode, daytime, time, bloodMoon, eclipse, raining, downedTracker, savedTracker, boringWorldInfo, tiles, chests, signs, npcs, mobs, tileEntities, pressurePlates);
         // Get rid of dead memory
         tiles = null;
         return world;
@@ -593,25 +616,24 @@ public class ReLogicWorldLoader extends AbstractWorldLoader {
         // Tree tops
         if(versionNumber >= 211) {
             int numTrees = reader.readInt();
-            //w.TreeTopVariations = new System.Collections.ObjectModel.ObservableCollection<int>(new int[numTrees]);
+
             for(int i = 0; i < numTrees; i++) {
-                reader.readInt();
+                treeTops[i] = reader.readInt();
             }
-        }
-        else {
-            /*w.TreeTopVariations[0] = w.TreeStyle0;
-            w.TreeTopVariations[1] = w.TreeStyle1;
-            w.TreeTopVariations[2] = w.TreeStyle2;
-            w.TreeTopVariations[3] = w.TreeStyle3;
-            w.TreeTopVariations[4] = w.BgCorruption;
-            w.TreeTopVariations[5] = w.JungleBackStyle;
-            w.TreeTopVariations[6] = w.BgSnow;
-            w.TreeTopVariations[7] = w.BgHallow;
-            w.TreeTopVariations[8] = w.BgCrimson;
-            w.TreeTopVariations[9] = w.BgDesert;
-            w.TreeTopVariations[10] = w.BgOcean;
-            w.TreeTopVariations[11] = w.MushroomBg;
-            w.TreeTopVariations[12] = w.UnderworldBg;*/
+        } else {
+            treeTops[0] = treeStyle0;
+            treeTops[1] = treeStyle1;
+            treeTops[2] = treeStyle2;
+            treeTops[3] = treeStyle3;
+            treeTops[4] = bgCorruption;
+            treeTops[5] = jungleBackStyle;
+            treeTops[6] = bgSnow;
+            treeTops[7] = bgHallow;
+            treeTops[8] = bgEvil;
+            treeTops[9] = bgDesert;
+            treeTops[10] = bgOcean;
+            treeTops[11] = bgMushroom;
+            treeTops[12] = bgUnderworld;
         }
 
         if(versionNumber >= 212) {

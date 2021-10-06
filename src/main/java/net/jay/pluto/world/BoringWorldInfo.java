@@ -23,6 +23,7 @@ public class BoringWorldInfo {
     private int iceBackStyle;
     private int jungleBackStyle;
     private int hellBackStyle;
+    private int[] treeTops;
     private double worldSurface;
     private double rockLayer;
     private boolean spawnMeteor;
@@ -246,6 +247,14 @@ public class BoringWorldInfo {
 
     public void setHellBackStyle(int hellBackStyle) {
         this.hellBackStyle = hellBackStyle;
+    }
+
+    public int[] getTreeTops() {
+        return treeTops;
+    }
+
+    public void setTreeTops(int[] treeTops) {
+        this.treeTops = treeTops;
     }
 
     public double getWorldSurface() {

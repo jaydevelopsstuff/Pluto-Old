@@ -107,20 +107,20 @@ public class WorldInfo implements SPacket {
         buffer.writeByte((byte)boringInfo.getCaveBackStyle1());
         buffer.writeByte((byte)boringInfo.getCaveBackStyle2());
         buffer.writeByte((byte)boringInfo.getCaveBackStyle3());
-        // TODO Do actual tree top styles
-        buffer.writeByte((byte)1);
-        buffer.writeByte((byte)1);
-        buffer.writeByte((byte)1);
-        buffer.writeByte((byte)1);
-        buffer.writeByte((byte)1);
-        buffer.writeByte((byte)1);
-        buffer.writeByte((byte)1);
-        buffer.writeByte((byte)1);
-        buffer.writeByte((byte)1);
-        buffer.writeByte((byte)1);
-        buffer.writeByte((byte)1);
-        buffer.writeByte((byte)1);
-        buffer.writeByte((byte)1);
+        int[] treeTops = boringInfo.getTreeTops();
+        buffer.writeByte((byte)treeTops[0]);
+        buffer.writeByte((byte)treeTops[1]);
+        buffer.writeByte((byte)treeTops[2]);
+        buffer.writeByte((byte)treeTops[3]);
+        buffer.writeByte((byte)treeTops[4]);
+        buffer.writeByte((byte)treeTops[5]);
+        buffer.writeByte((byte)treeTops[6]);
+        buffer.writeByte((byte)treeTops[7]);
+        buffer.writeByte((byte)treeTops[8]);
+        buffer.writeByte((byte)treeTops[9]);
+        buffer.writeByte((byte)treeTops[10]);
+        buffer.writeByte((byte)treeTops[11]);
+        buffer.writeByte((byte)treeTops[12]);
         buffer.writeFloat(boringInfo.getMaxRain());
         BitsByte eventInfo1 = new BitsByte();
         // TODO Fix bosses here also server side characters
