@@ -149,7 +149,12 @@ public enum Packets {
     ClientSyncedInventory(138, From.CLIENT),
     SetCountsAsHostForGameplay(139, From.SERVER);
 
+    /** The Packet's ID in the game */
     public final int ID;
+    /**
+     * Where the packet can come from
+     * @see From
+     */
     public final From from;
 
     Packets(int ID, From from) {

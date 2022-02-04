@@ -1,6 +1,6 @@
 package net.jay.pluto.item;
 
-// TODO Add items (this is a great thing for pull requests right now
+// TODO Add items (this is a great thing for prs right now)
 /**
  * An enum containing all the items in Terraria
  * @see Item

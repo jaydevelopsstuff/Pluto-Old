@@ -20,12 +20,6 @@ public class PasswordRequired implements SPacket {
     }
 
     @Override
-    public int getMaxPacketDataSize() {
-        // Nothing is ever written
-        return 0;
-    }
-
-    @Override
     public Packets getEnum() {
         return enumRepresentation;
     }

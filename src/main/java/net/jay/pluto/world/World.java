@@ -16,6 +16,7 @@ import net.jay.pluto.world.tracking.SavedTracker;
 import java.io.IOException;
 import java.util.UUID;
 
+// TODO Needs cleanup
 public class World implements Access {
     private WorldMetadata metadata;
     private UUID uuid;
@@ -93,99 +94,6 @@ public class World implements Access {
         this.pressurePlates = pressurePlates;
     }
 
-    public void acceptAndSpawnPlayer(Client client, RequestEssentialTiles packet) {
-        boolean customSpawn = true;
-
-        int customSpawnX = packet.spawnX;
-        int customSpawnY = packet.spawnY;
-
-        // If both are -1 then default to normal spawn, other conditions mean an invalid spawn was sent and should also default to normal spawn
-        if((customSpawnX == -1 || customSpawnY == -1) || ((customSpawnX < 10 || customSpawnX > getMaxTilesX() - 10) || (customSpawnY < 10 || customSpawnY > getMaxTilesY() - 10))) customSpawn = false;
-
-        // Move to World object?
-        int spawnSectionX = getSpawnX() / 200 - 2;
-        int spawnSectionY = getSpawnY() / 150 - 1;
-
-        int spawnSectionXEnd = spawnSectionX + 5;
-        int spawnSectionYEnd = spawnSectionY + 3;
-        //if (num4 < 0) num4 = 0;
-        if (spawnSectionXEnd >= getMaxSectionX()) spawnSectionXEnd = getMaxSectionX() - 1;
-        //if (y1 < 0)y1 = 0;
-        if(spawnSectionYEnd >= getMaxSectionY()) spawnSectionYEnd = getMaxSectionY() - 1;
-
-        for(int sectionX = spawnSectionX; sectionX < spawnSectionXEnd; sectionX++) {
-            for (int sectionY = spawnSectionY; sectionY < spawnSectionYEnd; sectionY++) {
-                int tempYSection = sectionY * 150;
-                while (tempYSection < sectionY * 150 + 150) {
-                    try {
-                        client.sendPacket(new SendSection(sectionX * 200, tempYSection, (short) 200, (short) 150, getTiles(sectionX * 200, tempYSection, 200, 150), new Chest[]{}, new Sign[]{}, new TileEntity[]{}));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    tempYSection += 150;
-                }
-            }
-        }
-
-        try {
-            client.sendPacket(new SectionsFrame((short)spawnSectionX, (short)spawnSectionY, (short)spawnSectionXEnd, (short)spawnSectionYEnd));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        /*for(int i = 0; i < world.getMaxTilesX() / 100; i++) {
-            try {
-                client.sendPacket(new SendSection((short)i * 100, (short)0, (short)100, (short)maxTilesY, getTiles(i * 100, 0, 100, maxTilesY), new Chest[0], new Sign[0], new TileEntity[0]));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        try {
-            client.sendPacket(new SectionsFrame((short)0, (short)0, (short)(maxTilesX / 200), (short)(maxTilesY / 150)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-        if(customSpawn) {
-            int customSpawnSectionX = customSpawnX / 200 - 2;
-            int customSpawnSectionY = customSpawnY / 150 - 1;
-
-            int customSpawnSectionXEnd = customSpawnSectionX + 5;
-            int customSpawnSectionYEnd = customSpawnSectionY + 3;
-            //if (num4 < 0) num4 = 0;
-            if (customSpawnSectionXEnd >= getMaxSectionX()) customSpawnSectionXEnd = getMaxSectionX() - 1;
-            //if (y1 < 0)y1 = 0;
-            if(customSpawnSectionYEnd >= getMaxSectionY()) customSpawnSectionYEnd = getMaxSectionY() - 1;
-
-            for(int sectionX = customSpawnSectionX; sectionX < customSpawnSectionXEnd; sectionX++) {
-                for (int sectionY = customSpawnSectionY; sectionY < customSpawnSectionYEnd; sectionY++) {
-                    int tempYSection = sectionY * 150;
-                    while (tempYSection < sectionY * 150 + 150) {
-                        try {
-                            client.sendPacket(new SendSection(sectionX * 200, tempYSection, (short)200, (short)150, getTiles(sectionX * 200, tempYSection, 200, 150), new Chest[0], new Sign[0], new TileEntity[0]));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        tempYSection += 150;
-                    }
-                }
-            }
-            try {
-                client.sendPacket(new SectionsFrame((short)customSpawnSectionX, (short)customSpawnY, (short)customSpawnSectionXEnd, (short)customSpawnSectionYEnd));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        try {
-            client.sendPacket(new FinishedConnectingToServer());
-            client.sendPacket(new CompleteConnectionAndSpawn());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public Tile getTile(int x, int y) {
         if((x < 0 || x > getWorldWidth()) || (y < 0 || y > getWorldHeight())) throw new IllegalArgumentException("X/Y cannot be less than 0 or more than world width/height");
         return tiles[x][y];
@@ -196,6 +104,10 @@ public class World implements Access {
         if((x < 0 || x > getWorldWidth()) || (y < 0 || y > getWorldHeight())) throw new IllegalArgumentException("X/Y cannot be less than 0 or more than world width/height");
         tiles[x][y] = tile;
         // TODO Synchronise change with all clients etc
+    }
+
+    public Tile[][] getTiles() {
+        return getTiles(0, 0, getMaxTilesX(), getMaxTilesY());
     }
 
     public Tile[][] getTiles(int startX, int startY, int width, int height) {

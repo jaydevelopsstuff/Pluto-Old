@@ -1,45 +1,40 @@
 package net.jay.pluto.net.handlers;
 
+import net.jay.pluto.PlutoServer;
 import net.jay.pluto.container.Chest;
 import net.jay.pluto.data.interfaces.Access;
 import net.jay.pluto.Terraria;
 import net.jay.pluto.data.enums.CharacterSkinVariant;
 import net.jay.pluto.data.holders.CharacterInfo;
+import net.jay.pluto.entity.player.PlayerFactory;
 import net.jay.pluto.entity.tileentity.TileEntity;
 import net.jay.pluto.item.Item;
 import net.jay.pluto.net.Client;
 import net.jay.pluto.net.packet.packets.both.*;
 import net.jay.pluto.net.packet.packets.client.*;
 import net.jay.pluto.net.packet.packets.server.*;
-import net.jay.pluto.util.PlayerBuilder;
+import net.jay.pluto.world.World;
 import net.jay.pluto.world.sign.Sign;
+import net.jay.pluto.world.tile.Tile;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 public class ServerLoginNetHandler implements IServerLoginNetHandler, Access {
     private final Client client;
-    private final PlayerBuilder playerBuilder;
+    private final PlayerFactory playerFactory;
 
     public ServerLoginNetHandler(Client client) {
         this.client = client;
-        this.playerBuilder = new PlayerBuilder(client);
+        this.playerFactory = new PlayerFactory();
     }
 
     @Override
     public void processConnectRequest(ConnectRequest request) {
         if(!request.version.equals("Terraria" + Terraria.currentRelease)) {
-            try {
-                client.disconnect();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            client.disconnect();
+            return;
         }
-        try {
-            client.sendPacket(new ContinueConnecting((byte)client.getClientID()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        client.sendPacket(new ContinueConnecting((byte)client.getClientID()));
     }
 
     @Override
@@ -55,48 +50,35 @@ public class ServerLoginNetHandler implements IServerLoginNetHandler, Access {
            characterInfo = new CharacterInfo(CharacterSkinVariant.fromID(packet.playerID), packet.hairType, packet.hairColor, packet.skinColor, packet.eyeColor, packet.shirtColor, packet.underShirtColor);
         } catch(IllegalArgumentException ignored) {
             // Client sent bad ID
-            try {
-                client.disconnect("Bad packet");
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
+            client.disconnect("Bad packet");
         }
-        playerBuilder.setName(packet.name);
+        playerFactory.setName(packet.name);
         if(characterInfo == null) return;
-        playerBuilder.setCharacterInfo(characterInfo);
+        playerFactory.setCharacterInfo(characterInfo);
     }
 
     @Override
     public void processClientUUID(ClientUUID packet) {
-        if(packet.UUID.length() == 0) return;
-        playerBuilder.setUuid(packet.UUID);
+        playerFactory.setUuid(packet.uuid);
     }
 
     @Override
     public void processPlayerHP(PlayerHP packet) {
-        if(packet.HP < 0 || packet.maxHP < 0 || packet.HP > 600 || packet.maxHP > 600) {
-            try {
-                client.disconnect("Invalid packet");
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
+        if(packet.hp < 0 || packet.maxHp < 0 || packet.hp > 600 || packet.maxHp > 600) {
+            client.disconnect("Invalid packet");
             return;
         }
-        playerBuilder.setHP(packet.HP);
-        playerBuilder.setMaxHP(packet.maxHP);
+        playerFactory.setHp(packet.hp);
+        playerFactory.setMaxHp(packet.maxHp);
     }
 
     @Override
     public void processManaEffect(ManaEffect packet) {
         if(packet.manaAmount < 0 || packet.manaAmount > 400) {
-            try {
-                client.disconnect("Invalid packet");
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
+            client.disconnect("Invalid packet");
             return;
         }
-        playerBuilder.setMana(packet.manaAmount);
+        playerFactory.setMana(packet.manaAmount);
     }
 
     @Override
@@ -117,22 +99,30 @@ public class ServerLoginNetHandler implements IServerLoginNetHandler, Access {
             return;
         }
         // Inventory
-        if(slot < 58) playerBuilder.getInventory().setItem(packet.slot, item);
+        if(slot < 58) playerFactory.getInventory().setItem(packet.slot, item);
         // TODO Figure the rest of this out
     }
 
     @Override
     public void processRequestWorldData(RequestWorldData packet) {
-        try {
-            client.sendPacket(new WorldInfo(server.getWorld()));
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+        client.sendPacket(new WorldInfo(server.getWorld()));
     }
 
     @Override
     public void processRequestEssentialTiles(RequestEssentialTiles packet) {
-        world.acceptAndSpawnPlayer(client, packet);
+        client.setLoggedIn(true);
+        client.getConnectionManager().setNetHandler(new ServerPlayNetHandler(client));
+
+        World world = PlutoServer.getInstance().getWorld();
+
+        for(int i = 0; i < world.getMaxTilesX() / 100; i++) {
+            Tile[][] tiles = world.getTiles(i, 0, 100, world.getMaxTilesY());
+            client.sendPacket(new TileSection(true, i * 100, 0, (short)100, (short)world.getMaxTilesY(), tiles, new Chest[0], new Sign[0][0], new TileEntity[0]));
+        }
+
+        client.sendPacket(new TileSectionFrame((short)0, (short)0, (short)world.getMaxSectionX(), (short)world.getMaxSectionY()));
+
+        client.sendPacket(new CompleteConnectionAndSpawn());
     }
 
 

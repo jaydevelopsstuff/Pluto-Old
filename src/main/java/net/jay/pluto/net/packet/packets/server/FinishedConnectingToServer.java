@@ -6,21 +6,15 @@ import net.jay.pluto.net.packet.SPacket;
 
 public class FinishedConnectingToServer implements SPacket {
     private static final Packets enumRepresentation = Packets.FinishedConnectingToServer;
-    private static final int maxPacketDataSize = 0;
 
     @Override
     public PacketBuffer writePacketData() {
-        return new PacketBuffer(maxPacketDataSize);
+        return new PacketBuffer(0);
     }
 
     @Override
     public PacketBuffer writePacketData(PacketBuffer buffer) {
         return buffer;
-    }
-
-    @Override
-    public int getMaxPacketDataSize() {
-        return maxPacketDataSize;
     }
 
     @Override

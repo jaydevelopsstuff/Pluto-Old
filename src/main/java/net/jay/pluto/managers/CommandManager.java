@@ -1,5 +1,6 @@
 package net.jay.pluto.managers;
 
+import lombok.Getter;
 import net.jay.pluto.data.StandardMessages;
 import net.jay.pluto.entity.player.ManageablePlayer;
 import net.jay.pluto.messaging.commands.Command;
@@ -12,6 +13,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CommandManager implements Manager {
     private boolean running;
+    @Getter
     private final List<Command> registeredCommands = new ArrayList<>();
     private final List<Command> commandQueue = new CopyOnWriteArrayList<>();
 
@@ -72,10 +74,6 @@ public class CommandManager implements Manager {
                 e.printStackTrace();
             }
         }
-    }
-
-    public List<Command> getRegisteredCommands() {
-        return registeredCommands;
     }
 
     @Override

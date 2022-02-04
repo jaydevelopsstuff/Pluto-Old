@@ -1,5 +1,7 @@
 package net.jay.pluto.net;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.jay.pluto.data.interfaces.Access;
 import net.jay.pluto.entity.player.BasicPlayer;
 import net.jay.pluto.net.handlers.NetHandler;
@@ -8,10 +10,12 @@ import net.jay.pluto.net.packet.packets.server.KeepAlive;
 
 import java.io.IOException;
 
+@Getter
 public class Client implements Access {
-    /** The ID of this client, if the client completes login it will be passed to the <code>Player</code> object */
+    /** The ID of this client, if the client completes login it will be passed to the player object */
     private final int clientID;
 
+    @Setter
     private boolean loggedIn;
 
     /** The socket of this client, used for TCP communication */
@@ -49,34 +53,52 @@ public class Client implements Access {
         else if(packet instanceof MultipleHandlersCPacket<?, ?>) connectionManager.passOnPacket((MultipleHandlersCPacket<NetHandler, NetHandler>)packet);
     }
 
-    public void sendPacket(SPacket packet) throws IOException {
-        socket.sendPacket(packet);
+    public void sendPacket(SPacket packet) {
+        try {
+            socket.sendPacket(packet);
+        } catch (IOException e) {
+            if(e.getMessage().toLowerCase().contains("socket closed")) disconnect("Client disconnected");
+            e.printStackTrace();
+        }
     }
 
-    public void queuePacket(SPacket packet) throws IOException {
+    public void queuePacket(SPacket packet) {
         socket.queuePacket(packet);
     }
 
-    public void flushPacketQueue() throws IOException {
-        socket.flushPacketQueue();
+    public void flushPacketQueue() {
+        try {
+            socket.flushPacketQueue();
+        } catch (IOException e) {
+            if(e.getMessage().toLowerCase().contains("socket closed")) disconnect("Client disconnected");
+            e.printStackTrace();
+        }
     }
 
-    public void boot(String reason) throws IOException {
+    public void boot(String reason) {
         disconnect(reason);
     }
 
-    public void disconnect(String reason) throws IOException {
-        socket.disconnectGracefully(reason);
+    public void disconnect(String reason) {
+        try {
+            socket.disconnectGracefully(reason);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         connectionManager.getNetHandler().handleDisconnect();
         server.getNetManager().removeClient(this);
     }
 
-    public void boot() throws IOException {
+    public void boot() {
         disconnect();
     }
 
-    public void disconnect() throws IOException {
-        socket.disconnectGracefully();
+    public void disconnect() {
+        try {
+            socket.disconnectGracefully();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         connectionManager.getNetHandler().handleDisconnect();
         server.getNetManager().removeClient(this);
     }
@@ -89,21 +111,5 @@ public class Client implements Access {
         String address = socket.getRemoteSocketAddress().toString();
         address = address.replace("/", "").substring(0, address.indexOf(":") - 1);
         return address;
-    }
-
-    public boolean isLoggedIn() {
-        return loggedIn;
-    }
-
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
-    }
-
-    public ClientSocket getSocket() {
-        return socket;
-    }
-
-    public ConnectionManager getConnectionManager() {
-        return connectionManager;
     }
 }

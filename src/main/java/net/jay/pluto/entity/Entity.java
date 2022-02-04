@@ -1,11 +1,25 @@
 package net.jay.pluto.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.jay.pluto.util.Vector2;
 
+/**
+ * A basic entity, pretty much straight ported from Terraria
+ * @author Jay
+ */
 public class Entity {
+    @Getter
+    @Setter
     protected boolean active;
 
+    /** The entity's position */
+    @Getter
+    @Setter
     protected Vector2 position;
+    /** The entity's velocity */
+    @Getter
+    @Setter
     protected Vector2 velocity;
 
     protected int direction = 1;
@@ -118,53 +132,5 @@ public class Entity {
 
     public Vector2 getBottomRight() {
         return new Vector2(position.getX() + (float)width, position.getY() + (float)height);
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Vector2 getPosition() {
-        return position;
-    }
-
-    public void setPosition(Vector2 position) {
-        this.position = position;
-    }
-
-    public Vector2 getVelocity() {
-        return velocity;
-    }
-
-    public void setVelocity(Vector2 velocity) {
-        this.velocity = velocity;
-    }
-
-    public int getDirection() {
-        return direction;
-    }
-
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 }

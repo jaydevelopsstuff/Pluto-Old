@@ -1,18 +1,27 @@
 package net.jay.pluto.item;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * A class that represents a basic Terraria item
  * @see Items
  * @author Jay
  */
+@Getter
 public class Item {
-    /** Air AKA nothing */
+    /** Air, nothing */
     public static final Item Air = new Item();
     public static final Item Empty = Air;
 
     /** The internal ID of this item */
     protected final int ID;
+    /**
+     * The enum equivalent of this item
+     * @see Items
+     */
     protected final Items enumType;
+    // TODO: Convert to enum
     protected final int prefix;
     /** The name of this item */
     protected String name;
@@ -20,6 +29,7 @@ public class Item {
     protected int maxStackSize;
     protected final Availability availability = Availability.ANY;
 
+    @Setter
     protected int stackSize;
 
     public Item() {

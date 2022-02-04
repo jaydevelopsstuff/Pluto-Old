@@ -1,9 +1,11 @@
 package net.jay.pluto.container;
 
+import lombok.Getter;
 import net.jay.pluto.item.Item;
 
 import java.util.Arrays;
 
+@Getter
 public class Chest implements IContainer {
     public static final int DefaultSize = 40;
 
@@ -59,11 +61,6 @@ public class Chest implements IContainer {
     public void setItem(int slot, Item item) {
         if(item == null) throw new IllegalArgumentException("Item cannot be null (if you want to have an empty slot use Item.Air)");
         items[slot] = item;
-    }
-
-    @Override
-    public Item[] getItems() {
-        return items;
     }
 
     @Override

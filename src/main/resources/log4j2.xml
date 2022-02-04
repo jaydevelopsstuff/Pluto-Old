@@ -2,15 +2,15 @@
 <Configuration status="WARN">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="[%level] [%d{HH:mm:ss}] [%logger]: %msg%n"/>
+            <PatternLayout pattern="[%d{HH:mm:ss}] [%level] [%logger]: %msg%n"/>
         </Console>
 
         <File name="DefaultLog" fileName="logs/latest.log">
-            <PatternLayout pattern="[%level] [%d{HH:mm:ss.SSS}] [%logger]: %msg%n"/>
+            <PatternLayout pattern="[%d{HH:mm:ss.SSS}] [%level] [%logger]: %msg%n"/>
         </File>
 
         <File name="DebugLog" fileName="logs/debug.log">
-            <PatternLayout pattern="[%level] [%d{HH:mm:ss.SSS}] [%t] [%logger]: %msg%n"/>
+            <PatternLayout pattern="[%d{HH:mm:ss.SSS}] [%level] [%t] [%logger]: %msg%n"/>
         </File>
     </Appenders>
     <Loggers>

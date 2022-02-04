@@ -1,15 +1,17 @@
 package net.jay.pluto.entity.player;
 
+import lombok.Getter;
 import net.jay.pluto.data.interfaces.Access;
 import net.jay.pluto.net.Client;
 
 import java.io.IOException;
 
 public class ManageablePlayer extends BasicPlayer implements Access {
+    @Getter
     private final Client connectedClient;
 
     public ManageablePlayer(Client client, BasicPlayer player) {
-        super(player.getID(), player.getUuid(), player.getName(), player.getCharacterInfo(), player.getHP(), player.getMaxHP(), player.getMana(), player.getMaxMana(), player.getInventory(), player.getArmor(), player.getAccessories());
+        super(player.getID(), player.getUuid(), player.getName(), player.getCharacterInfo(), player.getHp(), player.getMaxHp(), player.getMana(), player.getMaxMana(), player.getInventory(), player.getArmor(), player.getAccessories());
         this.connectedClient = client;
     }
 
@@ -28,13 +30,5 @@ public class ManageablePlayer extends BasicPlayer implements Access {
     public void disconnect() throws IOException {
         connectedClient.disconnect();
         server.getPlayerManager().removePlayer(this);
-    }
-
-    public Client getConnectedClient() {
-        return connectedClient;
-    }
-
-    public static ManageablePlayer toManageable(Client client, BasicPlayer player) {
-        return new ManageablePlayer(client, player);
     }
 }

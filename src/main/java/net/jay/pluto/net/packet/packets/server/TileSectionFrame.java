@@ -7,32 +7,29 @@ import net.jay.pluto.net.VariableSizePacketBuffer;
 import net.jay.pluto.net.packet.SPacket;
 
 @AllArgsConstructor
-public class UpdateGoodEvil implements SPacket {
-    private static final Packets enumRepresentation = Packets.UpdateGoodEvil;
-
-    public byte totalGood;
-    public byte totalEvil;
-    public byte totalCrimson;
+public class TileSectionFrame implements SPacket {
+    public short startX;
+    public short startY;
+    public short endX;
+    public short endY;
 
     @Override
     public PacketBuffer writePacketData() {
         VariableSizePacketBuffer buffer = new VariableSizePacketBuffer();
-        buffer.writeByte(totalGood);
-        buffer.writeByte(totalEvil);
-        buffer.writeByte(totalCrimson);
+        buffer.writeShort(startX);
+        buffer.writeShort(startY);
+        buffer.writeShort(endX);
+        buffer.writeShort(endY);
         return buffer.toNormal();
     }
 
     @Override
     public PacketBuffer writePacketData(PacketBuffer buffer) {
-        buffer.writeByte(totalGood);
-        buffer.writeByte(totalEvil);
-        buffer.writeByte(totalCrimson);
-        return buffer;
+        return null;
     }
 
     @Override
     public Packets getEnum() {
-        return enumRepresentation;
+        return Packets.SectionTileFrame;
     }
 }

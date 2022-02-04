@@ -1,18 +1,17 @@
 package net.jay.pluto.net.packet.packets.server;
 
-import net.jay.pluto.localization.NetworkText;
+import lombok.AllArgsConstructor;
+import net.jay.pluto.data.NetworkText;
 import net.jay.pluto.net.PacketBuffer;
 import net.jay.pluto.net.Packets;
 import net.jay.pluto.net.packet.SPacket;
 
+
+@AllArgsConstructor
 public class DisconnectClient implements SPacket {
     private static final Packets enumRepresentation = Packets.Disconnect;
 
-    private NetworkText reason;
-
-    public DisconnectClient(NetworkText reason) {
-        this.reason = reason;
-    }
+    public NetworkText reason;
 
     @Override
     public PacketBuffer writePacketData() {
@@ -23,11 +22,6 @@ public class DisconnectClient implements SPacket {
     public PacketBuffer writePacketData(PacketBuffer buffer) {
         buffer = reason.serialize(buffer);
         return buffer;
-    }
-
-    @Override
-    public int getMaxPacketDataSize() {
-        return maxStringLength;
     }
 
     @Override

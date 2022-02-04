@@ -1,24 +1,30 @@
 package net.jay.pluto.world.tile;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * The class for a Terraria "Block", this class is optimized for minimal memory use
  * @see Blocks
  * @author Jay
  */
+@Getter
 public class Block {
     /** The internal ID of this tile */
     private short ID;
 
+    @Setter
     private short u;
-
+    @Setter
     private short v;
 
+    @Setter
     private byte color;
 
     /**
      * The bit by bit flags for this block, this reduces the memory needed per block
      * <br> <br>
-     * First 3 bits are allocated for combinations to check what <code>Modification</code> this block has
+     * First 3 bits are allocated for combinations to check what {@link Modification} this block has
      * <br>
      * The last 5 bits are currently unused
      * <br><br>
@@ -109,10 +115,6 @@ public class Block {
         return tileType.name;
     }
 
-    public short getID() {
-        return ID;
-    }
-
     public void setID(short ID) {
         this.ID = ID;
         this.u = -1;
@@ -122,30 +124,6 @@ public class Block {
     public void setID(int ID) {
         if(ID < Short.MIN_VALUE || ID > Short.MAX_VALUE) throw new IllegalArgumentException("ID must be in the range of signed short");
         setID((short)ID);
-    }
-
-    public short getU() {
-        return u;
-    }
-
-    public void setU(short u) {
-        this.u = u;
-    }
-
-    public short getV() {
-        return v;
-    }
-
-    public void setV(short v) {
-        this.v = v;
-    }
-
-    public byte getColor() {
-        return color;
-    }
-
-    public void setColor(byte color) {
-        this.color = color;
     }
 
     private boolean getBitFlag(int index) {

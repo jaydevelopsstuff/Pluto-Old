@@ -1,14 +1,16 @@
 package net.jay.pluto.net.packet.packets.both;
 
+import lombok.AllArgsConstructor;
 import net.jay.pluto.net.PacketBuffer;
 import net.jay.pluto.net.Packets;
+import net.jay.pluto.net.VariableSizePacketBuffer;
 import net.jay.pluto.net.handlers.IServerLoginNetHandler;
 import net.jay.pluto.net.handlers.IServerPlayNetHandler;
 import net.jay.pluto.net.packet.MultipleHandlersBothPacket;
 
+@AllArgsConstructor
 public class PlayerSlot implements MultipleHandlersBothPacket<IServerLoginNetHandler, IServerPlayNetHandler> {
     private static final Packets enumRepresentation = Packets.PlayerSlot;
-    private static final int maxPacketDataSize = 8;
 
     public short playerID;
     public short slot;
@@ -18,14 +20,6 @@ public class PlayerSlot implements MultipleHandlersBothPacket<IServerLoginNetHan
 
     public PlayerSlot(PacketBuffer buffer) {
         this.readPacketData(buffer);
-    }
-
-    public PlayerSlot(short playerID, short slot, short stack, short prefix, short itemNetID) {
-        this.playerID = playerID;
-        this.slot = slot;
-        this.stack = stack;
-        this.prefix = prefix;
-        this.itemNetID = itemNetID;
     }
 
     @Override
@@ -39,13 +33,13 @@ public class PlayerSlot implements MultipleHandlersBothPacket<IServerLoginNetHan
 
     @Override
     public PacketBuffer writePacketData() {
-        PacketBuffer buffer = new PacketBuffer(maxPacketDataSize);
+        VariableSizePacketBuffer buffer = new VariableSizePacketBuffer();
         buffer.writeUnsignedByte(playerID);
         buffer.writeShort(slot);
         buffer.writeShort(stack);
         buffer.writeUnsignedByte(prefix);
         buffer.writeShort(itemNetID);
-        return buffer;
+        return buffer.toNormal();
     }
 
     @Override
@@ -66,11 +60,6 @@ public class PlayerSlot implements MultipleHandlersBothPacket<IServerLoginNetHan
     @Override
     public void processPacketPlay(IServerPlayNetHandler handler) {
 
-    }
-
-    @Override
-    public int getMaxPacketDataSize() {
-        return maxPacketDataSize;
     }
 
     @Override

@@ -15,6 +15,9 @@ public class TCPServerManager implements Access {
         this.port = port;
 
         listenerThread = new Thread(this::startServerAndListen, "TCP Listener Thread");
+        listenerThread.setUncaughtExceptionHandler((thread, throwable) -> {
+            mainLogger.warn("Uncaught exception in Listener Thread: " + throwable.getMessage());
+        });
         listenerThread.start();
     }
 
@@ -28,7 +31,7 @@ public class TCPServerManager implements Access {
 
                 // Disconnect if the server is full, otherwise start tracking client
                 if(server.isServerFull()) connectedSocket.disconnectGracefully("Server is full");
-                else server.addClient(new Client(server.usePlayerID(), connectedSocket));
+                else server.getNetManager().trackClient(new Client(server.usePlayerID(), connectedSocket));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -37,7 +40,7 @@ public class TCPServerManager implements Access {
 
     /**
      * Shuts down the thread listening for new connections as well as closing the server. This method assumes all clients have already been kicked off the server
-     * @throws IOException Thrown if <code>server.close()</code> throws an exception
+     * @throws IOException Thrown if {@link TServerSocket#close()} throws an exception
      */
     public void shutdown() throws IOException {
         listenerThread.interrupt();

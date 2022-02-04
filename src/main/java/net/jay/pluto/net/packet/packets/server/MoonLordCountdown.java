@@ -1,35 +1,28 @@
 package net.jay.pluto.net.packet.packets.server;
 
+import lombok.AllArgsConstructor;
 import net.jay.pluto.net.PacketBuffer;
 import net.jay.pluto.net.Packets;
+import net.jay.pluto.net.VariableSizePacketBuffer;
 import net.jay.pluto.net.packet.SPacket;
 
+@AllArgsConstructor
 public class MoonLordCountdown implements SPacket {
     private static final Packets enumRepresentation = Packets.MoonLordCountdown;
-    private static final int maxPacketDataSize = 4;
 
     public int moonLordCountdown;
 
-    public MoonLordCountdown(int moonLordCountdown) {
-        this.moonLordCountdown = moonLordCountdown;
-    }
-
     @Override
     public PacketBuffer writePacketData() {
-        PacketBuffer buffer = new PacketBuffer(maxPacketDataSize);
+        VariableSizePacketBuffer buffer = new VariableSizePacketBuffer();
         buffer.writeInt(moonLordCountdown);
-        return buffer;
+        return buffer.toNormal();
     }
 
     @Override
     public PacketBuffer writePacketData(PacketBuffer buffer) {
         buffer.writeInt(moonLordCountdown);
         return buffer;
-    }
-
-    @Override
-    public int getMaxPacketDataSize() {
-        return maxPacketDataSize;
     }
 
     @Override

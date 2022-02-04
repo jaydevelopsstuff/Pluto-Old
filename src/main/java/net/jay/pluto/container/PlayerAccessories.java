@@ -47,7 +47,8 @@ public class PlayerAccessories implements IContainer {
 
     @Override
     public Item[] getItems() {
-        return new Item[0];
+        Item[][] arrays = { accessories, vanity, dyes };
+        return (Item[])Arrays.stream(arrays).flatMap(Arrays::stream).toArray();
     }
 
     @Override

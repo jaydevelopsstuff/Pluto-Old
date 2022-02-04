@@ -1,15 +1,16 @@
-package net.jay.pluto.localization;
+package net.jay.pluto.data;
 
 import net.jay.pluto.net.PacketBuffer;
 import net.jay.pluto.io.TerrariaWriter;
+import net.jay.pluto.net.VariableSizePacketBuffer;
 
 import java.io.IOException;
 
 public class NetworkText {
     public static final NetworkText Empty = new NetworkText("", Mode.LITERAL);
 
-    private String text;
-    private Mode mode;
+    private final String text;
+    private final Mode mode;
 
     private NetworkText[] substitutions;
 
@@ -19,6 +20,12 @@ public class NetworkText {
     }
 
     public PacketBuffer serialize(PacketBuffer buffer) {
+        buffer.writeByte(mode.ID);
+        buffer.writeString(text);
+        return buffer;
+    }
+
+    public VariableSizePacketBuffer serialize(VariableSizePacketBuffer buffer) {
         buffer.writeByte(mode.ID);
         buffer.writeString(text);
         return buffer;

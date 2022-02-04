@@ -5,10 +5,12 @@ import net.jay.pluto.net.Packets;
 import net.jay.pluto.net.handlers.IServerLoginNetHandler;
 import net.jay.pluto.net.packet.CPacket;
 
+import java.util.UUID;
+
 public class ClientUUID implements CPacket<IServerLoginNetHandler> {
     private static final Packets enumRepresentation = Packets.ClientUUID;
 
-    public String UUID;
+    public UUID uuid;
 
     public ClientUUID(PacketBuffer buffer) {
         this.readPacketData(buffer);
@@ -16,7 +18,7 @@ public class ClientUUID implements CPacket<IServerLoginNetHandler> {
 
     @Override
     public void readPacketData(PacketBuffer buffer) {
-        UUID = buffer.readString();
+        uuid = UUID.fromString(buffer.readString());
     }
 
     @Override

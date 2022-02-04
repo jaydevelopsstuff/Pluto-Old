@@ -1,5 +1,6 @@
 package net.jay.pluto.managers;
 
+import lombok.Getter;
 import net.jay.pluto.net.Client;
 import net.jay.pluto.net.TCPServerManager;
 import org.apache.logging.log4j.LogManager;
@@ -14,13 +15,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Jay
  */
 public class NetManager implements Manager {
-    private final Logger logger = LogManager.getLogger("Net");
+    @Getter
+    private static final Logger logger = LogManager.getLogger("Network");
 
     private final int port;
 
     /** The TCP server that manages lower level connection logic */
     private TCPServerManager tcpServer;
     /** All the clients that are connected to the server */
+    @Getter
     private final List<Client> connectedClients = new CopyOnWriteArrayList<>();
 
     public NetManager(int port) {
@@ -37,6 +40,10 @@ public class NetManager implements Manager {
         logger.info("Started listening on port " + port);
     }
 
+    /**
+     * Begins tracking the provided client.
+     * @param client The {@link Client} to track
+     */
     public void trackClient(Client client) {
         logger.info(client.getIP() + " is connecting");
         connectedClients.add(client);
@@ -60,9 +67,5 @@ public class NetManager implements Manager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public List<Client> getConnectedClients() {
-        return connectedClients;
     }
 }

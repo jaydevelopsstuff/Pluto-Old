@@ -3,6 +3,10 @@ package net.jay.pluto.net;
 import java.io.IOException;
 import java.net.*;
 
+/**
+ * A utility class to allow us to accept a connected socket as a {@link ClientSocket}
+ * @author Jay
+ */
 public class TServerSocket extends ServerSocket {
     protected TServerSocket(SocketImpl impl) {
         super(impl);

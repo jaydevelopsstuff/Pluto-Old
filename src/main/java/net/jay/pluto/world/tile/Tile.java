@@ -1,12 +1,21 @@
 package net.jay.pluto.world.tile;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Tile {
+    @Getter
     private Block block;
+    @Getter
     private Wall wall;
 
-    private short x = -1;
+    @Getter
+    @Setter
+    private short frameX = -1;
 
-    private short y = -1;
+    @Getter
+    @Setter
+    private short frameY = -1;
 
     /**
      * The bit by bit flags for this tile, this reduces the memory needed per tile
@@ -31,22 +40,22 @@ public class Tile {
         this.wall = wall;
     }
 
-    public Tile(Block block, int x, int y) {
+    public Tile(Block block, int frameX, int frameY) {
         this(block);
-        this.x = (short)x;
-        this.y = (short)y;
+        this.frameX = (short)frameX;
+        this.frameY = (short)frameY;
     }
 
-    public Tile(Wall wall, int x, int y) {
+    public Tile(Wall wall, int frameX, int frameY) {
         this(wall);
-        this.x = (short)x;
-        this.y = (short)y;
+        this.frameX = (short)frameX;
+        this.frameY = (short)frameY;
     }
 
-    public Tile(Block block, Wall wall, int x, int y) {
+    public Tile(Block block, Wall wall, int frameX, int frameY) {
         this(block, wall);
-        this.x = (short)x;
-        this.y = (short)y;
+        this.frameX = (short)frameX;
+        this.frameY = (short)frameY;
     }
 
     public WireType getWire() {
@@ -119,8 +128,16 @@ public class Tile {
         setBitFlag(1, actuated);
     }
 
+    public boolean hasBlock() {
+        return block != null;
+    }
+
+    public boolean hasWall() {
+        return wall != null;
+    }
+
     public boolean isEmpty() {
-        return block == null && wall == null;
+        return !hasBlock() && !hasWall();
     }
 
     public boolean sameAs(Tile tile) {
@@ -131,43 +148,11 @@ public class Tile {
     }
 
     public Tile copy() {
-        return new Tile(block, wall, x, y);
+        return new Tile(block, wall, frameX, frameY);
     }
 
-    public Tile copy(int customY) {
-        return new Tile(block, wall, x, customY);
-    }
-
-    public short getX() {
-        return x;
-    }
-
-    public void setX(short x) {
-        this.x = x;
-    }
-
-    public short getY() {
-        return y;
-    }
-
-    public void setY(short y) {
-        this.y = y;
-    }
-
-    public Block getBlock() {
-        return block;
-    }
-
-    public void setBlock(Block block) {
-        this.block = block;
-    }
-
-    public Wall getWall() {
-        return wall;
-    }
-
-    public void setWall(Wall wall) {
-        this.wall = wall;
+    public Tile copy(int customFrameY) {
+        return new Tile(block, wall, frameX, customFrameY);
     }
 
     private boolean getBitFlag(int index) {

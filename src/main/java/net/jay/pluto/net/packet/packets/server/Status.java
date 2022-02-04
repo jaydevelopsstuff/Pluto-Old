@@ -1,13 +1,13 @@
 package net.jay.pluto.net.packet.packets.server;
 
-import net.jay.pluto.localization.NetworkText;
+import net.jay.pluto.data.NetworkText;
 import net.jay.pluto.net.PacketBuffer;
 import net.jay.pluto.net.Packets;
+import net.jay.pluto.net.VariableSizePacketBuffer;
 import net.jay.pluto.net.packet.SPacket;
 
 public class Status implements SPacket {
     private static final Packets enumRepresentation = Packets.Status;
-    private static final int maxPacketDataSize = 5 + maxStringLength;
 
     public int statusMax;
     public NetworkText text;
@@ -19,10 +19,10 @@ public class Status implements SPacket {
 
     @Override
     public PacketBuffer writePacketData() {
-        PacketBuffer buffer = new PacketBuffer(maxPacketDataSize);
+        VariableSizePacketBuffer buffer = new VariableSizePacketBuffer();
         buffer.writeInt(statusMax);
         buffer = text.serialize(buffer);
-        return buffer;
+        return buffer.toNormal();
     }
 
     @Override
@@ -30,11 +30,6 @@ public class Status implements SPacket {
         buffer.writeInt(statusMax);
         buffer = text.serialize(buffer);
         return buffer;
-    }
-
-    @Override
-    public int getMaxPacketDataSize() {
-        return maxPacketDataSize;
     }
 
     @Override

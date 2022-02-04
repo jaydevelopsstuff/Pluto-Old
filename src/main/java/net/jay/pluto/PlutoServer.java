@@ -1,5 +1,6 @@
 package net.jay.pluto;
 
+import lombok.Getter;
 import net.jay.pluto.managers.*;
 import net.jay.pluto.net.Client;
 import net.jay.pluto.world.World;
@@ -13,6 +14,7 @@ import java.util.Arrays;
 
 public class PlutoServer {
     /** The instance for the running PlutoServer */
+    @Getter
     private static PlutoServer instance;
 
     private final boolean[] playerIDs = new boolean[256];
@@ -20,23 +22,31 @@ public class PlutoServer {
     private final Logger logger = LogManager.getLogger("Pluto");
 
     /** The current loaded world */
+    @Getter
     private World world;
 
     /** Manages the server's file interactions */
+    @Getter
     private FileManager fileManager;
     /** Manages server configurations */
+    @Getter
     private ConfigManager configManager;
     /** Manages all connected clients, lower level TCP communication */
+    @Getter
     private NetManager netManager;
     /** Manages/tracks all connected players */
+    @Getter
     private PlayerManager playerManager;
     /** Manages listeners that wait for conditions to be reached */
+    @Getter
     private ListeningManager listeningManager;
     /** Manages command receiving, parsing, and handling */
+    @Getter
     private CommandManager commandManager;
+    @Getter
     private ConsoleManager consoleManager;
 
-    /** Creates a new <code>PlutoServer</code>, this class should never be initialized more than once */
+    /** Creates a new {@link PlutoServer}, this class should never be initialized more than once during runtime */
     public PlutoServer() {
         // Set instance
         instance = this;
@@ -86,7 +96,7 @@ public class PlutoServer {
         logger.debug("Initializing Command Manager");
         commandManager.initialize();
         logger.debug("Initializing Console Manager");
-        configManager.initialize();
+        consoleManager.initialize();
 
         logger.info("Finished initializing managers");
 
@@ -94,9 +104,7 @@ public class PlutoServer {
             ReLogicWorldLoader reLogicWorldLoader = new ReLogicWorldLoader("world.wld");
             reLogicWorldLoader.loadWorld();
             world = reLogicWorldLoader.build();
-        } catch (WorldLoadingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (WorldLoadingException | IOException e) {
             e.printStackTrace();
         }
 
@@ -137,14 +145,6 @@ public class PlutoServer {
         });
     }
 
-    /**
-     * Adds a client to the <code>NetManager</code>'s list of clients to keep track of (listen for packets, etc.)
-     * @param client The client to start tracking
-     */
-    public void addClient(Client client) {
-        netManager.trackClient(client);
-    }
-
     /** Gets the next available player ID without marking it as used */
     public int peekNextAvailablePlayerID() {
         for(int i = 1; i < playerIDs.length; i++)
@@ -161,7 +161,7 @@ public class PlutoServer {
                 return i;
             }
         }
-        // No ID is available (bruh)
+        // No ID is available
         return -1;
     }
 
@@ -175,43 +175,7 @@ public class PlutoServer {
         }
     }
 
-    public World getWorld() {
-        return world;
-    }
-
     public boolean isServerFull() {
         return playerManager.getOpenPlayerSlots() <= 0;
-    }
-
-    public Logger getMainLogger() {
-        return logger;
-    }
-
-    public FileManager getFileManager() {
-        return fileManager;
-    }
-
-    public ConfigManager getConfigManager() {
-        return configManager;
-    }
-
-    public NetManager getNetManager() {
-        return netManager;
-    }
-
-    public PlayerManager getPlayerManager() {
-        return playerManager;
-    }
-
-    public ListeningManager getListeningManager() {
-        return listeningManager;
-    }
-
-    public CommandManager getCommandManager() {
-        return commandManager;
-    }
-
-    public static PlutoServer getInstance() {
-        return instance;
     }
 }

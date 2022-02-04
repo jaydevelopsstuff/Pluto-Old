@@ -1,5 +1,6 @@
 package net.jay.pluto.messaging.commands;
 
+import lombok.Getter;
 import net.jay.pluto.entity.player.ManageablePlayer;
 import net.jay.pluto.permissions.Permission;
 import net.jay.pluto.util.RawLogger;
@@ -7,9 +8,13 @@ import net.jay.pluto.util.RawLogger;
 import java.util.Arrays;
 
 public abstract class Command {
+    @Getter
     protected final String ID;
+    @Getter
     protected final String name;
+    @Getter
     protected final String description;
+    @Getter
     protected final Permission[] requiredPermissions;
 
     protected Source source;
@@ -53,7 +58,7 @@ public abstract class Command {
     public abstract boolean execute();
 
     /**
-     * Checks if a given name is the same as this command's name, ignores case
+     * Checks if a given name is the same as this command's name, ignores case.
      * @param name A name
      * @return Whether the name of this command is the same as the one provided
      */
@@ -63,22 +68,6 @@ public abstract class Command {
 
     public boolean is(Command command) {
         return ID.equals(command.getID());
-    }
-
-    public String getID() {
-        return ID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Permission[] getRequiredPermissions() {
-        return requiredPermissions;
     }
 
     public static class Source {

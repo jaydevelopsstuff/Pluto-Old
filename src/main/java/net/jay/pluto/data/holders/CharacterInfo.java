@@ -1,8 +1,12 @@
 package net.jay.pluto.data.holders;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.jay.pluto.data.enums.CharacterSkinVariant;
 import net.jay.pluto.util.TColor;
 
+@Getter
+@Setter
 public class CharacterInfo {
     private CharacterSkinVariant skinVariant;
     private int hairType;

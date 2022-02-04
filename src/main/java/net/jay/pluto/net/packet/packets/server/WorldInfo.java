@@ -1,7 +1,9 @@
 package net.jay.pluto.net.packet.packets.server;
 
+import lombok.AllArgsConstructor;
 import net.jay.pluto.net.PacketBuffer;
 import net.jay.pluto.net.Packets;
+import net.jay.pluto.net.VariableSizePacketBuffer;
 import net.jay.pluto.net.packet.SPacket;
 import net.jay.pluto.util.BitsByte;
 import net.jay.pluto.world.*;
@@ -10,9 +12,9 @@ import net.jay.pluto.world.tracking.SavedTracker;
 
 import java.util.UUID;
 
+@AllArgsConstructor
 public class WorldInfo implements SPacket {
     private static final Packets enumRepresentation = Packets.WorldInfo;
-    private static final int maxPacketDataSize = 194 + maxStringLength;
 
     public UUID uuid;
     public int ID;
@@ -31,32 +33,13 @@ public class WorldInfo implements SPacket {
     public DownedTracker downedTracker;
     public BoringWorldInfo boringInfo;
 
-    public WorldInfo(UUID uuid, int ID, String name, long worldGenVersion, short maxTilesX, short maxTilesY, WorldDifficulty difficulty, short spawnX, short spawnY, boolean hardmode, boolean daytime, double time, boolean bloodMoon, boolean eclipse, DownedTracker downedTracker, BoringWorldInfo boringInfo) {
-        this.uuid = uuid;
-        this.ID = ID;
-        this.name = name;
-        this.worldGenVersion = worldGenVersion;
-        this.maxTilesX = maxTilesX;
-        this.maxTilesY = maxTilesY;
-        this.difficulty = difficulty;
-        this.spawnX = spawnX;
-        this.spawnY = spawnY;
-        this.hardmode = hardmode;
-        this.daytime = daytime;
-        this.time = time;
-        this.bloodMoon = bloodMoon;
-        this.eclipse = eclipse;
-        this.downedTracker = downedTracker;
-        this.boringInfo = boringInfo;
-    }
-
     public WorldInfo(World world) {
         this(world.getUuid(), world.getID(), world.getName(), world.getWorldGenVersion(), (short)world.getMaxTilesX(), (short)world.getMaxTilesY(), world.getWorldDifficulty(), (short)world.getSpawnX(), (short)world.getSpawnY(), world.isHardmode(), world.isDaytime(), world.getTime(), world.isBloodMoon(), world.isEclipse(), world.getDownedTracker(), world.getBoringInfo());
     }
 
     @Override
     public PacketBuffer writePacketData() {
-        PacketBuffer buffer = new PacketBuffer(maxPacketDataSize);
+        VariableSizePacketBuffer buffer = new VariableSizePacketBuffer();
         buffer.writeInt((int)time);
         BitsByte dayMoonEclipse = new BitsByte();
         dayMoonEclipse.setBits(daytime, bloodMoon, eclipse);
@@ -154,7 +137,7 @@ public class WorldInfo implements SPacket {
         buffer.writeByte((byte)boringInfo.getInvasionType());
         buffer.writeLong(0);
         buffer.writeFloat(boringInfo.getSandstormSeverity());
-        return buffer;
+        return buffer.toNormal();
     }
 
     @Override
@@ -257,11 +240,6 @@ public class WorldInfo implements SPacket {
         buffer.writeLong(0);
         buffer.writeFloat(boringInfo.getSandstormSeverity());
         return buffer;
-    }
-
-    @Override
-    public int getMaxPacketDataSize() {
-        return maxPacketDataSize;
     }
 
     @Override

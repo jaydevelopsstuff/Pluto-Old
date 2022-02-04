@@ -11,7 +11,7 @@ public class Group {
 
     public Group(Permission[] defaultPermissions) {
         this.defaultPermissions = defaultPermissions;
-        this.permissions = Arrays.asList(defaultPermissions);
+        this.permissions = List.of(defaultPermissions);
     }
 
     public boolean hasPermission(Permission permission) {

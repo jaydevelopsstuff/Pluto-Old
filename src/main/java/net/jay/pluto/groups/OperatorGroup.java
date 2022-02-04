@@ -5,6 +5,6 @@ import net.jay.pluto.permissions.Permission;
 
 class OperatorGroup extends Group {
     public OperatorGroup() {
-        super(new Permission[] { DefaultPermissions.All });
+        super(new Permission[] { DefaultPermissions.PlutoAll });
     }
 }

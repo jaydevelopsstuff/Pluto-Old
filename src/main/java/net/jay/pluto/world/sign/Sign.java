@@ -1,6 +1,11 @@
 package net.jay.pluto.world.sign;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
 public class Sign {
+    @Setter
     private String text;
     private short x;
     private short y;
@@ -20,21 +25,5 @@ public class Sign {
         this.text = text;
         this.x = (short)x;
         this.y = (short)y;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public short getX() {
-        return x;
-    }
-
-    public short getY() {
-        return y;
     }
 }

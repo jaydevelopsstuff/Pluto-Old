@@ -1,7 +1,6 @@
 package net.jay.pluto.entity.npc;
 
 import net.jay.pluto.entity.LivingEntity;
-import net.jay.pluto.util.Vector2;
 
 public class NPC extends LivingEntity {
     private int spriteID;
@@ -77,16 +76,16 @@ public class NPC extends LivingEntity {
     @Override
     public void kill() {
         alive = false;
-        HP = 0;
+        hp = 0;
     }
 
     @Override
     public void damage(int amount) {
         if(amount < 0) throw new IllegalArgumentException("Damage amount must be 0 or more");
-        HP -= amount;
-        if(HP <= 0) {
+        hp -= amount;
+        if(hp <= 0) {
             alive = false;
-            HP = 0;
+            hp = 0;
         } else {
 
         }
@@ -95,13 +94,13 @@ public class NPC extends LivingEntity {
     @Override
     public void heal(int amount) {
         if(amount < 0) throw new IllegalArgumentException("Heal amount must be 0 or more");
-        HP += amount;
-        if(HP > maxHP) HP = maxHP;
+        hp += amount;
+        if(hp > maxHp) hp = maxHp;
     }
 
     @Override
-    public void setHP(int HP) {
-        if(HP < 0) throw new IllegalArgumentException("HP cannot be below zero");
-        this.HP = Math.min(HP, maxHP);
+    public void setHp(int hp) {
+        if(hp < 0) throw new IllegalArgumentException("HP cannot be below zero");
+        this.hp = Math.min(hp, maxHp);
     }
 }

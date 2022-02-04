@@ -1,9 +1,12 @@
 package net.jay.pluto.entity;
 
+import lombok.Getter;
+
+@Getter
 public abstract class LivingEntity extends Entity {
     protected boolean alive;
-    protected int HP;
-    protected int maxHP;
+    protected int hp;
+    protected int maxHp;
 
     public abstract void kill();
 
@@ -11,17 +14,9 @@ public abstract class LivingEntity extends Entity {
 
     public abstract void heal(int amount);
 
-    public abstract void setHP(int HP);
+    public abstract void setHp(int hp);
 
-    public boolean isAlive() {
-        return alive;
-    }
-
-    public int getHP() {
-        return HP;
-    }
-
-    public int getMaxHP() {
-        return maxHP;
+    public void healToMax() {
+        setHp(maxHp);
     }
 }

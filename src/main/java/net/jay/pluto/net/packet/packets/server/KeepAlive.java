@@ -6,7 +6,6 @@ import net.jay.pluto.net.packet.SPacket;
 
 public class KeepAlive implements SPacket {
     private static final Packets enumRepresentation = Packets.KeepAlive;
-    private static final int maxPacketDataSize = 0;
 
     @Override
     public PacketBuffer writePacketData() {
@@ -16,11 +15,6 @@ public class KeepAlive implements SPacket {
     @Override
     public PacketBuffer writePacketData(PacketBuffer buffer) {
         return buffer;
-    }
-
-    @Override
-    public int getMaxPacketDataSize() {
-        return maxPacketDataSize;
     }
 
     @Override

@@ -26,10 +26,10 @@ public class ConnectionManager {
     }
 
     /**
-     * Initializes a new <code>ConnectionManager</code> for a client that has already logged in
-     * @param parent The <code>Client</code> that manages this user
+     * Initializes a new {@link ConnectionManager} for a client that has already logged in
+     * @param parent The {@link Client} that manages this user
      * @param connection The socket connection to this client
-     * @param player The <code>Player</code> object for this client
+     * @param player The player for this client
      */
     public ConnectionManager(ClientSocket connection, BasicPlayer player, Client parent) {
         this.parent = parent;
@@ -39,7 +39,7 @@ public class ConnectionManager {
     }
 
     public void setNetHandler(NetHandler netHandler) {
-        if(!(netHandler instanceof IServerLoginNetHandler) || !(netHandler instanceof IServerPlayNetHandler)) throw new IllegalArgumentException("NetHandler must implement IServerLoginNetHandler or IServerPlayNetHandler");
+        if(!(netHandler instanceof IServerLoginNetHandler) && !(netHandler instanceof IServerPlayNetHandler)) throw new IllegalArgumentException("NetHandler must implement IServerLoginNetHandler or IServerPlayNetHandler");
         this.netHandler = netHandler;
     }
 

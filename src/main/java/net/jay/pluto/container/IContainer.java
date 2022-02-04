@@ -7,10 +7,10 @@ public interface IContainer {
     /** The size of this container (amount of slots) */
     int getSize();
 
-    /** Retrieves the <code>Item</code> held in the specified slot */
+    /** Retrieves the {@link Item} held in the specified slot */
     Item getItem(int slot);
 
-    /** Sets the <code>Item</code> for the specified slot */
+    /** Sets the {@link Item} for the specified slot */
     void setItem(int slot, Item item);
 
     /** Retrieves an array of all the items in this container */
