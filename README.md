@@ -1,3 +1,6 @@
+# [Check Out the Rewrite](https://github.com/jaydevelopsstuff/PlutoRewrite)
+This project is no longer maintained, the rewrite is where you should go.
+
 # Pluto
 Pluto is a Terraria server written in java that aims to be optimized, simple, and scalable.
 The core reason for this being made is to improve performance and create a well documented
